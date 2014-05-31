@@ -1,8 +1,20 @@
 object Host "{{ hostvars[item]['ansible_fqdn'] }}" {
   import "generic-host"
-
   address = "{{ hostvars[item]['ansible_eth0']['ipv4']['address'] }}"
-
   vars.os = "Linux"
+  vars.sla = "24x7"
+}
+
+object Service "http" {
+  import "generic-service"
+  host_name = "{{ hostvars[item]['ansible_fqdn'] }}"
+  check_command = "http"
+  vars.sla = "24x7"
+}
+
+object Service "smtp" {
+  import "generic-service"
+  host_name = "{{ hostvars[item]['ansible_fqdn'] }}"
+  check_command = "smtp"
   vars.sla = "24x7"
 }
