@@ -1,0 +1,27 @@
+---
+- hosts: monitors
+  sudo: yes
+
+  vars_files:
+
+   - vars/yum_vars.yml
+   - vars/icinga.yml
+   - vars/icinga_web.yml
+
+  tasks:
+
+   - include: tasks/enable_repo.yml
+     tags:
+      - repo
+
+   - include: tasks/icinga2_install.yml
+     tags:
+      - icinga2
+
+   - include: tasks/icinga_classicui_install.yml
+     tags:
+      - icinga2ui
+
+  handlers:
+
+   - include: handlers/handlers.yml

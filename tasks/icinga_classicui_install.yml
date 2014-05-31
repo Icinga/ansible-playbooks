@@ -1,0 +1,7 @@
+- name: Install Icinga classicgui for CentOS OS family
+  yum: name={{ item.package }} state=latest
+  with_items: icinga_web_pkg
+  notify:
+   - restart icinga2
+   - restart httpd
+  when: ansible_os_family == 'RedHat'

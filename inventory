@@ -1,0 +1,7 @@
+[monitors]
+monitor_server1 ansible_ssh_host= ansible_ssh_user=
+monitor_server2 ansible_ssh_host= ansible_ssh_user=
+
+[monitored]
+monitored_server1 ansible_ssh_host= ansible_ssh_user=
+monitored_server2 ansible_ssh_host= ansible_ssh_user=

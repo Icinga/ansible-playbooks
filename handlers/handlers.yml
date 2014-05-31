@@ -1,0 +1,5 @@
+- name: restart icinga2
+  service: name=icinga2 state=restarted enabled=yes
+
+- name: restart httpd
+  service: name=httpd state=restarted enabled=yes

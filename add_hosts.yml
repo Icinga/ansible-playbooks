@@ -1,0 +1,17 @@
+- hosts: monitored
+  gather_facts: yes
+  sudo: yes
+
+- hosts: monitors
+  sudo: yes
+
+  vars_files:
+   - vars/icinga2.yml
+
+  tasks:
+
+   - include: tasks/icinga2_add_host.yml
+
+  handlers:
+
+   - include: handlers/handlers.yml

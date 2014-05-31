@@ -1,0 +1,7 @@
+---
+icinga_pkg:
+ - { package: "icinga2" }
+ - { package: "nagios-plugins-all" }
+
+icinga2_hosts_dir: "/etc/icinga2/conf.d/hosts/"
+

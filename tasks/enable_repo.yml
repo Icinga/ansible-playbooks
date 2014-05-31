@@ -1,0 +1,12 @@
+---
+- name: Get {{ icinga2_yumkey }} for CentOS OS family
+  rpm_key: key={{ icinga2_yumkey }} state=present
+  when: ansible_os_family == 'RedHat'
+
+- name: Get {{ icinga2_url_yum }} for CentOS OS family
+  get_url: url='{{ icinga2_url_yum }}' dest={{ icinga2_repo_yum }}
+  when: ansible_os_family == 'RedHat'
+
+- name: Enable Epel for CentOS OS family
+  yum: name={{ epel_url}} state=present
+  when: ansible_os_family == 'RedHat'
