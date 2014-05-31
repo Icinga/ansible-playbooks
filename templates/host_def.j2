@@ -1,12 +1,8 @@
-{% for host in groups['monitored'] %}
-
-object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
+object Host "{{ hostvars[item]['ansible_fqdn'] }}" {
   import "generic-host"
 
-  address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
+  address = "{{ hostvars[item]['ansible_eth0']['ipv4']['address'] }}"
 
   vars.os = "Linux"
   vars.sla = "24x7"
 }
-
-{% endfor %}
