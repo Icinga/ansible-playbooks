@@ -5,7 +5,7 @@
   vars_files:
 
    - vars/yum_vars.yml
-   - vars/icinga.yml
+   - vars/icinga2.yml
    - vars/icinga_web.yml
 
   tasks:
