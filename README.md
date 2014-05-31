@@ -4,8 +4,6 @@
 
 Tested on CentOS 6.5 x64
 
-Requires: python-apt - Ansible >= 1.6
-
 This playbook is intended to be run against a fresh server, not a production one!
 
 Please note: Icinga 2 is still under active development. This playbook will be updated as new feature or installation steps will be available.
@@ -24,7 +22,7 @@ then login:
 
 #### TODO
 
-- [x] expand support to Debian OS family
+- [ ] expand support to Debian OS family
 - [ ] add Travis CI building
 - [ ] add Icinga Web installation
 - [ ] add Icinga 2 Web installation
