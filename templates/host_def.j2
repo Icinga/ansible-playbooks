@@ -1,9 +1,26 @@
-object Host "{{ hostvars[item]['ansible_fqdn'] }}" {
+{% for host in groups['smtp_no'] %}
+object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
   import "generic-host"
-  address = "{{ hostvars[item]['ansible_eth0']['ipv4']['address'] }}"
-  vars.os = "Linux"
-  vars.sla = "24x7"
-  vars.http = "yes"
+  address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
+  #This host will be monitored only for ping
+  vars.smtp = "no" 
+}
+{% endfor %}
+
+{% for host in groups['smtp_only'] %}
+object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
+  import "generic-host"
+  address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
+  #This host will be monitored only for smtp and ping
   vars.smtp = "yes"
 }
+{% endfor %}
 
+{% for host in groups['http_only'] %}
+object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
+  import "generic-host"
+  address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
+  #This host will be monitored only for http and ping
+  vars.http = "yes"
+}
+{% endfor %}

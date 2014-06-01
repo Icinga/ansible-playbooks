@@ -1,4 +1,4 @@
-- hosts: monitored
+- hosts: all
   gather_facts: yes
   sudo: yes
 
