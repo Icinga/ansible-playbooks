@@ -1,0 +1,4 @@
+---
+services:
+ - { template: "smtp_service.j2" , config: "smtp_service.conf" }
+ - { template: "http_service.j2" , config: "http_service.conf" }
