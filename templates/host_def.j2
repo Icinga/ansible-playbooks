@@ -24,3 +24,13 @@ object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
   vars.http = "yes"
 }
 {% endfor %}
+
+{% for host in groups['checks_all'] %}
+object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
+  import "generic-host"
+  address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
+  #This host will be monitored for http, smtp and ping
+  vars.http = "yes"
+  vars.smtp = "yes"
+}
+{% endfor %}
