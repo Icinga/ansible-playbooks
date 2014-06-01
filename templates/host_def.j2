@@ -3,5 +3,7 @@ object Host "{{ hostvars[item]['ansible_fqdn'] }}" {
   address = "{{ hostvars[item]['ansible_eth0']['ipv4']['address'] }}"
   vars.os = "Linux"
   vars.sla = "24x7"
+  vars.http = "yes"
+  vars.smtp = "yes"
 }
 
