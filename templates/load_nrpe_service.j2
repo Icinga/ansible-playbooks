@@ -1,6 +1,0 @@
-apply Service "load" {
-  import "generic-service"
-  check_command = "check_nrpe"
-  vars.remote_nrpe_command = "check_load"
-  assign where host.vars.nrpe_load == "yes"
-}

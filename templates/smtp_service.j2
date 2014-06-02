@@ -1,6 +1,0 @@
-apply Service "smtp" {
-  import "generic-service"
-  check_command = "smtp"
-  assign where host.vars.smtp == "yes"
-  ignore where host.vars.smtp == "no"
-}
