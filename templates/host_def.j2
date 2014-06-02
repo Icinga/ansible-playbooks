@@ -4,6 +4,9 @@ object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
   address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
   vars.smtp = "no" 
   vars.nrpe_load = "yes"
+  vars.nrpe_disk = "yes"
+  vars.nrpe_var = "yes"
+  vars.nrpe_home = "yes"
 }
 {% endfor %}
 
@@ -13,6 +16,9 @@ object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
   address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
   vars.smtp = "yes"
   vars.nrpe_load = "yes"
+  vars.nrpe_disk = "yes"
+  vars.nrpe_var = "yes"
+  vars.nrpe_home = "yes"
 }
 {% endfor %}
 
@@ -22,6 +28,9 @@ object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
   address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
   vars.http = "yes"
   vars.nrpe_load = "yes"
+  vars.nrpe_disk = "yes"
+  vars.nrpe_var = "yes"
+  vars.nrpe_home = "yes"
 }
 {% endfor %}
 
@@ -32,6 +41,9 @@ object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
   vars.http = "yes"
   vars.smtp = "yes"
   vars.nrpe_load = "yes"
+  vars.nrpe_disk = "yes"
+  vars.nrpe_var = "yes"
+  vars.nrpe_home = "yes"
 }
 {% endfor %}
 
@@ -44,6 +56,9 @@ object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
   vars.plesk = "yes"
   vars.tcp_port = "8443"
   vars.nrpe_load = "yes"
+  vars.nrpe_disk = "yes"
+  vars.nrpe_var = "yes"
+  vars.nrpe_home = "yes"
 }
 {% endfor %}
 
@@ -56,5 +71,8 @@ object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
   vars.whm = "yes"
   vars.tcp_port = "2087"
   vars.nrpe_load = "yes"
+  vars.nrpe_disk = "yes"
+  vars.nrpe_var = "yes"
+  vars.nrpe_home = "yes"
 }
 {% endfor %}

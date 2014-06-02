@@ -5,3 +5,6 @@ services:
  - { template: "plesk_service.j2" , config: "plesk_service.conf" }
  - { template: "whm_service.j2" , config: "whm_service.conf" }
  - { template: "load_nrpe_service.j2" , config: "load_nrpe_service.conf" }
+ - { template: "disk_nrpe_service.j2" , config: "disk_nrpe_service.conf" }
+ - { template: "var_nrpe_service.j2" , config: "var_nrpe_service.conf" }
+ - { template: "home_nrpe_service.j2" , config: "home_nrpe_service.conf" }
