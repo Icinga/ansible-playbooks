@@ -1,0 +1,9 @@
+object CheckCommand "check_nrpe" {
+  import "plugin-check-command"
+
+  command = [
+    PluginDir + "/check_nrpe",
+    "-H", "$address$",
+    "-c", "$remote_nrpe_command$",
+  ]
+}

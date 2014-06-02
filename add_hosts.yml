@@ -8,10 +8,12 @@
   vars_files:
    - vars/icinga2.yml
    - vars/icinga2_services.yml
+   - vars/icinga2_commands.yml
 
   tasks:
 
    - include: tasks/icinga2_add_services.yml
+   - include: tasks/icinga2_add_commands.yml
    - include: tasks/icinga2_add_host.yml
 
   handlers:

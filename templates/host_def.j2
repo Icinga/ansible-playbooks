@@ -2,8 +2,8 @@
 object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
   import "generic-host"
   address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
-  #This host will be monitored only for ping
   vars.smtp = "no" 
+  vars.nrpe_load = "yes"
 }
 {% endfor %}
 
@@ -11,8 +11,8 @@ object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
 object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
   import "generic-host"
   address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
-  #This host will be monitored only for smtp and ping
   vars.smtp = "yes"
+  vars.nrpe_load = "yes"
 }
 {% endfor %}
 
@@ -20,8 +20,8 @@ object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
 object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
   import "generic-host"
   address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
-  #This host will be monitored only for http and ping
   vars.http = "yes"
+  vars.nrpe_load = "yes"
 }
 {% endfor %}
 
@@ -29,9 +29,9 @@ object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
 object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
   import "generic-host"
   address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
-  #This host will be monitored for http, smtp and ping
   vars.http = "yes"
   vars.smtp = "yes"
+  vars.nrpe_load = "yes"
 }
 {% endfor %}
 
@@ -39,11 +39,11 @@ object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
 object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
   import "generic-host"
   address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
-  #This host will be monitored for http, smtp, plesk and ping
   vars.http = "yes"
   vars.smtp = "yes"
   vars.plesk = "yes"
   vars.tcp_port = "8443"
+  vars.nrpe_load = "yes"
 }
 {% endfor %}
 
@@ -51,10 +51,10 @@ object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
 object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
   import "generic-host"
   address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
-  #This host will be monitored for http, smtp, whm and ping
   vars.http = "yes"
   vars.smtp = "yes"
   vars.whm = "yes"
   vars.tcp_port = "2087"
+  vars.nrpe_load = "yes"
 }
 {% endfor %}
