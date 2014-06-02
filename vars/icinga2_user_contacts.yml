@@ -1,0 +1,3 @@
+users:
+ - { user: "enoch", display: "SysOp", groups: "SysOp", email: "some@your.com", operator: "admin" }
+ - { user: "dummy", display: "Dummy User", groups: "Dummies", email: "wow@such.com", operator: "intern" }

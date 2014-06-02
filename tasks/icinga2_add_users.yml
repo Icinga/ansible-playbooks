@@ -1,0 +1,19 @@
+- name: Copy User Definitions
+  template: src=user_def.j2 
+            dest={{ icinga2_hosts_dir }}user_{{ item.user }}.conf
+            owner=root 
+            group=root 
+            mode=0644
+  with_items: users
+  notify:
+   - restart icinga2
+
+- name: Copy Notification Definitions
+  template: src=notification_def.j2 
+            dest={{ icinga2_hosts_dir }}notification_{{ item.user }}.conf
+            owner=root 
+            group=root 
+            mode=0644
+  with_items: users
+  notify:
+   - restart icinga2

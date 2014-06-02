@@ -1,0 +1,23 @@
+apply Notification "{{ item.user }}" to Host {
+  import "mail-host-notification"
+  command = "mail-host-notification"
+  user_groups = [ "{{ item.groups }}" ]
+{% if "{{ item.operator }}" is defined %}
+  assign where host.vars.sla == "24x7" & host.vars.operator == "{{ item.operator }}" 
+}
+{% else %}
+  assign where host.vars.sla == "24x7"
+}
+{% endif %}
+
+apply Notification "{{ item.user }}" to Service {
+  import "mail-service-notification"
+  command = "mail-service-notification"
+  user_groups = [ "{{ item.groups }}" ]
+{% if "{{ item.operator }}" is defined %}
+  assign where host.vars.sla == "24x7" & host.vars.operator == "{{ item.operator }}" 
+}
+{% else %}
+  assign where host.vars.sla == "24x7"
+}
+{% endif %}

@@ -9,11 +9,13 @@
    - vars/icinga2.yml
    - vars/icinga2_services.yml
    - vars/icinga2_commands.yml
+   - vars/icinga2_user_contacts.yml
 
   tasks:
 
    - include: tasks/icinga2_add_services.yml
    - include: tasks/icinga2_add_commands.yml
+   - include: tasks/icinga2_add_users.yml
    - include: tasks/icinga2_add_host.yml
 
   handlers:
