@@ -1,6 +1,7 @@
 apply Service "smtp" {
   import "generic-service"
   check_command = "smtp"
+  vars.sla = "24x7"
   assign where host.vars.smtp == "yes"
   ignore where host.vars.smtp == "no"
 }

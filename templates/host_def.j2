@@ -2,6 +2,7 @@
 object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
   import "generic-host"
   address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
+  vars.sla = "24x7"
   vars.smtp = "no" 
   vars.nrpe_load = "yes"
   vars.nrpe_disk = "yes"
@@ -14,6 +15,7 @@ object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
 object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
   import "generic-host"
   address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
+  vars.sla = "24x7"
   vars.smtp = "yes"
   vars.nrpe_load = "yes"
   vars.nrpe_disk = "yes"
@@ -26,6 +28,7 @@ object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
 object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
   import "generic-host"
   address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
+  vars.sla = "24x7"
   vars.http = "yes"
   vars.nrpe_load = "yes"
   vars.nrpe_disk = "yes"
@@ -38,6 +41,7 @@ object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
 object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
   import "generic-host"
   address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
+  vars.sla = "24x7"
   vars.http = "yes"
   vars.smtp = "yes"
   vars.nrpe_load = "yes"
@@ -51,6 +55,7 @@ object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
 object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
   import "generic-host"
   address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
+  vars.sla = "24x7"
   vars.http = "yes"
   vars.smtp = "yes"
   vars.plesk = "yes"
@@ -66,6 +71,7 @@ object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
 object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
   import "generic-host"
   address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
+  vars.sla = "24x7"
   vars.http = "yes"
   vars.smtp = "yes"
   vars.whm = "yes"
