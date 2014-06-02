@@ -1,0 +1,5 @@
+apply Service "whm" {
+  import "generic-service"
+  check_command = "tcp"
+  assign where host.vars.whm == "yes"
+}

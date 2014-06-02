@@ -25,12 +25,36 @@ object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
 }
 {% endfor %}
 
-{% for host in groups['checks_all'] %}
+{% for host in groups['smtp_http'] %}
 object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
   import "generic-host"
   address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
   #This host will be monitored for http, smtp and ping
   vars.http = "yes"
   vars.smtp = "yes"
+}
+{% endfor %}
+
+{% for host in groups['plesk'] %}
+object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
+  import "generic-host"
+  address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
+  #This host will be monitored for http, smtp, plesk and ping
+  vars.http = "yes"
+  vars.smtp = "yes"
+  vars.plesk = "yes"
+  vars.tcp_port = "8443"
+}
+{% endfor %}
+
+{% for host in groups['whm_cpanel'] %}
+object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
+  import "generic-host"
+  address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
+  #This host will be monitored for http, smtp, whm and ping
+  vars.http = "yes"
+  vars.smtp = "yes"
+  vars.whm = "yes"
+  vars.tcp_port = "2087"
 }
 {% endfor %}

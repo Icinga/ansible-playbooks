@@ -1,0 +1,5 @@
+apply Service "plesk" {
+  import "generic-service"
+  check_command = "tcp"
+  assign where host.vars.plesk == "yes"
+}
