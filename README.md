@@ -22,7 +22,7 @@ then login:
 
 `ansible-playbook -i inventory add_hosts.yml`
 
-Please, see the wiki for full documentation.
+Please, see the [Wiki](https://github.com/valentinogagliardi/ansible-icinga2/wiki) for full documentation.
 
 #### TODO
 
