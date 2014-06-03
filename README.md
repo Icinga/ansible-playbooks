@@ -1,5 +1,7 @@
 ### Ansible playbook to install Icinga 2
 
+![Picture](https://www.icinga.org/wp-content/uploads/2013/07/icinga2_core_logo.png)
+
 #### Platform - Prereq - Disclaimer
 
 Tested on CentOS 6.5 x64
@@ -19,6 +21,8 @@ then login:
 #### Usage: adding hosts
 
 `ansible-playbook -i inventory add_hosts.yml`
+
+Please, see the wiki for full documentation.
 
 #### TODO
 
