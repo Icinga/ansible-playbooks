@@ -32,6 +32,7 @@ object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
   address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
   vars.sla = "24x7"
   vars.http = "yes"
+  vars.http_vhost = "www.{{ hostvars[host]['ansible_domain'] }}"
   vars.nrpe_load = "yes"
   vars.nrpe_disk = "yes"
   vars.nrpe_var = "yes"
