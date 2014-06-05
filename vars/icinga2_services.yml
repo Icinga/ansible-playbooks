@@ -7,3 +7,5 @@ services:
  - { template: "load_nrpe_service.j2" , config: "load_nrpe_service.conf" }
  - { template: "disk_nrpe_service.j2" , config: "disk_nrpe_service.conf" }
  - { template: "home_nrpe_service.j2" , config: "home_nrpe_service.conf" }
+
+generic_domain: "ovh.net"

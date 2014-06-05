@@ -1,11 +1,18 @@
 object Host "{{ hostvars[item]['ansible_fqdn'] }}" {
+
+  #Inventory hostname of this host (to give you a bit of context) is: {{ hostvars[item]['inventory_hostname'] }}
   import "generic-host"
   address = "{{ hostvars[item]['ansible_eth0']['ipv4']['address'] }}"
   vars.sla = "24x7"
 
 {% if http_check == "yes" %}
   vars.http = "yes"
+{% if hostvars[item]['ansible_domain'] == generic_domain %}
+#Generic ansible_domain {{ generic_domain }} detected, using ansible_fqdn for http_vhost
+  vars.http_vhost = "{{ hostvars[item]['ansible_fqdn'] }}"
+{% else %}
   vars.http_vhost = "www.{{ hostvars[item]['ansible_domain'] }}"
+{% endif %}
 {% else %}
   vars.http = "no"
 {% endif %}
