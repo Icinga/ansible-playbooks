@@ -5,6 +5,7 @@ object Host "{{ hostvars[item]['ansible_fqdn'] }}" {
 
 {% if http_check == "yes" %}
   vars.http = "yes"
+  vars.http_vhost = "www.{{ hostvars[item]['ansible_domain'] }}"
 {% else %}
   vars.http = "no"
 {% endif %}
