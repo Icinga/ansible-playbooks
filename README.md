@@ -20,7 +20,7 @@ then login:
 
 #### Usage: adding hosts
 
-`ansible-playbook -i inventory add_hosts.yml`
+`ansible-playbook -i inventory add_hosts.yml --extra-vars="hosts=monitored"`
 
 Please, see the [Wiki](https://github.com/valentinogagliardi/ansible-icinga2/wiki) for full documentation.
 

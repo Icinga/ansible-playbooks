@@ -1,4 +1,4 @@
-- hosts: all
+- hosts: "{{ hosts }}"
   gather_facts: yes
   sudo: yes
 
@@ -10,6 +10,7 @@
    - vars/icinga2_services.yml
    - vars/icinga2_commands.yml
    - vars/icinga2_user_contacts.yml
+   - group_vars/{{ hosts }}
 
   tasks:
 

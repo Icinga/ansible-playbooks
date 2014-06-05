@@ -1,3 +1,6 @@
 users:
+# groups: groups the user belong to
+# addgroup: additional groups the user belong to
+# operator: must match the same operator as in group_vars/yourgroup
  - { user: "enoch", display: "SysOp", groups: "SysOp", email: "some@your.com", operator: "admin" }
  - { user: "dummy", display: "Dummy User", groups: "Dummies", email: "wow@such.com", operator: "intern" }

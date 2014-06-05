@@ -1,91 +1,57 @@
-{% for host in groups['smtp_no'] %}
-object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
+object Host "{{ hostvars[item]['ansible_fqdn'] }}" {
   import "generic-host"
-  address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
+  address = "{{ hostvars[item]['ansible_eth0']['ipv4']['address'] }}"
   vars.sla = "24x7"
-  vars.smtp = "no" 
-  vars.nrpe_load = "yes"
-  vars.nrpe_disk = "yes"
-  vars.nrpe_var = "yes"
-  vars.nrpe_home = "yes"
-  vars.operator = "admin"
-}
-{% endfor %}
 
-{% for host in groups['smtp_only'] %}
-object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
-  import "generic-host"
-  address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
-  vars.sla = "24x7"
-  vars.smtp = "yes"
-  vars.nrpe_load = "yes"
-  vars.nrpe_disk = "yes"
-  vars.nrpe_var = "yes"
-  vars.nrpe_home = "yes"
-  vars.operator = "admin"
-}
-{% endfor %}
-
-{% for host in groups['http_only'] %}
-object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
-  import "generic-host"
-  address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
-  vars.sla = "24x7"
+{% if http_check == "yes" %}
   vars.http = "yes"
-  vars.http_vhost = "www.{{ hostvars[host]['ansible_domain'] }}"
-  vars.nrpe_load = "yes"
-  vars.nrpe_disk = "yes"
-  vars.nrpe_var = "yes"
-  vars.nrpe_home = "yes"
-  vars.operator = "admin"
-}
-{% endfor %}
+{% else %}
+  vars.http = "no"
+{% endif %}
 
-{% for host in groups['smtp_http'] %}
-object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
-  import "generic-host"
-  address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
-  vars.sla = "24x7"
-  vars.http = "yes"
+{% if smtp_check == "yes" %}
   vars.smtp = "yes"
-  vars.nrpe_load = "yes"
-  vars.nrpe_disk = "yes"
-  vars.nrpe_var = "yes"
-  vars.nrpe_home = "yes"
-  vars.operator = "admin"
-}
-{% endfor %}
+{% else %}
+  vars.smtp = "no"
+{% endif %}
 
-{% for host in groups['plesk'] %}
-object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
-  import "generic-host"
-  address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
-  vars.sla = "24x7"
-  vars.http = "yes"
-  vars.smtp = "yes"
-  vars.plesk = "yes"
-  vars.tcp_port = "8443"
+{% if nrpe_load == "yes" %}
   vars.nrpe_load = "yes"
-  vars.nrpe_disk = "yes"
-  vars.nrpe_var = "yes"
-  vars.nrpe_home = "yes"
-  vars.operator = "admin"
-}
-{% endfor %}
+{% else %}
+  vars.nrpe_load = "no"
+{% endif %}
 
-{% for host in groups['whm_cpanel'] %}
-object Host "{{ hostvars[host]['ansible_fqdn'] }}" {
-  import "generic-host"
-  address = "{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}"
-  vars.sla = "24x7"
-  vars.http = "yes"
-  vars.smtp = "yes"
+{% if nrpe_disk == "yes" %}
+  vars.nrpe_disk = "yes"
+{% else %}
+  vars.nrpe_disk = "no"
+{% endif %}
+
+{% if whm_check == "yes" %}
   vars.whm = "yes"
   vars.tcp_port = "2087"
-  vars.nrpe_load = "yes"
-  vars.nrpe_disk = "yes"
-  vars.nrpe_var = "yes"
-  vars.nrpe_home = "yes"
+{% else %}
+  vars.whm = "no"
+{% endif %}
+
+{% if plesk_check == "yes" %}
+  vars.plesk = "yes"
+  vars.tcp_port = "8443"
+{% else %}
+  vars.plesk = "no"
+{% endif %}
+
+{% if mysql_check == "yes" %}
+  vars.nrpe_mysql = "yes"
+{% else %}
+  vars.nrpe_mysql = "no"
+{% endif %}
+
+{% if operator is defined %}
+  #This is who receive all notifications about this host
+  vars.operator = "{{ operator }}"
+{% else %}
+  #This is who receive all notifications about this host
   vars.operator = "admin"
+{% endif %}
 }
-{% endfor %}

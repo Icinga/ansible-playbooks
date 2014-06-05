@@ -1,8 +1,9 @@
 - name: Copy Host Definitions
   template: src=host_def.j2 
-            dest={{ icinga2_hosts_dir }}monitored_hosts.conf
+            dest={{ icinga2_hosts_dir }}{{ hostvars[item]['ansible_fqdn'] }}.conf
             owner=root 
             group=root 
             mode=0644
+  with_items: groups["{{ hosts }}"]
   notify:
    - restart icinga2

@@ -1,18 +1,6 @@
 [monitors]
-monitor_server1 ansible_ssh_host= ansible_ssh_user=
-monitor_server2 ansible_ssh_host= ansible_ssh_user=
+monitoring_server1 ansible_ssh_user=root ansible_ssh_host=
 
-[smtp_no]
-#Add here the hosts that will be checked only for ping4
-monitored_server1 ansible_ssh_host= ansible_ssh_user=
-monitored_server2 ansible_ssh_host= ansible_ssh_user=
-
-[smtp_only]
-#Add here the hosts that will be checked only for SMTP and ping4
-monitored_server1 ansible_ssh_host= ansible_ssh_user=
-monitored_server2 ansible_ssh_host= ansible_ssh_user=
-
-[http_only]
-#Add here the hosts that will be checked only for HTTP and ping4
-monitored_server1 ansible_ssh_host= ansible_ssh_user=
-monitored_server2 ansible_ssh_host= ansible_ssh_user=
+[monitored]
+puppy ansible_ssh_user=root ansible_ssh_host=
+grumpy ansible_ssh_user=root ansible_ssh_host=
