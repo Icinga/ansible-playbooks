@@ -6,7 +6,7 @@
   sudo: yes
 
   vars_files:
-   - vars/icinga2.yml
+   - vars/main.yml
    - vars/icinga2_services.yml
    - vars/icinga2_commands.yml
    - vars/icinga2_user_contacts.yml
