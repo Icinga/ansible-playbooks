@@ -6,7 +6,7 @@
             mode=0644
   with_items: users
   notify:
-   - restart icinga2
+   - reload icinga2
 
 - name: Copy HostGroup Definitions (which are tied to users)
   template: src=grouphost_def.j2 
@@ -16,7 +16,7 @@
             mode=0644
   with_items: users
   notify:
-   - restart icinga2
+   - reload icinga2
 
 - name: Copy Notification Definitions (which are tied to users)
   template: src=notification_def.j2 
@@ -26,4 +26,4 @@
             mode=0644
   with_items: users
   notify:
-   - restart icinga2
+   - reload icinga2

@@ -6,4 +6,4 @@
             mode=0644
   with_items: services
   notify:
-  - restart icinga2
+  - reload icinga2
