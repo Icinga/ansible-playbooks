@@ -1,0 +1,21 @@
+---
+- name: Include OS specific variables
+  include_vars: "{{ ansible_distribution }}_{{ ansible_distribution_release }}.yml"
+
+- include: icinga2_install_Debian.yml
+  when: ansible_os_family == 'Debian' and ansible_distribution == 'Debian' and ansible_distribution_release == 'wheezy'
+
+- include: icinga2_install_Ubuntu.yml
+  when: ansible_os_family == 'Debian' and ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
+
+- include: icinga2_install_RedHat.yml
+  when: ansible_os_family == 'RedHat'
+
+- include: icinga2_classicui_install_Debian.yml
+  when: ansible_os_family == 'Debian' and ansible_distribution == 'Debian' and ansible_distribution_release == 'wheezy'
+
+- include: icinga2_classicui_install_Ubuntu.yml
+  when: ansible_os_family == 'Debian' and ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
+
+- include: icinga2_classicui_install_RedHat.yml
+  when: ansible_os_family == 'RedHat'

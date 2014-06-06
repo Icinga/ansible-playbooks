@@ -1,0 +1,22 @@
+---
+icinga2_key: "http://packages.icinga.org/icinga.key"
+
+# Handlers variables
+
+apache: "httpd"
+
+icinga2_repos:
+ - { repo: "deb http://packages.icinga.org/ubuntu icinga-trusty main" }
+ - { repo: "deb-src http://packages.icinga.org/ubuntu icinga-trusty main" }
+
+icinga2_pkg:
+ - { package: "icinga2" }
+ - { package: "nagios-plugins" }
+ - { package: "nagios-nrpe-plugin" }
+ - { package: "nagios-nrpe-server" }
+
+icinga2_web_pkg:
+ - { package: "icinga2-classicui" }
+
+icinga2_hosts_dir: "/etc/icinga2/conf.d/hosts/"
+

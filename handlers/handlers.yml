@@ -1,8 +1,15 @@
 - name: restart icinga2
-  service: name=icinga2 state=restarted enabled=yes
+  service: name=icinga2 
+           state=restarted 
+           enabled=yes
 
 - name: reload icinga2
-  service: name=icinga2 state=reloaded enabled=yes
+  service: name=icinga2  
+           state=reloaded 
+           enabled=yes
 
-- name: restart httpd
-  service: name=httpd state=restarted enabled=yes
+- name: restart apache
+  service: name={{ apache }} 
+           state=restarted 
+           enabled=yes
+

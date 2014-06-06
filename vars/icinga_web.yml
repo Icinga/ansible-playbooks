@@ -1,4 +1,0 @@
----
-icinga_web_pkg:
- - { package: "icinga2-classicui-config" }
- - { package: "icinga-gui" }

@@ -1,7 +1,0 @@
----
-- name: Install Icinga2 for CentOS OS family
-  yum: name={{ item.package }} state=latest
-  with_items: icinga_pkg
-  notify:
-   - restart icinga2
-  when: ansible_os_family == 'RedHat'

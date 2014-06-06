@@ -1,0 +1,6 @@
+- name: Install Icinga Classic Gui for Ubuntu OS family
+  apt: pkg={{ item.package }} state=latest
+  with_items: icinga2_web_pkg
+  notify:
+   - restart icinga2
+   - restart apache
