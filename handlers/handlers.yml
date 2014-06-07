@@ -13,3 +13,7 @@
            state=restarted 
            enabled=yes
 
+- name: restart firewalld
+  service: name=firewalld.service
+           state=restarted 
+           enabled=yes

@@ -4,7 +4,9 @@
 
 #### Platform - Prereq - Disclaimer
 
-Tested platforms: CentOS 6.5 x64 - Debian Wheezy x64 - Ubuntu Trusty x64. This playbook is intended to be run against a fresh server!
+Tested on: CentOS 6.5 x64 - Debian Wheezy x64 - Ubuntu Trusty x64 - Fedora 20
+
+This playbook is intended to be run against a fresh server!
 
 #### Usage: installation
 

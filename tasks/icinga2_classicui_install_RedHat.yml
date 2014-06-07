@@ -5,5 +5,5 @@
    - restart icinga2
    - restart apache
 
-- name: Icinga Classic Gui Installation finished
+- name: Icinga Classic Gui Installation finished (CentOS)
   debug: msg="Now you can login at http://{{ ansible_eth0.ipv4.address }}/icinga with username icingaadmin and password icingaadmin"
