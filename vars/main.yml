@@ -1,2 +1,4 @@
 ---
 # vars file for icinga2-ansible
+
+icinga2_hosts_dir: "/etc/icinga2/conf.d/hosts/"

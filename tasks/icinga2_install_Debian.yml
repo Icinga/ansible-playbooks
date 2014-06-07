@@ -1,0 +1,15 @@
+---
+- name: Get Icinga2 Apt Key for Debian OS family (Debian)
+  apt_key: url={{ item.key }} state=present
+  with_items: icinga2_repo_keys
+
+- name: Get Icinga2 Apt Repos for Debian OS family (Debian)
+  apt_repository: repo='{{ item.repo }}' update_cache=yes state=present
+  with_items: icinga2_repos
+
+- name: Install Icinga2 on Debian OS family (Debian)
+  apt: pkg={{ item.package }} state=latest
+  with_items: icinga2_pkg
+  notify:
+   - restart icinga2
+
