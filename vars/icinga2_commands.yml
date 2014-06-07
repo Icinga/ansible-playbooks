@@ -1,3 +1,0 @@
----
-commands:
- - { template: "check_nrpe.j2" , config: "check_nrpe.conf" }

@@ -1,7 +1,0 @@
-apply Service "home" {
-  import "generic-service"
-  check_command = "check_nrpe"
-  vars.sla = "24x7"
-  vars.remote_nrpe_command = "check_home"
-  assign where host.vars.nrpe_home == "yes"
-}

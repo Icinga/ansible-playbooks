@@ -1,6 +1,0 @@
-apply Service "plesk" {
-  import "generic-service"
-  check_command = "tcp"
-  vars.sla = "24x7"
-  assign where host.vars.plesk == "yes"
-}

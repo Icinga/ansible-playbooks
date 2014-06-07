@@ -1,5 +1,0 @@
-object HostGroup "{{ item.groups }}" {
-  display_name = "{{ item.groups }}"
-
-  assign where host.vars.operator == "{{ item.operator }}"
-}

@@ -1,7 +1,0 @@
-apply Service "http" {
-  import "generic-service"
-  check_command = "http"
-  vars.sla = "24x7"
-  assign where host.vars.http == "yes"
-  ignore where host.vars.http == "no"
-}

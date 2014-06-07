@@ -1,9 +1,0 @@
-- name: Copy Command Definitions
-  template: src=commands/{{ item.template }}
-            dest={{ icinga2_hosts_dir }}{{ item.config }}
-            owner=root 
-            group=root 
-            mode=0644
-  with_items: commands
-  notify:
-  - reload icinga2
