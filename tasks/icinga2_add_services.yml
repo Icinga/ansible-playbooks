@@ -1,0 +1,9 @@
+- name: Copy Service Definitions
+  template: src=services/{{ item.template }}
+            dest={{ icinga2_hosts_dir }}{{ item.config }}
+            owner=root 
+            group=root 
+            mode=0644
+  with_items: services
+  notify:
+  - reload icinga2

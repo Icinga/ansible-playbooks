@@ -1,0 +1,32 @@
+---
+#Debian packages require additional packages which are provided by the Debian Monitoring Project repository
+
+icinga2_repo_keys:
+
+ - { key: "http://packages.icinga.org/icinga.key" }
+ - { key: "http://debmon.org/debmon/repo.key" }
+
+# Handlers variables
+
+apache: "apache2"
+
+icinga2_repos:
+ - { repo: "deb http://packages.icinga.org/debian icinga-wheezy main" }
+ - { repo: "deb-src http://packages.icinga.org/debian icinga-wheezy main" }
+ - { repo: "deb http://debmon.org/debmon debmon-wheezy main" }
+
+icinga2_pkg:
+ - { package: "icinga2" }
+ - { package: "nagios-plugins" }
+ - { package: "nagios-nrpe-plugin" }
+ - { package: "nagios-nrpe-server" }
+
+icinga2_classicui_debconf:
+ - { name: "icinga2-classicui", question: "icinga2-classicui/adminpassword", value: "CHANGEME", vtype: "string" }
+ - { name: "icinga2-classicui", question: "icinga2-classicui/adminpassword-repeat", value: "CHANGEME", vtype: "string" }
+
+icinga2_web_pkg:
+ - { package: "icinga2-classicui" }
+
+icinga2_hosts_dir: "/etc/icinga2/conf.d/hosts/"
+

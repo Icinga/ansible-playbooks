@@ -1,0 +1,18 @@
+---
+- name: Configure Debconf values for Icinga Classic Gui on Debian OS family (Ubuntu)
+  debconf: name={{ item.name }}
+           question={{ item.question }}
+           value={{ item.value }}
+           vtype={{ item.vtype }}
+           unseen=no
+  with_items: icinga2_classicui_debconf
+
+- name: Install Icinga Classic Gui on Debian OS family (Ubuntu)
+  apt: pkg={{ item.package }} state=latest
+  with_items: icinga2_web_pkg
+  notify:
+   - restart icinga2
+   - restart apache
+
+- name: Icinga Classic Gui Installation finished
+  debug: msg="Now you can login at http://{{ ansible_eth0.ipv4.address }}/icinga2-classicui with username icingaadmin and the password you provided"

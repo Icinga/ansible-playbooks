@@ -1,0 +1,6 @@
+[monitors]
+monitoring_server1 ansible_ssh_user=root ansible_ssh_host=
+
+[monitored]
+puppy ansible_ssh_user=root ansible_ssh_host=
+grumpy ansible_ssh_user=root ansible_ssh_host=

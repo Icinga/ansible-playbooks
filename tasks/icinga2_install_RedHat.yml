@@ -1,0 +1,16 @@
+---
+- name: Get Icinga2 Yum Key on CentOS OS family
+  rpm_key: key={{ icinga2_key }} state=present
+
+- name: Get Icinga2 Yum Repo on CentOS OS family
+  get_url: url='{{ icinga2_url_yum }}' dest={{ icinga2_repo_yum }}
+
+- name: Enable Epel on CentOS OS family
+  yum: name={{ epel_url }} state=present
+
+- name: Install Icinga2 on CentOS OS family
+  yum: name={{ item.package }} state=latest
+  with_items: icinga2_pkg
+  notify:
+   - restart icinga2
+

@@ -1,0 +1,11 @@
+---
+services:
+ - { template: "smtp_service.j2" , config: "smtp_service.conf" }
+ - { template: "http_service.j2" , config: "http_service.conf" }
+ - { template: "plesk_service.j2" , config: "plesk_service.conf" }
+ - { template: "whm_service.j2" , config: "whm_service.conf" }
+ - { template: "load_nrpe_service.j2" , config: "load_nrpe_service.conf" }
+ - { template: "disk_nrpe_service.j2" , config: "disk_nrpe_service.conf" }
+ - { template: "home_nrpe_service.j2" , config: "home_nrpe_service.conf" }
+
+generic_domain: "ovh.net"
