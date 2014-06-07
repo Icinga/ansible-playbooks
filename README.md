@@ -20,6 +20,11 @@ None
 Example Playbook
 -------------------------
 
+- hosts: monitors
+  
+  roles:
+   - { role: icinga2-ansible }
+
 
 License
 -------
