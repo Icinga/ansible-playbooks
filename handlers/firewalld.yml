@@ -1,0 +1,7 @@
+---
+# handlers file for icinga2-ansible
+
+- name: restart firewalld
+  service: name=firewalld
+           state=restarted
+           enabled=yes

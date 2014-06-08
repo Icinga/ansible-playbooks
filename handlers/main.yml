@@ -16,7 +16,5 @@
            state=restarted 
            enabled=yes
 
-- name: restart firewalld
-  service: name=firewalld
-           state=restarted 
-           enabled=yes
+- include: firewalld.yml
+  when: ansible_os_family == 'RedHat' and ansible_distribution == 'Fedora'
