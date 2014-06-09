@@ -10,9 +10,14 @@ apache: "apache2"
 
 icinga2_pkg:
  - { package: "icinga2" }
+ - { package: "nrpe" }
  - { package: "nagios-plugins-all" }
- - { package: "nagios-nrpe" }
  - { package: "nagios-plugins-nrpe" }
+
+features:
+ - { feature: "checker" }
+ - { feature: "mainlog" }
+ - { feature: "notification" }
 
 icinga2_web_pkg:
  - { package: "icinga2-classicui-config" }
