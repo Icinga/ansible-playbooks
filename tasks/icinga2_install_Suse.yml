@@ -1,0 +1,18 @@
+---
+- name: Get Icinga2 RPM Key on Suse OS family
+  rpm_key: key={{ icinga2_key }} state=present
+
+- name: Get Icinga2 Repo on Suse OS family
+  zypper_repository: name=icinga2
+                     repo='{{ icinga2_url_zypper }}' 
+                     state=present
+                     disable_gpg_check=yes
+  ignore_errors: yes
+ 
+- name: Install Icinga2 on Suse OS family
+  zypper: name={{ item.package }} 
+          state=present
+          disable_gpg_check=yes
+  with_items: icinga2_pkg
+  notify:
+   - restart icinga2

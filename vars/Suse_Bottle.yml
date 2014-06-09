@@ -1,0 +1,21 @@
+icinga2_key: "http://packages.icinga.org/icinga.key"
+
+icinga2_url_zypper: "http://packages.icinga.org/openSUSE/ICINGA-release.repo"
+
+# Handlers variables
+
+apache: "apache2"
+
+#
+
+icinga2_pkg:
+ - { package: "icinga2" }
+ - { package: "nagios-plugins-all" }
+ - { package: "nagios-nrpe" }
+ - { package: "nagios-plugins-nrpe" }
+
+icinga2_web_pkg:
+ - { package: "icinga2-classicui-config" }
+ - { package: "icinga-gui" }
+
+icinga2_hosts_dir: "/etc/icinga2/conf.d/hosts/"
