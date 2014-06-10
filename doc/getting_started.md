@@ -20,7 +20,7 @@ Then create a simple playbook, `site.yml` and place the following content:
 - hosts: monitors_icinga2_core
   
   roles:
-   - { role: icinga2-ansible, icinga2_classicui: "no" }
+   - { role: Icinga.icinga2-ansible, icinga2_classicui: "no" }
 ```
 
 then launch the playbook:
@@ -45,12 +45,12 @@ Then update your playbook:
 - hosts: monitors_icinga2_core
   
   roles:
-   - { role: icinga2-ansible, icinga2_classicui: "no" }
+   - { role: Icinga.icinga2-ansible, icinga2_classicui: "no" }
 
 - hosts: monitors_icinga2_classicui
   
   roles:
-   - { role: icinga2-ansible, icinga2_classicui: "yes" }
+   - { role: Icinga.icinga2-ansible, icinga2_classicui: "yes" }
 ```
 
 and then launch again the playbook:
