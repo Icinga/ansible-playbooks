@@ -29,6 +29,7 @@ then launch the playbook:
 
 What happens if you want to setup 2 monitoring servers with Icinga2 Classic UI alongside the previous two? Add them in your inventory:
 
+```
 [monitors_icinga2_core]
 mnt_srv1 ansible_ssh_host="" ansible_ssh_user=""
 mnt_srv2 ansible_ssh_host="" ansible_ssh_user=""
@@ -36,6 +37,7 @@ mnt_srv2 ansible_ssh_host="" ansible_ssh_user=""
 [monitors_icinga2_classicui]
 mnt_srv3 ansible_ssh_host="" ansible_ssh_user=""
 mnt_srv4 ansible_ssh_host="" ansible_ssh_user=""
+```
 
 Given that Classic UI for Debian OS family requires a password which will be passed to Debconf, open up `vars/Ubuntu_trusty.yml` and `vars/Debian_wheezy.yml` and fill `icinga2_classicui_password: "CHANGEME"` with your desired password.
 
