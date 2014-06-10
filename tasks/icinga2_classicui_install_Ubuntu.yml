@@ -2,7 +2,7 @@
 - name: Configure Debconf values for Icinga Classic Gui on Debian OS family (Ubuntu)
   debconf: name={{ item.name }}
            question={{ item.question }}
-           value={{ item.value }}
+           value={{ item.icinga2_classicui_password }}
            vtype={{ item.vtype }}
            unseen=no
   with_items: icinga2_classicui_debconf

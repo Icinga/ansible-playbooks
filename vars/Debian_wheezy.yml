@@ -10,6 +10,8 @@ icinga2_repo_keys:
 
 apache: "apache2"
 
+#
+
 icinga2_repos:
  - { repo: "deb http://packages.icinga.org/debian icinga-wheezy main" }
  - { repo: "deb-src http://packages.icinga.org/debian icinga-wheezy main" }
@@ -22,8 +24,8 @@ icinga2_pkg:
  - { package: "nagios-nrpe-server" }
 
 icinga2_classicui_debconf:
- - { name: "icinga2-classicui", question: "icinga2-classicui/adminpassword", value: "CHANGEME", vtype: "string" }
- - { name: "icinga2-classicui", question: "icinga2-classicui/adminpassword-repeat", value: "CHANGEME", vtype: "string" }
+ - { name: "icinga2-classicui", question: "icinga2-classicui/adminpassword", icinga2_classicui_password: "CHANGEME", vtype: "string" }
+ - { name: "icinga2-classicui", question: "icinga2-classicui/adminpassword-repeat", icinga2_classicui_password: "CHANGEME", vtype: "string" }
 
 icinga2_web_pkg:
  - { package: "icinga2-classicui" }

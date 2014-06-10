@@ -17,6 +17,12 @@ The variables that can be passed to this role:
 |-----------------------|----------------|
 |icinga2_classicui: ""	| yes/no         |
 
+The variables that you are required to configure:
+
+File `vars/Ubuntu_trusty.yml` and `vars/Debian_wheezy.yml`
+
+icinga2_classicui_password: "CHANGEME"
+
 Dependencies
 ------------
 
