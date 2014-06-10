@@ -13,9 +13,9 @@ Role Variables
 
 The variables that can be passed to this role:
 
-	icinga2_classicui: "yes" # Classic UI will be installed
-	icinga2_classicui: "no"  # Prevent Classic UI to be installed
-
+| Name			|Possible values |
+|-----------------------|----------------|
+|icinga2_classicui: ""	| yes/no         |
 
 Dependencies
 ------------
@@ -40,4 +40,4 @@ GNU General Public License Version 2
 Author Information
 ------------------
 
-Valentino Gagliardi - Icinga Team
+Valentino Gagliardi - Icinga Dev Team
