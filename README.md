@@ -49,7 +49,6 @@ Install Icinga2 with Icinga New Web Classic:
 ```
 ---
 - hosts: monitors
-  sudo: yes
 
   roles:
    - { role: icinga2-ansible, icinga2_classicui: "no", icinga2_new_web_mysql: "yes", icinga2_ido_db_user_pass: "icinga", icinga2_web_db_user_pass: "icinga_web"}

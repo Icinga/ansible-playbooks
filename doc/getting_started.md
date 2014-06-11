@@ -92,7 +92,6 @@ Then update your playbook:
    - { role: Icinga.icinga2-ansible, icinga2_classicui: "yes" }
 
 - hosts: monitors_icinga2_new_web_classic
-  sudo: yes
 
   roles:
    - { role: icinga2-ansible, icinga2_classicui: "no", icinga2_new_web_mysql: "yes", icinga2_ido_db_user_pass: "icinga", icinga2_web_db_user_pass: "icinga_web"}
