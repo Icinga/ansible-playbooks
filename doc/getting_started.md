@@ -17,6 +17,7 @@ mnt_srv2 ansible_ssh_host="" ansible_ssh_user=""
 Then create a simple playbook, `site.yml` and place the following content:
 
 ```
+---
 - hosts: monitors_icinga2_core
   
   roles:
@@ -44,6 +45,7 @@ Given that Classic UI for Debian OS family requires a password which will be pas
 Then update your playbook:
 
 ```
+---
 - hosts: monitors_icinga2_core
   
   roles:
@@ -53,6 +55,47 @@ Then update your playbook:
   
   roles:
    - { role: Icinga.icinga2-ansible, icinga2_classicui: "yes" }
+```
+
+and then launch again the playbook:
+
+`ansible-playbook -i inventory site.yml`
+
+What happens if you want to add 2 monitoring servers with Icinga2 New Web Classic alongside the previous servers? Add them in your inventory:
+
+```
+[monitors_icinga2_core]
+mnt_srv1 ansible_ssh_host="" ansible_ssh_user=""
+mnt_srv2 ansible_ssh_host="" ansible_ssh_user=""
+
+[monitors_icinga2_classicui]
+mnt_srv3 ansible_ssh_host="" ansible_ssh_user=""
+mnt_srv4 ansible_ssh_host="" ansible_ssh_user=""
+
+[monitors_icinga2_new_web_classic]
+mnt_srv5 ansible_ssh_host="" ansible_ssh_user=""
+mnt_srv6 ansible_ssh_host="" ansible_ssh_user=""
+```
+
+Then update your playbook:
+
+```
+---
+- hosts: monitors_icinga2_core
+  
+  roles:
+   - { role: Icinga.icinga2-ansible, icinga2_classicui: "no" }
+
+- hosts: monitors_icinga2_classicui
+  
+  roles:
+   - { role: Icinga.icinga2-ansible, icinga2_classicui: "yes" }
+
+- hosts: monitors_icinga2_new_web_classic
+  sudo: yes
+
+  roles:
+   - { role: icinga2-ansible, icinga2_classicui: "no", icinga2_new_web_mysql: "yes", icinga2_ido_db_user_pass: "icinga", icinga2_web_db_user_pass: "icinga_web"}
 ```
 
 and then launch again the playbook:
