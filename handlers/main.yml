@@ -11,8 +11,10 @@
            state=reloaded 
            enabled=yes
 
-- include: apache.yml
-  when: icinga2_classicui == 'yes'
+- name: restart apache
+  service: name={{ apache }}
+           state=restarted
+           enabled=yes
 
 - include: firewalld.yml
   when: ansible_os_family == 'RedHat' and ansible_distribution == 'Fedora'

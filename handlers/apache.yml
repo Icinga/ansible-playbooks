@@ -1,7 +1,0 @@
----
-# handlers file for icinga2-ansible
-
-- name: restart apache
-  service: name={{ apache }}
-           state=restarted
-           enabled=yes
