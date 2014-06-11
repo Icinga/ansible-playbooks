@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ae:configurations xmlns="http://icinga.org/api/config/parts/access/1.0"
+    xmlns:ae="http://agavi.org/agavi/config/global/envelope/1.0">
+    <ae:configuration>
+
+        <!-- Document resources 
+            http://docs.icinga.org/latest/en/icinga-web-config.html#configweb-access 
+            https://wiki.icinga.org/display/howtos/access.xml -->
+
+        <!-- Map your instances to hosts here -->
+        <instances>
+            <!-- For slave commands seperate hosts with ';' 
+                    <instance name="default">localhost;host1;host15</instance> -->
+            <instance name="default">localhost</instance>
+        </instances>
+
+        <!-- Default settings that will be set if useDefaults is true -->
+        <defaults>
+            <access>
+                <readwrite>
+                    <folders>
+                        <resource name="icinga_objects">/etc/icinga/objects</resource>
+                    </folders>
+                    <files>
+                        <resource name="icinga_cfg">/etc/icinga/icinga.cfg</resource>
+                    </files>
+                </readwrite>
+                <!-- allowed to be read from -->
+                <read>
+                </read>
+                <!-- allowed to be written to -->
+                <write>
+                    <files>
+                        <resource name="icinga_pipe">{{ icinga2_command_pipe_socket }}</resource>
+                    </files>
+                </write>
+                <!-- allowed to be executed -->
+                <execute>
+                    <files>
+                        <resource name="icinga_service">/etc/init.d/icinga</resource>
+                        <resource name="icinga_bin">/usr/bin/icinga</resource>
+                        <resource name="echo">/bin/echo</resource>
+                        <resource name="printf">printf</resource>
+                        <resource name="cp">/bin/cp</resource>
+                        <resource name="ls">/bin/ls</resource>
+                        <resource name="grep">/bin/grep</resource>
+                    </files>
+                </execute>
+            </access>
+        </defaults>
+
+
+        <!-- Hosts that can be accessed via the console interface -->
+        <hosts>
+            <host name="localhost">
+                <type>local</type>
+                <!-- Only allow access to these files, folders or executables -->
+                <access useDefaults="true">
+                    <read>
+                        <!-- <files> <resource name="test">test</resource> 
+                            </files> -->
+                    </read>
+
+
+                </access>
+            </host>
+
+            <!-- Example for ssh connection with user/password auth -->
+            <!-- <host name="vm_host1"> <type>ssh</type> <ssh-config> <host>localhost</host> 
+                <port>22</port> <auth> <type>password</type> <user>testuser</user> <password>test</password> 
+                </auth> </ssh-config> <access useDefaults="true" /> </host> -->
+
+            <!-- Example for Key based authentication. Only RSA keys are supported at the moment (DSA won't work)
+            -->
+            <!---
+            <host name="localhost">
+                <type>ssh</type>
+                <ssh-config>
+                    <host>debian.www</host>
+                    <port>22</port>
+                    <auth>
+                        <type>key</type>
+                        <user>icinga</user>   
+                        <private-key>/usr/local/icinga-web/id_debian</private-key>
+                        <password>test123</password>
+                    </auth>
+                </ssh-config> 
+                
+                <access useDefaults="true" />
+            </host>
+            -->
+        </hosts>
+
+    </ae:configuration>
+</ae:configurations>

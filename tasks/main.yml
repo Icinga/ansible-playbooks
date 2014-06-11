@@ -19,6 +19,8 @@
 - include: icinga2_install_Suse.yml
   when: ansible_os_family == 'Suse'
 
+# tasks files to install Icinga2 alongside Classic UI
+
 - include: icinga2_classicui_install_Debian.yml
   when: ansible_os_family == 'Debian' and ansible_distribution == 'Debian' and ansible_distribution_release == 'wheezy'
         and icinga2_classicui == 'yes'
@@ -38,3 +40,13 @@
 - include: icinga2_classicui_install_Suse.yml
   when: ansible_os_family == 'Suse' 
         and icinga2_classicui == 'yes'
+
+# tasks files to install Icinga2 IDO Mysql alongside Icinga2 New Web (Classic)
+
+- include: icinga2_ido_mysql_install_RedHat.yml
+  when: ansible_os_family == 'RedHat' and ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
+        and icinga2_new_web_mysql == 'yes'
+
+- include: icinga2_new_web_install_RedHat.yml
+  when: ansible_os_family == 'RedHat' and ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
+        and icinga2_new_web_mysql == 'yes'
