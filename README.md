@@ -26,6 +26,10 @@ File `vars/Ubuntu_trusty.yml` and `vars/Debian_wheezy.yml`
 
 icinga2_classicui_password: "CHANGEME"
 
+File `vars/CentOS_Final.yml`
+
+icinga2_new_web_timezone: "Europe/Berlin"
+
 Dependencies
 ------------
 
