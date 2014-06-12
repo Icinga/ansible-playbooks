@@ -30,6 +30,10 @@
   notify:
    - restart icinga2
 
+- include: timezone_RedHat.yml
+  when: ansible_os_family == 'RedHat' and ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
+        and icinga2_new_web_mysql == 'yes'
+
 - name: Configure Icinga Web Command Access on CentOS OS family
   template: src={{ item.template }}
             dest={{ item.conf }}

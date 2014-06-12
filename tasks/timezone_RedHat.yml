@@ -1,0 +1,14 @@
+---
+- name: Set System Timezone on CentOS OS family
+  file: src=/usr/share/zoneinfo/{{ icinga2_new_web_timezone }}
+        dest={{ localtime }}
+        force=yes
+        state=link
+
+- name: Set System Timezone on CentOS OS family
+  lineinfile: dest=/etc/php.ini
+              regexp='^;date.timezone\s?='
+              line='date.timezone = "{{ icinga2_new_web_timezone }}"'
+  notify:
+   - restart apache
+   - restart mysql_server
