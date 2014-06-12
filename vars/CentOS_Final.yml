@@ -10,6 +10,8 @@ epel_url: "http://ftp.linux.cz/pub/linux/fedora/epel/6/i386/epel-release-6-8.noa
 apache: "httpd"
 mysql_server: "mysqld"
 
+#
+
 icinga2_pkg:
  - { package: "icinga2" }
  - { package: "nagios-plugins-all" }
@@ -42,6 +44,9 @@ icinga2_web_db_user: "icinga_web"
 
 icinga2_new_web_confs:
  - { template: "access.xml.j2", conf: "/etc/icinga-web/conf.d/access.xml" }
+
+icinga2_new_web_timezone: "Europe/Berlin"
+localtime: "/etc/localtime"
 
 features:
  - { feature: "command" }
