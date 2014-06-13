@@ -7,7 +7,10 @@
   with_items: icinga2_repos
 
 - name: Install Icinga2 on Debian OS family (Ubuntu)
-  apt: pkg={{ item.package }} state=latest
+  apt: pkg={{ item.package }} 
+       update_cache=yes
+       state=latest
+       install_recommends=no
   with_items: icinga2_pkg
   notify:
    - restart icinga2
