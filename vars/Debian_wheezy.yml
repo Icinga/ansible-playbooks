@@ -24,11 +24,47 @@ icinga2_pkg:
  - { package: "nagios-nrpe-server" }
 
 icinga2_classicui_debconf:
- - { name: "icinga2-classicui", question: "icinga2-classicui/adminpassword", icinga2_classicui_password: "CHANGEME", vtype: "string" }
- - { name: "icinga2-classicui", question: "icinga2-classicui/adminpassword-repeat", icinga2_classicui_password: "CHANGEME", vtype: "string" }
+ - { name: "icinga2-classicui", question: "icinga2-classicui/adminpassword", icinga2_classicui_password: "CHANGEME", vtype: "password" }
+ - { name: "icinga2-classicui", question: "icinga2-classicui/adminpassword-repeat", icinga2_classicui_password: "CHANGEME", vtype: "password" }
 
 icinga2_web_pkg:
  - { package: "icinga2-classicui" }
 
-icinga2_hosts_dir: "/etc/icinga2/conf.d/hosts/"
+icinga2_ido_mysql:
+ - { package: "icinga2-ido-mysql", template: "ido-mysql.conf.j2", conf: "/etc/icinga2/features-enabled/ido-mysql.conf" }
 
+mysql_server_debconf:
+ - { name: "icinga2-classicui", question: "mysql-server/root_password", mysql_root_password: "CHANGEME", vtype: "password" }
+ - { name: "icinga2-classicui", question: "mysql-server/root_password_again", mysql_root_password: "CHANGEME", vtype: "password" }
+
+icinga2_mysql_pkg:
+ - { package: "mysql-server" }
+ - { package: "python-mysqldb" }
+
+icinga2_icinga_common:
+ - { name: "icinga-common", question: "icinga/check_external_commands", value: "true", vtype: "boolean" }
+
+icinga2_icinga_idoutils:
+ - { name: "icinga-idoutils", question: "icinga-idoutils/dbconfig-install", value: "true", vtype: "boolean" }
+ - { name: "icinga-idoutils", question: "icinga-idoutils/database-type", value: "mysql", vtype: "string" }
+ - { name: "icinga-idoutils", question: "icinga-idoutils/mysql/admin-pass", value: "CHANGEME", vtype: "password" }
+ - { name: "icinga-idoutils", question: "icinga-idoutils/mysql/app-pass", value: "icinga", vtype: "password" }
+ - { name: "icinga-idoutils", question: "icinga-idoutils/app-pass-confirm", value: "icinga", vtype: "password" }
+
+icinga2_icinga_web:
+ - { name: "icinga-web", question: "icinga-web/dbconfig-install", value: "true", vtype: "boolean" }
+ - { name: "icinga-web", question: "icinga-web/database-type", value: "mysql", vtype: "string" }
+ - { name: "icinga-web", question: "icinga-web/mysql/admin-pass", value: "CHANGEME", vtype: "password" }
+ - { name: "icinga-web", question: "icinga-web/mysql/app-pass", value: "icingaweb", vtype: "password" }
+ - { name: "icinga-web", question: "icinga-web/app-pass-confirm", value: "icingaweb", vtype: "password" }
+ - { name: "icinga-web", question: "icinga-web/rootpassword-repeat", value: "password", vtype: "password" }
+ - { name: "icinga-web", question: "icinga-web/rootpassword", value: "password", vtype: "password" }
+
+icinga2_new_web_pkg:
+ - { package: "icinga-web" }
+
+icinga2_ido_db_user: "icinga-idoutils"
+icinga2_ido_db_user_pass: "icinga"
+icinga2_ido_db: "icinga"
+
+icinga2_hosts_dir: "/etc/icinga2/conf.d/hosts/"

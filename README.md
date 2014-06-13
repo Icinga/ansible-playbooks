@@ -17,14 +17,16 @@ The variables that can be passed to this role in the main playbook. "Mandatory" 
 |--------------------------|--------|---------------|
 |icinga2_classicui:	   | yes/no | Yes	    |
 |icinga2_new_web_mysql:	   | yes/no | Yes	    |
-|icinga2_ido_db_user_pass: | icinga | No, only if you have icinga2_new_web_mysql: "yes"	|
-|icinga2_web_db_user_pass: | icinga_web | No, only if you have icinga2_new_web_mysql: "yes"	|
+|icinga2_ido_db_user_pass: | icinga | No, only if you have icinga2_new_web_mysql: "yes"|
+|icinga2_web_db_user_pass: | icinga_web | No, only if you have icinga2_new_web_mysql: "yes"|
+|mysql_root_password:      | same as in vars/ | No, only if you have icinga2_new_web_mysql: "yes"|
 
 The variables that you are required to configure manually:
 
 File `vars/Ubuntu_trusty.yml` and `vars/Debian_wheezy.yml`
 
 icinga2_classicui_password: "CHANGEME"
+mysql_root_password: "CHANGEME"
 
 File `vars/CentOS_Final.yml`
 
