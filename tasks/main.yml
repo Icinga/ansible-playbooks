@@ -50,3 +50,19 @@
 - include: icinga2_new_web_install_RedHat.yml
   when: ansible_os_family == 'RedHat' and ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
         and icinga2_new_web_mysql == 'yes'
+
+- include: icinga2_ido_mysql_install_Debian.yml
+  when: ansible_os_family == 'Debian' and ansible_distribution == 'Debian' and ansible_distribution_release == 'wheezy'
+        and icinga2_new_web_mysql == 'yes'
+
+- include: icinga2_new_web_install_Debian.yml
+  when: ansible_os_family == 'Debian' and ansible_distribution == 'Debian' and ansible_distribution_release == 'wheezy'
+        and icinga2_new_web_mysql == 'yes'
+
+- include: icinga2_ido_mysql_install_Ubuntu.yml
+  when: ansible_os_family == 'Debian' and ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
+        and icinga2_new_web_mysql == 'yes'
+
+- include: icinga2_new_web_install_Ubuntu.yml
+  when: ansible_os_family == 'Debian' and ansible_distribution == 'Ubuntu' and ansible_distribution_release == 'trusty'
+        and icinga2_new_web_mysql == 'yes'
