@@ -1,0 +1,34 @@
+---
+- name: Configure Debconf values for Mysql Server on Debian OS family (Ubuntu)
+  debconf: name={{ item.name }}
+           question={{ item.question }}
+           value={{ item.mysql_root_password }}
+           vtype={{ item.vtype }}
+  with_items: mysql_server_debconf
+
+- name: Install Mysql Server on Debian OS family (Ubuntu)
+  apt: pkg={{ item.package }} update_cache=yes state=latest
+  with_items: icinga2_mysql_pkg
+
+- name: Start Mysql Server on Debian OS family
+  debug: msg="Start of Mysql Server on Debian OS family is done automatically upon installation"
+
+- name: Configure Debconf values for Icinga IDOUtils (required for Icinga Web) on Debian OS family (Ubuntu)
+  debconf: name={{ item.name }}
+           question={{ item.question }}
+           value={{ item.value }}
+           vtype={{ item.vtype }}
+  with_items: icinga2_icinga_idoutils
+
+- name: Install IDO Mysql on Debian OS family (Ubuntu)
+  apt: pkg={{ item.package }} 
+       update_cache=yes 
+       state=latest
+  with_items: icinga2_ido_mysql
+
+- name: Configure IDO Mysql Feature on Debian OS family (Ubuntu)
+  template: src={{ item.template }}
+            dest={{ item.conf }}
+  with_items: icinga2_ido_mysql
+  notify:
+   - restart icinga2
