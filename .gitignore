@@ -1,4 +1,4 @@
 *.test
 *.list
 *.sh
-group_vars/
+test.yml

@@ -3,53 +3,10 @@ icinga2_key: "http://packages.icinga.org/icinga.key"
 
 icinga2_url_yum: "http://packages.icinga.org/epel/ICINGA-release.repo"
 icinga2_repo_yum: "/etc/yum.repos.d/ICINGA-release.repo"
-epel_url: "http://ftp.linux.cz/pub/linux/fedora/epel/6/i386/epel-release-6-8.noarch.rpm"
-
-# Handlers variables
-
-apache: "httpd"
-mysql_server: "mysqld"
-
-#
+epel_url: "http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm"
 
 icinga2_pkg:
  - { package: "icinga2" }
  - { package: "nagios-plugins-all" }
  - { package: "nagios-nrpe" }
  - { package: "nagios-plugins-nrpe" }
- - { package: "mailx" }
-
-icinga2_web_pkg:
- - { package: "icinga2-classicui-config" }
- - { package: "icinga-gui" }
-
-icinga2_ido_mysql:
- - { package: "icinga2-ido-mysql", template: "ido-mysql.conf.j2", conf: "/etc/icinga2/features-enabled/ido-mysql.conf" }
-
-icinga2_ido_mysql_schema: "/usr/share/doc/icinga2-ido-mysql-2.0.0/schema/mysql.sql"
-icinga2_ido_db: "icinga"
-icinga2_ido_db_user: "icinga"
-
-icinga2_mysql_pkg:
- - { package: "mysql-server" }
- - { package: "MySQL-python" }
-
-icinga2_new_web_pkg:
- - { package: "icinga-web" }
- - { package: "icinga-web-mysql" }
-
-icinga2_web_mysql_schema: "/usr/share/doc/icinga-web-1.11.0/schema/mysql.sql"
-icinga2_web_db: "icinga_web"
-icinga2_web_db_user: "icinga_web"
-
-icinga2_new_web_confs:
- - { template: "access.xml.j2", conf: "/etc/icinga-web/conf.d/access.xml" }
-
-icinga2_new_web_timezone: "Europe/Berlin"
-localtime: "/etc/localtime"
-
-features:
- - { feature: "command" }
-
-icinga2_hosts_dir: "/etc/icinga2/conf.d/hosts/"
-

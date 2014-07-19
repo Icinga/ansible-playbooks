@@ -1,7 +1,7 @@
 ---
 galaxy_info:
   author: Valentino Gagliardi
-  description: Ansible role to install Icinga2
+  description: Ansible role to install Icinga2 Headless
   # company: 
   # Some suggested licenses:
   # - BSD (default)
@@ -11,7 +11,7 @@ galaxy_info:
   # - Apache
   # - CC-BY
   license: license GPLv2
-  min_ansible_version: 1.6.3
+  min_ansible_version: 1.6
   #
   # Below are all platforms currently available. Just uncomment
   # the ones that apply to your role. If you don't see your 
@@ -21,7 +21,7 @@ galaxy_info:
   - name: EL
     versions:
   #  - all
-  #  - 5
+    - 5
     - 6
   #  - 7
   #- name: GenericUNIX
