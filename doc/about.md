@@ -6,4 +6,4 @@ Ansible roles are pre-packaged units of automation. Once downloaded, roles can b
 
 ### Icinga2 Ansible role
 
-The purpose of Icinga2 role is to install Icinga2-Core Headless.
+The purpose of Icinga2 role is to install Icinga2-Core Headless alongside Nagios Plugins

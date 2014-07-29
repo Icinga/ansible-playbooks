@@ -11,6 +11,8 @@ None
 Role Variables
 --------------
 
+See `vars/`
+
 Dependencies
 ------------
 
@@ -19,13 +21,10 @@ Example Playbooks
 
 Install Icinga2 Headless:
 
-```
----
-- hosts: monitors
-  
-  roles:
-   - { role: icinga2-ansible }
-```
+      - hosts: monitoring
+        roles:
+         - { role: icinga2-ansible,
+                   tags: ["icinga2"] }
 
 License
 -------

@@ -2,7 +2,7 @@
 icinga2_key: "http://packages.icinga.org/icinga.key"
 
 icinga2_repo_yum: "/etc/yum.repos.d/ICINGA-release.repo"
-epel_url: "http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm"
+epel_url: "http://dl.fedoraproject.org/pub/epel/beta/7/x86_64/epel-release-7-0.2.noarch.rpm"
 
 icinga2_pkg:
  - { package: "icinga2" }

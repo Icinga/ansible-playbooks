@@ -1,16 +1,33 @@
 ---
 - name: Get Icinga2 Yum Key on RedHat OS family
-  rpm_key: key={{ icinga2_key }} state=present
+  rpm_key: key={{ icinga2_key }} 
+           state=present
+  tags:
+   - key
 
-- name: Get Icinga2 Yum Repo on RedHat OS family
-  get_url: url='{{ icinga2_url_yum }}' dest={{ icinga2_repo_yum }}
+- name: Get Icinga2 Yum Repo on RedHat OS family (CentOS)
+  get_url: url='{{ icinga2_url_yum }}' 
+           dest={{ icinga2_repo_yum }}
+  when: ansible_distribution == "CentOS"
+  tags:
+   - repo
+
+- name: Copy Icinga2 Yum Repo on RedHat OS family (RH)
+  template: src=ICINGA-release.repo.j2
+            dest={{ icinga2_repo_yum }}
+  when: ansible_distribution == "RedHat"
+  tags:
+   - repo
 
 - name: Enable Epel on RedHat OS family
-  yum: name={{ epel_url }} state=present
+  yum: name={{ epel_url }} 
+       state=present
+  tags:
+   - epel
 
 - name: Install Icinga2 on RedHat OS family
-  yum: name={{ item.package }} state=latest
+  yum: name={{ item.package }} 
+       state=latest
   with_items: icinga2_pkg
   notify:
    - restart icinga2
-

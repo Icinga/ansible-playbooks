@@ -8,5 +8,3 @@ epel_url: "http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.
 icinga2_pkg:
  - { package: "icinga2" }
  - { package: "nagios-plugins-all" }
- - { package: "nagios-nrpe" }
- - { package: "nagios-plugins-nrpe" }

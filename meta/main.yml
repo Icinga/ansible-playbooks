@@ -21,9 +21,9 @@ galaxy_info:
   - name: EL
     versions:
   #  - all
-    - 5
+  #  - 5
     - 6
-  #  - 7
+    - 7
   #- name: GenericUNIX
   #  versions:
   #  - all
@@ -34,7 +34,7 @@ galaxy_info:
   #  - 16
   #  - 17
   #  - 18
-  #  - 19
+    - 19
     - 20
   - name: opensuse
     versions:
