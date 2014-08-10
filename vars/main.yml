@@ -1,5 +1,0 @@
----
-# vars file for icinga2-ansible
-
-icinga2_hosts_dir: "/etc/icinga2/conf.d/hosts/"
-icinga2_command_pipe_socket: "/var/run/icinga2/cmd/icinga2.cmd"

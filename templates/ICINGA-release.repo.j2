@@ -1,9 +1,0 @@
-# This file is used only for RH where distroverpkg is missing from /etc/yum.conf and therefore Yum gives errors during installation
-# See https://dev.icinga.org/issues/6768
-
-[icinga-stable-release]
-name=ICINGA (stable release for epel)
-baseurl=http://packages.icinga.org/epel/{{ ansible_distribution_major_version }}/release/
-enabled=1
-gpgcheck=1
-gpgkey=http://packages.icinga.org/icinga.key

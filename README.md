@@ -1,37 +1,13 @@
-Role Name
-========
+# About Icinga2 Ansible Roles
 
-Ansible role to install Icinga2 Headless
+### What is an Ansible role?
 
-Requirements
-------------
+Ansible roles are pre-packaged units of automation. Once downloaded, roles can be dropped into Ansible PlayBooks and immediately applied to servers.
 
-None
+## Documentation
 
-Role Variables
---------------
+The documentation is located in the doc/ directory.
 
-See `vars/`
+## Support
 
-Dependencies
-------------
-
-Example Playbooks
--------------------------
-
-Install Icinga2 Headless:
-
-      - hosts: monitoring
-        roles:
-         - { role: icinga2-ansible,
-                   tags: ["icinga2"] }
-
-License
--------
-
-GNU General Public License Version 2
-
-Author Information
-------------------
-
-Valentino Gagliardi - Icinga Dev Team
+Check the project website at http://www.icinga.org for status updates and https://support.icinga.org if you want to contact us.

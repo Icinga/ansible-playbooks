@@ -1,0 +1,34 @@
+---
+- name: Install Requirements on RedHat OS family (Fedora)
+  yum: name={{ item.package }} 
+       state=latest
+  with_items: req_pkg
+  when: ansible_distribution == 'Fedora'
+
+- name: Enable Epel on RedHat OS family (RH6)
+  yum: name={{ epel6_url }}
+       state=present
+  when: ansible_distribution_major_version == "6"
+
+- name: Enable Epel on RedHat OS family (RH7)
+  yum: name={{ epel7_url }}
+       state=present
+  when: ansible_distribution_major_version == "7"
+
+- name: Get Icinga2 Yum Key on RedHat OS family
+  rpm_key: key={{ icinga2_key }} 
+           state=present
+
+- name: Get Icinga2 Yum Repo on RedHat OS family (Fedora)
+  get_url: url='{{ icinga2_url_yum_fedora }}' 
+           dest={{ icinga2_repo_yum }}
+  when: ansible_distribution == 'Fedora'
+
+- name: Get Icinga2 Yum Repo on RedHat OS family
+  get_url: url='{{ icinga2_url_yum }}' 
+           dest={{ icinga2_repo_yum }}
+
+- name: Install Icinga2 on RedHat OS family
+  yum: name={{ item.package }} 
+       state=latest
+  with_items: icinga2_yum
