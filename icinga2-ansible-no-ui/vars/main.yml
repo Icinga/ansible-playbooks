@@ -29,3 +29,12 @@ icinga2_yum:
  - { package: "icinga2" }
  - { package: "nagios-plugins-all" }
 
+icinga2_main_conf: "/etc/icinga2/icinga2.conf"
+
+icinga2_conf_global:
+ - { directive: 'include "constants.conf"' }
+ - { directive: 'include "zones.conf"' }
+ - { directive: 'include <itl>' }
+ - { directive: 'include <plugins>' }
+ - { directive: 'include "features-enabled/*.conf"' }
+ - { directive: 'include_recursive "conf.d"' }

@@ -1,0 +1,7 @@
+# {{ ansible_managed }}
+
+{% if icinga2_conf_global is defined %}
+{% for element in icinga2_conf_global %}
+{{ element.directive }}
+{% endfor %}
+{% endif %}

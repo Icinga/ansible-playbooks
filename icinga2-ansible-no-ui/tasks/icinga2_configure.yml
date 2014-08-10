@@ -1,0 +1,9 @@
+---
+- name: Copy Main Icinga2 Configuration
+  template: src=icinga2.conf.j2
+            dest={{ icinga2_main_conf }}
+            backup=yes
+            owner=root
+            group=root
+            mode=0644
+  notify: restart icinga2

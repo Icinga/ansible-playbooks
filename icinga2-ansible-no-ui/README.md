@@ -8,6 +8,23 @@ Requirements
 
 None
 
+Example Playbook
+-------------------------
+
+```yaml
+    - hosts: MonitoringServers
+      roles:
+         - { role: icinga2-ansible-no-ui,
+                   icinga2_conf_global:
+                   [{ directive: 'include "constants.conf"' },
+                    { directive: 'include "zones.conf"' },
+                    { directive: 'include <itl>' },
+                    { directive: 'include <plugins>' },
+                    { directive: 'include "features-enabled/*.conf"' },
+                    { directive: 'include_recursive "conf.d"' }],
+                   tags: ["icinga2-no-ui"] }
+```
+
 Role Variables
 --------------
 
@@ -40,24 +57,20 @@ icinga2_yum:
  - { package: "icinga2" }
  - { package: "nagios-plugins-all" }
 
-```
+icinga2_conf_global:
+ - { directive: 'include "constants.conf"' }
+ - { directive: 'include "zones.conf"' }
+ - { directive: 'include <itl>' }
+ - { directive: 'include <plugins>' }
+ - { directive: 'include "features-enabled/*.conf"' }
+ - { directive: 'include_recursive "conf.d"' }
 
+```
 
 Dependencies
 ------------
 
 None
-
-
-Example Playbook
--------------------------
-
-```yaml
-    - hosts: MonitoringServers
-      roles:
-         - { role: icinga2-ansible-no-ui,
-                   tags: ["icinga2-no-ui"] }
-```
 
 License
 -------
