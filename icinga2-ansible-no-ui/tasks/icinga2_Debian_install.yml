@@ -28,3 +28,8 @@
        state=latest
        install_recommends=no
   with_items: icinga2_pkg
+
+- name: Start Icinga2
+  service: name=icinga2
+           state=started
+           enabled=yes
