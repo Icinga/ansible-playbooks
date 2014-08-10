@@ -1,2 +1,8 @@
 ---
 # tasks file for icinga2-ansible-classic-ui
+
+- include: icinga2_classic_ui_Debian_install.yml
+  when: ansible_os_family == 'Debian'
+
+- include: icinga2_classic_ui_RedHat_install.yml
+  when: ansible_os_family == 'RedHat'
