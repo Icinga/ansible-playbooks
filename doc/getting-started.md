@@ -82,7 +82,7 @@ Save the file and close, then launch the playbook with Ansible as usual:
 
 `ansible-playbook site.yml -i inventory.ini`
 
-During the execution the role will take care of all the tasks required to install and configure Icinga2 Classic UI. Please take note that **icinga2-ansible-classic-ui** does not install Icinga2, and must be used before **icinga2-ansible-no-ui**. Here's a list of the tasks executed by **icinga2-ansible-classic-ui** role:
+During the execution the role will take care of all the tasks required to install and configure Icinga2 Classic UI. Please take note that **icinga2-ansible-classic-ui** does not install Icinga2, and must be used after **icinga2-ansible-no-ui**. Here's a list of the tasks executed by **icinga2-ansible-classic-ui** role:
 
 * Install Icinga Classic UI on Debian OS family 
 * Configure a password for icingaadmin user 
