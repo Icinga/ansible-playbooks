@@ -3,7 +3,7 @@ Role Name
 
 Ansible role to install Icinga2 Headless alongside Plugins
 
-Requirements
+Dependencies
 ------------
 
 None
@@ -66,11 +66,6 @@ icinga2_conf_global:
  - { directive: 'include_recursive "conf.d"' }
 
 ```
-
-Dependencies
-------------
-
-None
 
 License
 -------
