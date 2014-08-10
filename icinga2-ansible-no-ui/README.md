@@ -14,15 +14,15 @@ Example Playbook
 ```yaml
     - hosts: MonitoringServers
       roles:
-         - { role: icinga2-ansible-no-ui,
-                   icinga2_conf_global:
-                   [{ directive: 'include "constants.conf"' },
-                    { directive: 'include "zones.conf"' },
-                    { directive: 'include <itl>' },
-                    { directive: 'include <plugins>' },
-                    { directive: 'include "features-enabled/*.conf"' },
-                    { directive: 'include_recursive "conf.d"' }],
-                   tags: ["icinga2-no-ui"] }
+       - { role: icinga2-ansible-no-ui,
+                 icinga2_conf_global:
+                 [{ directive: 'include "constants.conf"' },
+                  { directive: 'include "zones.conf"' },
+                  { directive: 'include <itl>' },
+                  { directive: 'include <plugins>' },
+                  { directive: 'include "features-enabled/*.conf"' },
+                  { directive: 'include_recursive "conf.d"' }],
+                 tags: ["icinga2-no-ui"] }
 ```
 
 Role Variables
