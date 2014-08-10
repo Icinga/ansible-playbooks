@@ -23,13 +23,6 @@ Now create a playbook to hold instructions for Ansible, let's call this file `si
 - hosts: monitoring_servers
   roles:
    - { role: icinga2-ansible-no-ui,
-             icinga2_conf_global:
-             [{ directive: 'include "constants.conf"' },
-              { directive: 'include "zones.conf"' },
-              { directive: 'include <itl>' },
-              { directive: 'include <plugins>' },
-              { directive: 'include "features-enabled/*.conf"' },
-              { directive: 'include_recursive "conf.d"' }],
              tags: ["icinga2-no-ui"] }
 ```
 
@@ -61,13 +54,6 @@ After Icinga2 is installed you can move forward to adding a Web UI. Open up the 
 - hosts: monitoring_servers
   roles:
    - { role: icinga2-ansible-no-ui,
-             icinga2_conf_global:
-             [{ directive: 'include "constants.conf"' },
-              { directive: 'include "zones.conf"' },
-              { directive: 'include <itl>' },
-              { directive: 'include <plugins>' },
-              { directive: 'include "features-enabled/*.conf"' },
-              { directive: 'include_recursive "conf.d"' }],
              tags: ["icinga2-no-ui"] }
 
    - { role: icinga2-ansible-classic-ui,
