@@ -55,7 +55,8 @@ Example Playbook
 ```yaml
     - hosts: MonitoringServers
       roles:
-         - { role: icinga2-ansible-no-ui }
+         - { role: icinga2-ansible-no-ui,
+                   tags: ["icinga2-no-ui"] }
 ```
 
 License
