@@ -1,9 +1,9 @@
-# About Icinga2 Ansible role
+# About Icinga2 Ansible roles
 
 ### What is an Ansible role?
 
-Ansible roles are pre-packaged units of automation. Once downloaded, roles can be dropped into Ansible PlayBooks and immediately applied to servers.
+Ansible roles are pre-packaged units of automation. Once downloaded, roles can be dropped into Ansible Playooks and immediately applied to servers.
 
-### Icinga2 Ansible role
+### Icinga2 Ansible roles
 
-The purpose of Icinga2 role is to install Icinga2-Core Headless alongside Nagios Plugins
+Ansible roles for Icinga2 are built to automate both setup and configuration, enabling faster provisioning of monitoring servers and host checks.
