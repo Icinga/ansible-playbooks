@@ -39,9 +39,9 @@ Now open up your `site.yml` playbook with your favorite text editor and add the 
 
 As you have noticed, there is a new variable in place: **configuration_logic**.
 
-When configuration_logic is "object", the role will generate host definitions following an (Object logic style)[http://docs.icinga.org/icinga2/latest/doc/module/icinga2/toc#!/icinga2/latest/doc/module/icinga2/chapter/monitoring-basics#configuration-best-practice]
+When configuration_logic is "object", the role will generate host definitions following an [Object logic style](http://docs.icinga.org/icinga2/latest/doc/module/icinga2/toc#!/icinga2/latest/doc/module/icinga2/chapter/monitoring-basics#configuration-best-practice)
  
-**This role feature is still in development** When configuration_logic variable is "apply", the role will generate host definitions following an (Apply logic style)[http://docs.icinga.org/icinga2/latest/doc/module/icinga2/toc#!/icinga2/latest/doc/module/icinga2/chapter/monitoring-basics#using-apply] 
+**This role feature is still in development** When configuration_logic variable is "apply", the role will generate host definitions following an [Apply logic style](http://docs.icinga.org/icinga2/latest/doc/module/icinga2/toc#!/icinga2/latest/doc/module/icinga2/chapter/monitoring-basics#using-apply)
 
 Given that icinga2 and Classic UI are already installed, we are interested only to _add-hosts_ tag. Please take note that icinga2-ansible-add-hosts does not install Icinga2, and must be used after icinga2-ansible-no-ui.
 
