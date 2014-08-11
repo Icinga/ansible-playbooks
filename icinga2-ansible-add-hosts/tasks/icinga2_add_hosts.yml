@@ -1,7 +1,7 @@
 ---
 - name: Copy Host Definitions
   template: src=hosts_template.j2
-            dest={{ icinga2_hosts_dir }}/host_{{ hostvars[item]['ansible_fqdn'] }}.conf
+            dest={{ icinga2_hosts_dir }}/{{ hostvars[item]['ansible_fqdn'] }}.conf
             owner=root 
             group=root 
             mode=0644
