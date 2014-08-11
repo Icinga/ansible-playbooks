@@ -23,7 +23,7 @@ Example Playbook
    - { role: icinga2-ansible-no-ui,
              tags: ["icinga2-no-ui"] }
 
-   - { roles: icinga2-ansible-add-hosts,
+   - { role: icinga2-ansible-add-hosts,
               configuration_logic: "object",
               tags: ["add-hosts"] }
 ```
