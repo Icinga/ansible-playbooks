@@ -13,7 +13,6 @@ Create an inventory file and place inside your monitoring servers entries:
 ```ini
 [monitoring_servers]
 icinga_one ansible_ssh_host=1.2.3.4
-icinga_two ansible_ssh_host=5.6.7.8
 ```
 
 Now create a playbook to hold instructions for Ansible, let's call this file `site.yml`:
@@ -47,7 +46,7 @@ During the execution the role will take care of all the tasks required to instal
 * Start Icinga2 
 * Copy Main Icinga2 Configuration 
 
-After Icinga2 is installed you can move forward to adding a Web UI. Open up the playbook with your favorite text editor and add the role for Classic UI:
+After Icinga2 is installed you can move forward to adding a Web UI. Open up the playbook with your favorite text editor and add the role for Classic UI (more roles for Wb UI's will be added in future):
 
 ```yaml
 ---

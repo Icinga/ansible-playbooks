@@ -6,7 +6,7 @@ Ansible roles are pre-packaged units of automation. Once downloaded, roles can b
 
 ## Documentation
 
-The documentation is located in the doc/ directory.
+The documentation is located in the doc/ directory. This documentation is, as the Icinga2-ansible, currently under development and the various information provided may be subject to changes in the near future.
 
 ## Support
 
