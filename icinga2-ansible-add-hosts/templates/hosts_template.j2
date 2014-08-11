@@ -1,0 +1,6 @@
+{% if configuration_logic == "apply" %}
+{% include "apply_logic.j2" %}
+{% endif %}
+{% if configuration_logic == "object" %}
+{% include "object_logic.j2" %}
+{% endif %}
