@@ -1,7 +1,7 @@
 ---
 # handlers file for icinga2-ansible-add-hosts
 
-- name: reload icinga2
+- name: restart icinga2
   service: name=icinga2
-           state=reloaded
+           state=restarted
            enabled=yes
