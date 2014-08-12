@@ -1,0 +1,56 @@
+---
+- name: Install MariaDB and Utils on Red Hat OS Family (based on your choice in icinga2_web_ui_ido value)
+  yum: name={{ item.package }}
+       state=latest
+  with_items: icinga2_web_ui_mariadb_rpm
+  when: ansible_distribution_major_version == "7"
+
+- name: Start MariaDB
+  service: name=mariadb
+           state=started
+           enabled=yes
+  when: ansible_distribution_major_version == "7"
+
+- name: Install MySQL and Utils on Red Hat OS Family (based on your choice in icinga2_web_ui_ido value)
+  yum: name={{ item.package }}
+       state=latest
+  with_items: icinga2_web_ui_{{ icinga2_web_ui_ido }}_rpm
+  when: ansible_distribution_major_version == "6"
+
+- name: Start MySQL
+  service: name=mysqld
+           state=started
+           enabled=yes
+  when: ansible_distribution_major_version == "6"
+
+- name: Create a Database for Icinga
+  mysql_db: name=icinga
+            state=present
+  register: icinga_db
+
+- name: Import IDO Schema on Icinga Database (only once)
+  mysql_db: name=icinga
+            state=import
+            target={{ icinga2_ido_mysql_schema }}
+  when: icinga_db.changed == true
+
+- name: Create Icinga Database User and configure Grants
+  mysql_user: name=icinga
+              password=icinga
+              state=present
+              priv="icinga.*:GRANT,INSERT,SELECT,UPDATE,DELETE,DROP,CREATE VIEW,INDEX,EXECUTE"
+
+- name: Configure Icinga2 Ido Mysql Feature
+  template: src=ido-mysql.conf.j2
+            dest={{ icinga2_ido_mysql_conf }}
+            backup=no
+            owner=icinga
+            group=icinga
+            mode=0640
+
+- name: Enable Icinga2 Ido Mysql Feature
+  command: "icinga2-enable-feature ido-{{ icinga2_web_ui_ido }}"
+  register: features_result
+  changed_when: "'for these changes to take effect' in features_result.stdout"
+  notify:
+   - restart icinga2

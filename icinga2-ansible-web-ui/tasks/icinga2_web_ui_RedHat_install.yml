@@ -1,0 +1,43 @@
+---
+- name: Install IDO {{ icinga2_web_ui_ido }} on RedHat OS family
+  yum: name=icinga2-ido-{{ icinga2_web_ui_ido }} 
+       state=latest
+
+- include: icinga2_web_ui_mysql_RedHat_install.yml
+  when: icinga2_web_ui_ido == "mysql"
+
+- name: Install Icinga Web on RedHat OS family
+  yum: name={{ item.package }}
+       state=latest
+  with_items: icinga2_web_ui_rpm
+
+- name: Create a Database for Icinga Web
+  mysql_db: name={{ icinga2_web_db_dbuser }}
+            state=present
+  register: icinga_web_db
+
+- name: Import IDO Schema in Icinga Web Database on RH6 (only once)
+  mysql_db: name={{ icinga2_web_db_dbuser }}
+            state=import
+            target={{ icinga2_web_mysql_schema_rh_6 }}
+  when: ansible_distribution_major_version == "6" and icinga_web_db.changed == true
+
+- name: Import IDO Schema in Icinga Web Database on RH7 (only once)
+  mysql_db: name={{ icinga2_web_db_dbuser }}
+            state=import
+            target={{ icinga2_web_mysql_schema_rh_7 }}
+  when: ansible_distribution_major_version == "7" and icinga_web_db.changed == true
+
+- name: Create Icinga Web Database User and configure Grants
+  mysql_user: name={{ icinga2_web_db_dbuser }}
+              password={{ icinga2_web_db_dbuser }}
+              state=present
+              priv="{{ icinga2_web_db_dbuser }}.*:GRANT,INSERT,SELECT,UPDATE,DELETE,DROP,CREATE VIEW,INDEX,EXECUTE"
+
+- name: Start Apache
+  service: name=httpd
+           state=started
+           enabled=yes
+
+- name: Icinga Web UI Installation finished (RH)
+  debug: msg="Login at http://{{ ansible_eth0.ipv4.address }}/icinga-web with user root and password password"

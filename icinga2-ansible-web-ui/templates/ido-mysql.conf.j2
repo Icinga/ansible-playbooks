@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+
+library "db_ido_mysql"
+object IdoMysqlConnection "ido-mysql" {
+{% for element in icinga2_ido_mysql_conf_global %}
+   {{ element.directive }}
+{% endfor %}
+}
+
