@@ -104,7 +104,7 @@ During the execution the role will take care of all the tasks required to instal
 * Install IDO Mysql on RedHat OS family
 * Install MariaDB and Utils on Red Hat 7 OS Family
 * Start MariaDB on Red Hat 7 OS Family
-* Install MySQL and Utils on Red Hat 7 OS Family
+* Install MySQL and Utils on Red Hat 6 OS Family
 * Start MySQL
 * Create a Database for Icinga
 * Import IDO Schema on Icinga Database (only once)
