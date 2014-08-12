@@ -1,14 +1,16 @@
 ## Setting up Icinga 2 with Ansible roles
 
+### Setting up Icinga2 headless
+
 Assuming that you have Ansible already installed and configured, move to a directory of your choice and clone the **icinga2-ansible** repo:
 
 `git clone https://github.com/Icinga/icinga2-ansible.git`
 
-Append the path where you have cloned the repository to your **.ansible.cfg roles_path**:
+Append the path where you have cloned the repository to your **.ansible.cfg** _roles_path_. In this example we are assuming that you have cloned the repo in your home directory:
 
 `roles_path=/etc/ansible/roles:~/icinga2-ansible`
 
-Create an inventory file and place inside your monitoring servers entries:
+Create an inventory file and place your monitoring servers entries inside:
 
 ```ini
 [monitoring_servers]
@@ -43,10 +45,12 @@ During the execution the role will take care of all the tasks required to instal
 * Get Icinga2 Yum Repo on RedHat OS family (Fedora) 
 * Get Icinga2 Yum Repo on RedHat OS family 
 * Install Icinga2 on RedHat OS family 
-* Start Icinga2 
 * Copy Main Icinga2 Configuration 
+* Start Icinga2 
 
-After Icinga2 is installed you can move forward to adding a Web UI. Open up the playbook with your favorite text editor and add the role for Classic UI (more roles for Wb UI's will be added in future):
+### Setting up Icinga2 alongside Classic UI
+
+After Icinga2 is up and running you can move forward to add a Classic UI. Open up the playbook with your favorite text editor and add the role for Classic UI:
 
 ```yaml
 ---
@@ -58,10 +62,9 @@ After Icinga2 is installed you can move forward to adding a Web UI. Open up the 
    - { role: icinga2-ansible-classic-ui,
              icinga2_classic_ui_passwd: "CHANGEME",
              tags: ["icinga2-classic-ui"] }
-
 ```
 
-Make sure  to replace CHANGEME with your desidered password for user icingaadmin.
+Make sure  to replace CHANGEME with your desidered password for user **icingaadmin**.
 
 Save the file and close, then launch the playbook with Ansible as usual:
 
@@ -73,3 +76,46 @@ During the execution the role will take care of all the tasks required to instal
 * Configure a password for icingaadmin user 
 * Install Icinga Classic UI on RedHat OS family 
 * Configure a password for icingaadmin user 
+
+### Setting up Icinga2 alongside Web UI
+
+After Icinga2 is up and running you can move forward to add a Web UI. Open up the playbook with your favorite text editor and add the role for Web UI:
+
+```yaml
+---
+- hosts: monitoring_servers
+  roles:
+   - { role: icinga2-ansible-no-ui,
+             tags: ["icinga2-no-ui"] }
+
+   - { role: icinga2-ansible-web-ui,
+             icinga2_web_ui_ido: "mysql",
+             tags: ["icinga2-web-ui"] }
+```
+
+At this moment, the role have only support for Mysql IDO Backend.
+
+Save the file and close, then launch the playbook with Ansible as usual:
+
+`ansible-playbook site.yml -i inventory.ini`
+
+During the execution the role will take care of all the tasks required to install and configure Icinga2 Web UI. Please take note that **icinga2-ansible-web-ui** does not install Icinga2, and must be used after **icinga2-ansible-no-ui**. Here's a list of the tasks executed by **icinga2-ansible-web-ui** role (this list does not represent strictly the order of execution, consider these ones only a reference):
+
+* Install IDO Mysql on RedHat OS family
+* Install MariaDB and Utils on Red Hat 7 OS Family
+* Start MariaDB on Red Hat 7 OS Family
+* Install MySQL and Utils on Red Hat 7 OS Family
+* Start MySQL
+* Create a Database for Icinga
+* Import IDO Schema on Icinga Database (only once)
+* Create Icinga Database User and configure Grants
+* Configure Icinga2 Ido Mysql Feature
+* Enable Icinga2 Ido Mysql Feature
+* Install Icinga Web on RedHat OS family
+* Create a Database for Icinga Web
+* Import IDO Schema in Icinga Web Database on RH6 (only once)
+* Import IDO Schema in Icinga Web Database on RH7 (only once)
+* Create Icinga Web Database User and configure Grants
+* Start Apache
+
+After Icinga2 is up and running with your favorite UI, you can move forward to [add host checks](https://github.com/Icinga/icinga2-ansible/blob/master/doc/adding-hosts.md).
