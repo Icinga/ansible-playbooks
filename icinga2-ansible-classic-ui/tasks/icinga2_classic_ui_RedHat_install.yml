@@ -17,4 +17,4 @@
    - restart httpd
 
 - name: Icinga Classic UI Installation finished (RH)
-  debug: msg="Login at http://{{ ansible_eth0.ipv4.address }}/icinga with user icingaadmin and password {{ icinga2_classic_ui_passwd }}"
+  debug: msg="Login at http://IP/icinga with user icingaadmin and password {{ icinga2_classic_ui_passwd }}"

@@ -40,4 +40,4 @@
            enabled=yes
 
 - name: Icinga Web UI Installation finished (RH)
-  debug: msg="Login at http://{{ ansible_eth0.ipv4.address }}/icinga-web with user root and password password"
+  debug: msg="Login at http://IP/icinga-web with user root and password password"
