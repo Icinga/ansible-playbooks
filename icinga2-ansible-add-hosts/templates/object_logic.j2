@@ -1,37 +1,27 @@
+  # A host definition
+
 object Host "{{ hostvars[item]['ansible_fqdn'] }}" {
   import "generic-host"
   address = "{{ hostvars[item]['ansible_eth0']['ipv4']['address'] }}"
-  vars.sla = "24x7"
-  check_command = "hostalive"
-{% if extra is defined %}
-## Reserved for future use
-{% for element in extra %}
-  {{ element.var }}
+  
+  # Here Goes Vars and check_command
+
+{% for key,value in host_attributes.iteritems() %}
+{% for key,value in value.items() %}
+  {{ key }} = "{{ value }}"
 {% endfor %}
-{% endif %}
+{% endfor %}
+
 }
 
-{% if checks is defined %}
-{% for element in checks %}
-{% if element.type is defined and element.type == "nrpe" %}
-object Service "{{ element.check }}" {
+  #Here Goes Checks
+
+{% for key,value in host_checks.iteritems() %}
+object Service "{{ key }}" {
   host_name = "{{ hostvars[item]['ansible_fqdn'] }}"
-  check_command = "check_{{ element.type }}"
-{% if element.remote_nrpe_command is defined %}
-  vars.remote_nrpe_command = "check_{{ element.check }}"
-{% endif %}
-{% else %}
-{% if element.service_name is defined %}
-object Service "{{ element.service_name }}" {
-{% else %}
-object Service "{{ element.check }}" {
-{% endif %}
-  host_name = "{{ hostvars[item]['ansible_fqdn'] }}"
-  check_command = "{{ element.check }}"
-{% if element.custom_attr is defined %}
-  {{ element.custom_attr }}
-{% endif %}
-{% endif %}
-}
+{% for key,value in value.items() %}
+  {{ key }} = "{{ value }}"
 {% endfor %}
-{% endif %}
+}
+
+{% endfor %}
