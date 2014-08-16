@@ -1,11 +1,10 @@
+{% if hostvars[item]['group_names'] | difference('monitoring_servers') %}
   # A host definition
-
 object Host "{{ hostvars[item]['ansible_fqdn'] }}" {
   import "generic-host"
   address = "{{ hostvars[item]['ansible_eth0']['ipv4']['address'] }}"
-  
-  # Here Goes Vars and check_command
 
+  # Here Goes Vars and check_command
 {% for key,value in host_attributes.iteritems() %}
 {% for key,value in value.items() %}
   {{ key }} = "{{ value }}"
@@ -15,7 +14,6 @@ object Host "{{ hostvars[item]['ansible_fqdn'] }}" {
 }
 
   #Here Goes Checks
-
 {% for key,value in host_checks.iteritems() %}
 object Service "{{ key }}" {
   host_name = "{{ hostvars[item]['ansible_fqdn'] }}"
@@ -25,3 +23,6 @@ object Service "{{ key }}" {
 }
 
 {% endfor %}
+{% else %}
+# This is a monitoring server entry. No checks will be copied.
+{% endif %}

@@ -6,4 +6,5 @@
             group=root 
             mode=0644
   with_items: groups['all']
-  notify: restart icinga2
+  notify: 
+   - restart icinga2
