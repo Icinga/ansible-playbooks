@@ -1,0 +1,11 @@
+nrpe_user=nrpe
+nrpe_group=nrpe
+
+# Here goes NRPE check commands
+{% for key,value in nrpe_check_commands.iteritems() %}
+{% for key,value in value.items() %}
+command[{{ key }}]={% if ansible_architecture == "i386" %}{{ nrpe_agent_plugins }}{% else %}{{ nrpe_agent_plugins_x86_64 }}{% endif %}/{{ key }} {{ value }}
+{% endfor %}
+{% endfor %}
+
+
