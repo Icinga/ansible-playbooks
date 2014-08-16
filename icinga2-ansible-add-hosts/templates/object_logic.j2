@@ -3,6 +3,8 @@
 object Host "{{ hostvars[item]['ansible_fqdn'] }}" {
   import "generic-host"
   address = "{{ hostvars[item]['ansible_eth0']['ipv4']['address'] }}"
+  vars.os = "{{ hostvars[item]['ansible_system'] }}"
+  vars.os_family = "{{ hostvars[item]['ansible_os_family'] }}"
 
   # Here Goes Vars and check_command
 {% for key,value in host_attributes.iteritems() %}

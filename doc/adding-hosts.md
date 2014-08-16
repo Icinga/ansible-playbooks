@@ -40,7 +40,7 @@ Now open up your `site.yml` playbook with your favorite text editor and add the 
    - { roles: icinga2-ansible-add-hosts,
               configuration_logic: "object",
               host_attributes:
-              { vars: { vars.sla: "24x7", vars.operator: "on_call", vars.os: "{{ ansible_system }}" },
+              { vars: { vars.sla: "24x7", vars.operator: "on_call" },
                 check_command: { check_command: "hostalive" }},
         
               host_checks:
