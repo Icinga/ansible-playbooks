@@ -1,0 +1,16 @@
+nrpe_user=nagios
+nrpe_group=nagios
+
+# Here goes NRPE check commands
+{% for key,value in nrpe_check_commands.iteritems() %}
+{% for key,value in value.items() %}
+command[{{ key }}]={{ nrpe_agent_plugins }}/{{ key }} {{ value }}
+{% endfor %}
+{% endfor %}
+
+# Here goes specific NRPE check commands for {{ ansible_os_family }}
+{% for key,value in nrpe_check_commands_Debian.iteritems() %}
+{% for key,value in value.items() %}
+command[{{ key }}]={{ nrpe_agent_plugins }}/{{ key }} {{ value }}
+{% endfor %}
+{% endfor %}

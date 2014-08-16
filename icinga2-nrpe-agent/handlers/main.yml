@@ -1,0 +1,12 @@
+---
+# handlers file for icinga2-nrpe-agent
+
+- name: restart nrpe
+  service: name=nrpe
+           state=restarted 
+           enabled=yes
+
+- name: restart nagios-nrpe-server
+  service: name=nagios-nrpe-server
+           state=restarted 
+           enabled=yes
