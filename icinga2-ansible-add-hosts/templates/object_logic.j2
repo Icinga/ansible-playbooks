@@ -15,7 +15,8 @@ object Host "{{ hostvars[item]['ansible_fqdn'] }}" {
 
 }
 
-  #Here Goes Checks
+  #Here Goes Checks if Any
+{% if host_checks is defined %}
 {% for key,value in host_checks.iteritems() %}
 object Service "{{ key }}" {
   host_name = "{{ hostvars[item]['ansible_fqdn'] }}"
@@ -25,6 +26,7 @@ object Service "{{ key }}" {
 }
 
 {% endfor %}
+{% endif %}
 {% else %}
 # This is a monitoring server entry. No checks will be copied.
 {% endif %}
