@@ -3,6 +3,7 @@
 ### What is an Ansible role?
 
 Ansible roles are pre-packaged units of automation. Once downloaded, roles can be dropped into Ansible PlayBooks and immediately applied to servers.
+For details checks [doc/about.md](doc/about.md).
 
 ## Documentation
 
