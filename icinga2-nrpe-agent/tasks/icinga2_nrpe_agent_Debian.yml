@@ -5,6 +5,8 @@
        update_cache=yes
        install_recommends=no
   with_items: nrpe_agent_{{ ansible_os_family }}
+  tags:
+   - nrpe_agent_install
 
 - name: Copy Nrpe Configuration
   template: src=nrpe.cfg.j2
