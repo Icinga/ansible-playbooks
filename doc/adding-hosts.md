@@ -49,7 +49,7 @@ Now open up your `site.yml` playbook with your favorite text editor and add the 
         
               host_checks:
               { load_average: { check_command: "nrpe", vars.remote_nrpe_command: "check_load" },
-                disk: { check_command: "_nrpe", vars.remote_nrpe_command: "check_disk" },
+                disk: { check_command: "nrpe", vars.remote_nrpe_command: "check_disk" },
                 http: { check_command: "http", vars.http_vhost: "{{ hostvars[item]['ansible_domain'] }}" }},
 
               tags: ["add-hosts"] }
