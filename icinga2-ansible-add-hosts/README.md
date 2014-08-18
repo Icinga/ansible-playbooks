@@ -25,6 +25,9 @@ Example Playbook
 
    - { role: icinga2-ansible-add-hosts,
               configuration_logic: "object",
+              host_attributes:
+              { vars: { vars.sla: "24x7", },
+                check_command: { check_command: "hostalive" }},
               tags: ["add-hosts"] }
 ```
 
