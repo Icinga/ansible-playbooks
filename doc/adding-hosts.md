@@ -37,7 +37,7 @@ Now open up your `site.yml` playbook with your favorite text editor and add the 
              icinga2_classic_ui_passwd: "CHANGEME",
              tags: ["icinga2-classic-ui"] }
 
-   - { roles: icinga2-ansible-add-hosts,
+   - { role: icinga2-ansible-add-hosts,
               configuration_logic: "object",
               host_attributes:
               { vars: { vars.sla: "24x7", vars.operator: "on_call" },
