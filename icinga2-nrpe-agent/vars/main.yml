@@ -19,6 +19,14 @@ nrpe_configuration:
  - { directive: "command_timeout=60" }
  - { directive: "connection_timeout=150" }
 
+nrpe_users_RedHat:
+ - { user: "nrpe_user=nrpe" }
+ - { user: "nrpe_group=nrpe" }
+
+nrpe_users_Debian:
+ - { user: "nrpe_user=nagios" }
+ - { user: "nrpe_group=nagios" }
+
 nrpe_agent_config: "/etc/nagios/nrpe.cfg"
 
 # Plugins path for Debian x86_64 and other i386

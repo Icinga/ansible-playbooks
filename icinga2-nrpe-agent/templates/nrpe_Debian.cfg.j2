@@ -1,5 +1,7 @@
-nrpe_user=nagios
-nrpe_group=nagios
+# {{ ansible_managed }}
+{% for element in nrpe_users_Debian %}
+{{ element.user }}
+{% endfor %}
 
 # Here goes NRPE check commands
 {% for key,value in nrpe_check_commands.iteritems() %}
