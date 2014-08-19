@@ -47,7 +47,7 @@ Now open up your `site.yml` playbook with your favorite text editor and add the 
               configuration_logic: "object",
               host_attributes:
               { vars: { vars.sla: "24x7", vars.operator: "on_call" },
-                check_command: { check_command: "hostalive" }},
+                check_command: { check_command: "http" }},
         
               host_checks:
               { load_average: { check_command: "check_nrpe", vars.remote_nrpe_command: "check_load" },
@@ -83,7 +83,7 @@ object Host "webserver_one.tld" {
   vars.os_family = "Debian"
 
   # Here Goes Vars and check_command
-  check_command = "hostalive"
+  check_command = "http"
   vars.operator = "on_call"
   vars.sla = "24x7"
 
@@ -152,7 +152,7 @@ Now open up your `site.yml` playbook with your favorite text editor and add the 
               configuration_logic: "object",
               host_attributes:
               { vars: { vars.sla: "24x7", vars.operator: "on_call" },
-                check_command: { check_command: "hostalive" }},
+                check_command: { check_command: "mysql" }},
         
               host_checks:
               { load_average: { check_command: "check_nrpe", vars.remote_nrpe_command: "check_load" },
@@ -181,7 +181,7 @@ object Host "dbserver_one" {
   vars.os_family = "RedHat"
   
   # Here Goes Vars and check_command
-  check_command = "hostalive"
+  check_command = "mysql"
   vars.operator = "on_call"
   vars.sla = "24x7"
 
