@@ -1,0 +1,15 @@
+# {{ ansible_managed }}
+
+{% for key,value in check_commands.iteritems() %}
+object CheckCommand "{{ key }}" {
+  import "plugin-check-command"
+
+  command = [
+    PluginDir + "/{{ key }}",
+{% for key,value in value.items() %}
+    "{{ key }}", "{{ value }}",
+{% endfor %}
+  ]
+}
+
+{% endfor %}

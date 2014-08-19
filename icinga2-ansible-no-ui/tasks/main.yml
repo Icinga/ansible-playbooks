@@ -8,4 +8,5 @@
   when: ansible_os_family == 'RedHat'
 
 - include: icinga2_configure.yml
-  tags: icinga2_configure
+  tags: 
+   - icinga2_configure
