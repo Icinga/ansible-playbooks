@@ -24,6 +24,8 @@ Now create a playbook to hold instructions for Ansible, let's call this file `si
 - hosts: monitoring_servers
   roles:
    - { role: icinga2-ansible-no-ui,
+             check_commands:
+             { check_nrpe: { -H: "$address$", -c: "$remote_nrpe_command$" }},
              tags: ["icinga2-no-ui"] }
 ```
 
@@ -46,6 +48,7 @@ During the execution the role will take care of all the tasks required to instal
 * Get Icinga2 Yum Repo on RedHat OS family 
 * Install Icinga2 on RedHat OS family 
 * Copy Main Icinga2 Configuration 
+* Copy Check Commands Configuration
 * Start Icinga2 
 
 ### Setting up Icinga2 alongside Classic UI
@@ -57,6 +60,8 @@ After Icinga2 is up and running you can move forward to add a Classic UI. Open u
 - hosts: monitoring_servers
   roles:
    - { role: icinga2-ansible-no-ui,
+             check_commands:
+             { check_nrpe: { -H: "$address$", -c: "$remote_nrpe_command$" }},
              tags: ["icinga2-no-ui"] }
 
    - { role: icinga2-ansible-classic-ui,
@@ -86,6 +91,8 @@ After Icinga2 is up and running you can move forward to add a Web UI. Open up th
 - hosts: monitoring_servers
   roles:
    - { role: icinga2-ansible-no-ui,
+             check_commands:
+             { check_nrpe: { -H: "$address$", -c: "$remote_nrpe_command$" }},
              tags: ["icinga2-no-ui"] }
 
    - { role: icinga2-ansible-web-ui,

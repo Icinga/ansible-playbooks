@@ -35,6 +35,8 @@ Now open up your `site.yml` playbook with your favorite text editor and add the 
 - hosts: monitoring_servers
   roles:
    - { role: icinga2-ansible-no-ui,
+             check_commands:
+             { check_nrpe: { -H: "$address$", -c: "$remote_nrpe_command$" }},
              tags: ["icinga2-no-ui"] }
 
    - { role: icinga2-ansible-classic-ui,
@@ -48,8 +50,8 @@ Now open up your `site.yml` playbook with your favorite text editor and add the 
                 check_command: { check_command: "hostalive" }},
         
               host_checks:
-              { load_average: { check_command: "nrpe", vars.remote_nrpe_command: "check_load" },
-                disk: { check_command: "nrpe", vars.remote_nrpe_command: "check_disk" },
+              { load_average: { check_command: "check_nrpe", vars.remote_nrpe_command: "check_load" },
+                disk: { check_command: "check_nrpe", vars.remote_nrpe_command: "check_disk" },
                 http: { check_command: "http", vars.http_vhost: "{{ hostvars[item]['ansible_domain'] }}" }},
 
               tags: ["add-hosts"] }
@@ -90,13 +92,13 @@ object Host "webserver_one.tld" {
   #Here Goes Checks
 object Service "load_average" {
   host_name = "webserver_one.tld"
-  check_command = "nrpe"
+  check_command = "check_nrpe"
   vars.remote_nrpe_command = "check_load"
 }
 
 object Service "disk" {
   host_name = "webserver_one.tld"
-  check_command = "nrpe"
+  check_command = "check_nrpe"
   vars.remote_nrpe_command = "check_disk"
 }
 
@@ -138,6 +140,8 @@ Now open up your `site.yml` playbook with your favorite text editor and add the 
 - hosts: monitoring_servers
   roles:
    - { role: icinga2-ansible-no-ui,
+             check_commands:
+             { check_nrpe: { -H: "$address$", -c: "$remote_nrpe_command$" }},
              tags: ["icinga2-no-ui"] }
 
    - { role: icinga2-ansible-classic-ui,
@@ -151,8 +155,8 @@ Now open up your `site.yml` playbook with your favorite text editor and add the 
                 check_command: { check_command: "hostalive" }},
         
               host_checks:
-              { load_average: { check_command: "nrpe", vars.remote_nrpe_command: "check_load" },
-                disk: { check_command: "nrpe", vars.remote_nrpe_command: "check_disk" },
+              { load_average: { check_command: "check_nrpe", vars.remote_nrpe_command: "check_load" },
+                disk: { check_command: "check_nrpe", vars.remote_nrpe_command: "check_disk" },
                 mysql: { check_command: "tcp", vars.tcp_port: "3306" }},
               tags: ["add-hosts"] }
 ```
@@ -186,13 +190,13 @@ object Host "dbserver_one" {
   #Here Goes Checks
 object Service "load_average" {
   host_name = "dbserver_one"
-  check_command = "nrpe"
+  check_command = "check_nrpe"
   vars.remote_nrpe_command = "check_load"
 }
 
 object Service "disk" {
   host_name = "dbserver_one"
-  check_command = "nrpe"
+  check_command = "check_nrpe"
   vars.remote_nrpe_command = "check_disk"
 }
 
