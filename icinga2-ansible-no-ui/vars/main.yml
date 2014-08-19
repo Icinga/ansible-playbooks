@@ -30,6 +30,7 @@ icinga2_yum:
  - { package: "nagios-plugins-all" }
 
 icinga2_main_conf: "/etc/icinga2/icinga2.conf"
+icinga2_conf_d: "/etc/icinga2/conf.d"
 
 icinga2_conf_global:
  - { directive: 'include "constants.conf"' }
@@ -38,3 +39,8 @@ icinga2_conf_global:
  - { directive: 'include <plugins>' }
  - { directive: 'include "features-enabled/*.conf"' }
  - { directive: 'include_recursive "conf.d"' }
+
+check_commands:
+  check_nrpe:
+    -H: "$address$"
+    -c: "$remote_nrpe_command$"
