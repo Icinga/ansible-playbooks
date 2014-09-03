@@ -19,7 +19,7 @@ req_pkg:
  - { package: "gpg" }
 
 epel6_url: "http://download.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm"
-epel7_url: "http://download.fedoraproject.org/pub/epel/7/x86_64/epel-release-7-1.noarch.rpm"
+epel7_url: "http://download.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-1.noarch.rpm"
 
 icinga2_url_yum: "http://packages.icinga.org/epel/ICINGA-release.repo"
 icinga2_url_yum_fedora: "http://packages.icinga.org/fedora/ICINGA-release.repo"
