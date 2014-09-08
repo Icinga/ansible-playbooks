@@ -5,21 +5,6 @@
   with_items: req_pkg
   when: ansible_distribution == 'Fedora'
 
-- name: Enable Epel on RedHat OS family (RH6)
-  yum: name={{ epel6_url }}
-       state=present
-  when: ansible_distribution_major_version == "6"
-
-- name: Install Epel on RedHat OS family (CentOS 7)
-  yum: name=epel-release
-       state=latest
-  when: ansible_distribution_major_version == "7" and ansible_distribution == 'CentOS'
-
-- name: Enable Epel on RedHat OS family (RH7)
-  yum: name={{ epel7_url }}
-       state=present
-  when: ansible_distribution_major_version == "7" and ansible_distribution == 'RedHat'
-
 - name: Get Icinga2 Yum Key on RedHat OS family
   rpm_key: key={{ icinga2_key }} 
            state=present

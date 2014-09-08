@@ -3,10 +3,10 @@ Role Name
 
 Ansible role to install Icinga2 Headless alongside Plugins
 
-Dependencies
+Requirements
 ------------
 
-None
+EPEL
 
 Example Playbook
 -------------------------
