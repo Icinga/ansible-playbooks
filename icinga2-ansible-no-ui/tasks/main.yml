@@ -1,11 +1,8 @@
 ---
 # tasks file for icinga2-ansible-no-ui
 
-- include: icinga2_Debian_install.yml
-  when: ansible_os_family == 'Debian'
-
-- include: icinga2_RedHat_install.yml
-  when: ansible_os_family == 'RedHat'
+- name: Add the OS specific varibles
+  include_vars: "icinga2_{{ ansible_os_family }}_install.yml"
 
 - include: icinga2_configure.yml
   tags: 
