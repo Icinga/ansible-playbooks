@@ -1,12 +1,12 @@
 ---
-- name: Install IDO {{ icinga2_web_ui_ido }} on RedHat OS family
+- name: Install IDO {{ icinga2_web_ui_ido }} on Debian OS family
   apt: name=icinga2-ido-{{ icinga2_web_ui_ido }} 
        state=latest
 
 - include: icinga2_web_ui_mysql_Debian_install.yml
   when: icinga2_web_ui_ido == "mysql"
 
-- name: Install Icinga Web on RedHat OS family
+- name: Install Icinga Web on Debian OS family
   apt: name={{ item.package }}
        state=latest
   with_items: icinga2_web_ui_deb
@@ -27,6 +27,13 @@
               password={{ icinga2_web_db_dbuser }}
               state=present
               priv="{{ icinga2_web_db_dbuser }}.*:GRANT,INSERT,SELECT,UPDATE,DELETE,DROP,CREATE VIEW,INDEX,EXECUTE"
+
+- name: Set password for database-connections
+  template: src=database-{{item}}.xml.j2
+            dest="/etc/icinga-web/conf.d/database-{{item}}.xml"
+  with_items:
+    - "ido"
+    - "web"
 
 - name: Start Apache
   service: name=apache2

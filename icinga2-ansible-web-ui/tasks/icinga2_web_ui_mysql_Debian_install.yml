@@ -42,11 +42,3 @@
   changed_when: "'for these changes to take effect' in features_result.stdout"
   notify:
    - restart icinga2
-
-- name: Set password for database-connections
-  template: src=database-{{item}}.xml.j2
-            dest="/etc/icinga-web/conf.d/database-{{item}}.xml"
-  with_items: 
-    - "ido"
-    - "web"
-
