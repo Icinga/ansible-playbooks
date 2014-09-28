@@ -15,7 +15,21 @@ icinga2_web_ui_mysql_rpm:
  - { package: "mysql-server" }
  - { package: "MySQL-python" }
 
+# Vars for Debian OS Family
+
+icinga2_web_ui_deb:
+ - { package: "icinga-web" }
+ - { package: "icinga-web-config-icinga2-ido-{{ icinga2_web_ui_ido }}" }
+
+icinga2_web_ui_mysql_deb:
+ - { package: "mysql-server" }
+ - { package: "python-mysqldb" }
+
+
+icinga2_ido_mysql_schema_debian: "/usr/share/icinga2-ido-mysql/schema/mysql.sql"
+icinga2_web_mysql_schema_debian: "/usr/share/dbconfig-common/data/icinga-web/install/mysql"
 icinga2_web_db_dbuser: "icinga_web"
+icinga2_ido_db_dbuser: "icinga"
 
 icinga2_ido_schema_version: "2.0.2"
 icinga2_ido_mysql_schema: "/usr/share/doc/icinga2-ido-mysql-{{ icinga2_ido_schema_version }}/schema/mysql.sql"
