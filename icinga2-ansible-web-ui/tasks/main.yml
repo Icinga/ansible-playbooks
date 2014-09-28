@@ -3,3 +3,7 @@
 
 - include: icinga2_web_ui_RedHat_install.yml
   when: ansible_os_family == 'RedHat'
+
+- include: icinga2_web_ui_Debian_install.yml
+  when: ansible_os_family == 'Debian'
+
