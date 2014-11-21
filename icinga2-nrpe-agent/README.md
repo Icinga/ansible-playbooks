@@ -45,7 +45,7 @@ nrpe_agent_Debian:
 nrpe_configuration:
  - { directive: "log_facility=daemon" }
  - { directive: "server_port=5666" }
- - { directive: "server_address={{ ansible_eth0.ipv4.address }}" }
+ - { directive: "server_address={{ ansible_default_ipv4.address }}" }
  - { directive: "dont_blame_nrpe=0" }
  - { directive: "debug=0" }
  - { directive: "command_timeout=60" }
