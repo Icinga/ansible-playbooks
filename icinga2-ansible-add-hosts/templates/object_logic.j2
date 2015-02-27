@@ -9,10 +9,19 @@ object Host "{{ hostvars[item]['ansible_fqdn'] }}" {
   # Here Goes Vars and check_command
 {% for key,value in host_attributes.iteritems() %}
 {% for key,value in value.items() %}
+{% if value is mapping %}
+{% for dictname,dictentries in value.items() %}
+  {{ key }}["{{ dictname }}"] = { 
+{% for entrykey,entryvalue in dictentries.items() %}
+    {{ entrykey }} = "{{ entryvalue }}"
+{% endfor %}
+  } 
+{% endfor %}
+{% else %}
   {{ key }} = "{{ value }}"
+{% endif %}
 {% endfor %}
 {% endfor %}
-
 }
 
   #Here Goes Checks if Any
