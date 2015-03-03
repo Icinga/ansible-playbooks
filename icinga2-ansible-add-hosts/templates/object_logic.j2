@@ -17,6 +17,14 @@ object Host "{{ hostvars[item]['ansible_fqdn'] }}" {
     {{ entrykey }} = "{{ entryvalue }}"
 {% endfor %}
   } 
+{% set defaults = (value | difference(i)) %}
+{% for j in defaults  %}
+  {{ key }}["{{ j }}"] = { 
+{% for entrykey,entryvalue in value[j].items() %}
+    {{ entrykey }} = "{{ entryvalue }}"
+{% endfor %}
+  } 
+{% endfor %}
 {% endfor %}
 {% else %}
   {{ key }} = "{{ i }}"
