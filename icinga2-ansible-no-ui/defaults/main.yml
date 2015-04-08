@@ -1,2 +1,7 @@
 ---
 # defaults file for icinga2-ansible-no-ui
+
+check_commands:
+  check_nrpe:
+    -H: "$address$"
+    -c: "$remote_nrpe_command$"

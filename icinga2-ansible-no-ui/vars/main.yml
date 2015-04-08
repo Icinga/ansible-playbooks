@@ -37,7 +37,3 @@ icinga2_conf_global:
  - { directive: 'include "features-enabled/*.conf"' }
  - { directive: 'include_recursive "conf.d"' }
 
-check_commands:
-  check_nrpe:
-    -H: "$address$"
-    -c: "$remote_nrpe_command$"
