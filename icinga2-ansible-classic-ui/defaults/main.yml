@@ -1,2 +1,4 @@
 ---
 # defaults file for icinga2-ansible-classic-ui
+
+icinga2_classic_ui_passwd: "none"

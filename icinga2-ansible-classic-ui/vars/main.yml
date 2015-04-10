@@ -1,8 +1,6 @@
 ---
 # vars file for icinga2-ansible-classic-ui
 
-icinga2_classic_ui_passwd: "none"
-
 # Vars for Debian OS Family
 icinga2_classic_ui_pkg:
  - { package: "icinga2-classicui" }
