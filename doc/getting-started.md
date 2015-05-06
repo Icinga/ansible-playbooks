@@ -23,10 +23,12 @@ Now create a playbook to hold instructions for Ansible, let's call this file `si
 ---
 - hosts: monitoring_servers
   roles:
-   - { role: icinga2-ansible-no-ui,
-             check_commands:
-             { check_nrpe: { -H: "$address$", -c: "$remote_nrpe_command$" }},
-             tags: ["icinga2-no-ui"] }
+   - role: icinga2-ansible-no-ui
+     check_commands:
+       check_nrpe: |
+          "-H", "$address$",
+              "-c", "$remote_nrpe_command$",
+     tags: icinga2-no-ui
 ```
 
 Save the file and close, then launch the playbook with Ansible:
@@ -59,14 +61,16 @@ After Icinga2 is up and running you can move forward to add a Classic UI. Open u
 ---
 - hosts: monitoring_servers
   roles:
-   - { role: icinga2-ansible-no-ui,
-             check_commands:
-             { check_nrpe: { -H: "$address$", -c: "$remote_nrpe_command$" }},
-             tags: ["icinga2-no-ui"] }
+   - role: icinga2-ansible-no-ui
+     check_commands:
+       check_nrpe: |
+          "-H", "$address$",
+              "-c", "$remote_nrpe_command$",
+     tags: icinga2-no-ui
 
-   - { role: icinga2-ansible-classic-ui,
-             icinga2_classic_ui_passwd: "CHANGEME",
-             tags: ["icinga2-classic-ui"] }
+   - role: icinga2-ansible-classic-ui
+     icinga2_classic_ui_passwd: 'CHANGEME'
+     tags: icinga2-classic-ui
 ```
 
 Make sure  to replace CHANGEME with your desidered password for user **icingaadmin**.
@@ -90,14 +94,16 @@ After Icinga2 is up and running you can move forward to add a Web UI. Open up th
 ---
 - hosts: monitoring_servers
   roles:
-   - { role: icinga2-ansible-no-ui,
-             check_commands:
-             { check_nrpe: { -H: "$address$", -c: "$remote_nrpe_command$" }},
-             tags: ["icinga2-no-ui"] }
+   - role: icinga2-ansible-no-ui
+     check_commands:
+       check_nrpe: |
+          "-H", "$address$",
+              "-c", "$remote_nrpe_command$",
+     tags: icinga2-no-ui
 
-   - { role: icinga2-ansible-web-ui,
-             icinga2_web_ui_ido: "mysql",
-             tags: ["icinga2-web-ui"] }
+   - role: icinga2-ansible-web-ui
+     icinga2_web_ui_ido: "mysql"
+     tags: icinga2-web-ui
 ```
 
 At this moment, the role have only support for Mysql IDO Backend.

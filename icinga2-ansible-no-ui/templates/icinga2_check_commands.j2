@@ -6,9 +6,7 @@ object CheckCommand "{{ key }}" {
 
   command = [
     PluginDir + "/{{ key }}",
-{% for key,value in value.items() %}
-    "{{ key }}", "{{ value }}",
-{% endfor %}
+    {{ value }}
   ]
 }
 
