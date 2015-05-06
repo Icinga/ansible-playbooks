@@ -5,6 +5,7 @@ object Host "{{ hostvars[item]['ansible_fqdn'] }}" {
   address = "{{ hostvars[item]['ansible_default_ipv4']['address'] }}"
   vars.os = "{{ hostvars[item]['ansible_system'] }}"
   vars.os_family = "{{ hostvars[item]['ansible_os_family'] }}"
+  vars.ssh_port = "{{ hostvars[item]['ansible_ssh_port'] }}"
 
   # Here Goes Vars and check_command
 {% for key,value in host_attributes.iteritems() %}
