@@ -1,4 +1,15 @@
 ---
+- name: Make sure hosts directory exists
+  file: path="{{ icinga2_hosts_dir}}" state=directory
+
+- name: Check if hosts.conf exists
+  stat: path=/etc/icinga2/conf.d/hosts.conf
+  register: hosts_conf
+
+- name: Move out hosts.conf that will conflict with generated files
+  command: mv /etc/icinga2/conf.d/hosts.conf /etc/icinga2/hosts.conf.bak
+  when: hosts_conf.stat.exists
+
 - name: Copy Host Definitions
   template: src=hosts_template.j2
             dest={{ icinga2_hosts_dir }}/{{ hostvars[item]['ansible_fqdn'] }}.conf
