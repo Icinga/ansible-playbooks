@@ -3,20 +3,41 @@
   file: path="{{ icinga2_hosts_dir}}" state=directory
 
 - name: Check if hosts.conf exists
-  stat: path=/etc/icinga2/conf.d/hosts.conf
+  stat: path={{ icinga2_conf_d }}/hosts.conf
   register: hosts_conf
 
 - name: Move out distribution hosts.conf that will conflict with generated files
-  command: mv /etc/icinga2/conf.d/hosts.conf /etc/icinga2/conf.d/hosts.conf.orig
+  command: mv {{ icinga2_conf_d }}/hosts.conf {{ icinga2_conf_d }}/hosts.conf.orig
   when: hosts_conf.stat.exists
 
-- name: Copy Host Definitions
+- name: Render Groups 
+  template: src=groups.conf.j2
+            dest={{ icinga2_conf_d }}/groups.conf
+            owner=root 
+            group=root 
+            mode=0644
+            backup=yes
+  with_items: groups[monitored]
+  notify: 
+   - restart icinga2
+
+- name: Render Host Definitions
   template: src=hosts_template.j2
             dest={{ icinga2_hosts_dir }}/{{ hostvars[item]['ansible_fqdn'] }}.conf
             owner=root 
             group=root 
             mode=0644
             backup=yes
-  with_items: groups['all']
+  with_items: groups[monitored]
+  notify: 
+   - restart icinga2
+
+- name: Render Services Definitions
+  template: src=services.conf.j2
+            dest={{ icinga2_conf_d }}/services.conf
+            owner=root 
+            group=root 
+            mode=0644
+            backup=yes
   notify: 
    - restart icinga2

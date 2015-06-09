@@ -1,0 +1,61 @@
+/**
+ * Host group examples.
+ */
+
+{# overkill might as well view all servers #}
+{% if include_linux_server_group == True %}
+object HostGroup "linux-servers" {
+  display_name = "Linux Servers"
+
+  assign where host.vars.os == "Linux"
+}
+{% endif %}
+
+{% if include_windows_server_group == True %}
+object HostGroup "windows-servers" {
+  display_name = "Windows Servers"
+
+  assign where host.vars.os == "Windows"
+}
+{% endif %}
+
+/**
+ *  HostGroups based off of ansible groups
+ */
+{% for group,gdict in groups.iteritems() %}
+{% if group in groups_info %} 
+object HostGroup "{{ group }}" {
+  display_name = "{{ groups_info[group]['gname'] }}"
+{% for host in groups[group] %}
+  assign where match("{{ host }}*", host.name)
+{% endfor %}
+}
+{% endif %}
+{% endfor %}
+
+/**
+ * Service group examples.
+ */
+
+object ServiceGroup "ping" {
+  display_name = "Ping Checks"
+
+  assign where match("ping*", service.name)
+}
+object ServiceGroup "slave_checks" {
+  display_name = "MySQL Slave Checks"
+
+  assign where match("*slave*", service.name)
+}
+
+object ServiceGroup "http" {
+  display_name = "HTTP Checks"
+
+  assign where match("http*", service.check_command)
+}
+
+object ServiceGroup "disk" {
+  display_name = "Disk Checks"
+
+  assign where match("disk*", service.check_command)
+}

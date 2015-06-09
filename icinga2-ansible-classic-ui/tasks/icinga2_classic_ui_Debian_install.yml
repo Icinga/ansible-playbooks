@@ -15,5 +15,28 @@
   notify: 
    - restart apache2
 
+#- name: Set Icinga CGI configuration 
+#  template: src=cgi.cfg.j2
+#            dest=/etc/icinga2-classicui/cgi.cfg
+#            owner=root
+#            group=root
+#            mode=0644
+#            backup=yes
+#  notify: 
+#   - restart apache2
+
+- name: Set Icinga Apache configuration 
+  template: src={{ item }}.j2
+            dest=/etc/icinga2-classicui/{{ item }}
+            owner=root
+            group=root
+            mode=0644
+            backup=yes
+  with_items: 
+    - apache2.conf
+    - cgi.cfg
+  notify: 
+   - restart apache2
+
 - name: Icinga Classic UI Installation finished (Debian)
-  debug: msg="Login at http://IP/icinga2-classicui with user icingaadmin and password {{ icinga2_classic_ui_passwd }}"
+  debug: msg="Login at http://IP/{{ icinga2_classicui_web_url }} with user icingaadmin and password {{ icinga2_classic_ui_passwd }}"

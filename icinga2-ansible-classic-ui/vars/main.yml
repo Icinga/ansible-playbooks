@@ -8,6 +8,9 @@ icinga2_classic_ui_pkg:
  - { package: "icinga2-classicui" }
  - { package: "python-passlib" }
 
+# default set in the template
+# icinga2_classicui_web_url: icinga2-classicui
+
 htpasswd_deb: "/etc/icinga2-classicui/htpasswd.users"
 
 # Vars for RH OS Family

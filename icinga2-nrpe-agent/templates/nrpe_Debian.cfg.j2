@@ -3,16 +3,28 @@
 {{ element.user }}
 {% endfor %}
 
-# Here goes NRPE check commands
+# Here go NRPE check commands
 {% for key,value in nrpe_check_commands.iteritems() %}
 {% for key,value in value.items() %}
 command[{{ key }}]={{ nrpe_agent_plugins }}/{{ key }} {{ value }}
 {% endfor %}
 {% endfor %}
 
-# Here goes specific NRPE check commands for {{ ansible_os_family }}
+# Here go specific NRPE check commands for {{ ansible_os_family }}
 {% for key,value in nrpe_check_commands_Debian.iteritems() %}
 {% for key,value in value.items() %}
 command[{{ key }}]={{ nrpe_agent_plugins }}/{{ key }} {{ value }}
 {% endfor %}
 {% endfor %}
+
+# Here go specific NRPE check commands for a given host or host group
+{% if hostvars[inventory_hostname].nrpe_check_commands %}
+{% for check,chkdict in hostvars[inventory_hostname].nrpe_check_commands.iteritems() %}
+{% if "plugin_dir" in chkdict %}
+{% set plugin_dir = chkdict.plugin_dir %}
+{% else %}
+{% set plugin_dir = nrpe_agent_plugins %}
+{% endif %}
+command[{{ check }}]={{ plugin_dir }}/{{ chkdict.command }} {{ chkdict.args }}
+{% endfor %}
+{% endif %}

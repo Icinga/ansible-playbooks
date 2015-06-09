@@ -1,5 +1,5 @@
 {% if hostvars[item]['group_names'] | difference('monitoring_servers') %}
-  # A host definition
+  # host definition for {{ item }}
 object Host "{{ hostvars[item]['ansible_fqdn'] }}" {
   import "generic-host"
   address = "{{ hostvars[item]['ansible_default_ipv4']['address'] }}"
@@ -7,16 +7,36 @@ object Host "{{ hostvars[item]['ansible_fqdn'] }}" {
   vars.os_family = "{{ hostvars[item]['ansible_os_family'] }}"
   vars.ssh_port = "{{ hostvars[item]['ansible_ssh_port'] }}"
 
-  # Here Goes Vars and check_command
+  # vars and check_command
 {% for key,value in host_attributes.iteritems() %}
 {% for key,value in value.items() %}
   {{ key }} = "{{ value }}"
 {% endfor %}
 {% endfor %}
 
+  # virtual host checks
+  # See /usr/share/icinga2/include/command-plugins.conf
+  # this also has companion code in services.conf to make this work!
+{% if 'vhosts' in hostvars[item] %}
+{# hostvars[item]['vhosts']|pprint #}
+{% for ctype in hostvars[item]['vhosts'] %}
+{% set vhosts = hostvars[item ]['vhosts'][ctype] %}
+{% for vhost in vhosts %}
+{# this is important - do not want to iterate if no array members #}
+  vars.{{ ctype }}_vhosts["{{ vhost }}"] = {
+{% if vhosts[vhost] %}
+{% for var,val in vhosts[vhost].iteritems() %}
+    {{ var }} = "{{ val }}"
+{% endfor %}
+{% endif %}
+  }
+{% endfor %}
+{% endfor %}
+{% endif %}
+
 }
 
-  #Here Goes Checks if Any
+  # host checks if any - defined in top-level playbook
 {% if host_checks is defined %}
 {% for key,value in host_checks.iteritems() %}
 object Service "{{ key }}" {
@@ -30,4 +50,17 @@ object Service "{{ key }}" {
 {% endif %}
 {% else %}
 # This is a monitoring server entry. No checks will be copied.
+{% endif %}
+
+  # host/group-specific checks if any, defined in host_vars/<host> or group_vars/<group>
+{% if 'host_checks' in hostvars[item] %}
+{% for key,value in hostvars[item].host_checks.iteritems() %}
+object Service "{{ key }}" {
+  host_name = "{{ hostvars[item]['ansible_fqdn'] }}"
+{% for key,value in value.items() %}
+  {{ key }} = "{{ value }}"
+{% endfor %}
+}
+
+{% endfor %}
 {% endif %}
