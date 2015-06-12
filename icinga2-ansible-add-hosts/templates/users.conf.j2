@@ -1,0 +1,39 @@
+/**
+ * The example user 'icingaadmin' and the example
+ * group 'icingaadmins'.
+ */
+
+object User "icingaadmin" {
+  import "generic-user"
+
+  display_name = "Icinga 2 Admin"
+  groups = [ "icingaadmins" ]
+
+  email = "root@localhost"
+}
+
+{% if notification_users is defined %}
+# Users generated from groupvars file for group 'all' where the 
+# notifications_users dictionary is defined
+{% for user,userdct in notification_users.iteritems() %} 
+object User "{{ user }}" {
+  import "generic_user"
+  display_name = "{{ userdct['display_name'] }}"
+  enable_notifications = "{{ userdct['enable_notifications'] }}"
+{% if 'states' in userdct %}
+{% else %}
+  states = [ OK, Warning, Critical ]
+{% endif %}
+{% if 'types' in userdct %}
+{% else %}
+  types = [ Problem, Recovery ]
+{% endif %}
+  groups = [ "{{ userdct['groups']|join('", "') }}" ]
+  email = "{{ userdct['email'] }}"
+}
+{% endfor %}
+{% endif %}
+
+object UserGroup "icingaadmins" {
+  display_name = "Icinga 2 Admin Group"
+}

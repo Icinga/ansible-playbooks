@@ -160,7 +160,7 @@ apply Notification "mail-notifications" to Service {
     import "mail-service-notification"
 
     command = "mail-service-notification"
-    users = [ "{{ mail_notification_users| join('", "') }}" ]
+    users = [ "{{ notification_users| join('", "') }}" ]
     
     #assign where match("*", service.name)
     assign where match("*", host.name)

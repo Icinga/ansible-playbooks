@@ -17,7 +17,16 @@
             group=root 
             mode=0644
             backup=yes
-  with_items: groups[monitored]
+  notify: 
+   - restart icinga2
+
+- name: Render Users 
+  template: src=users.conf.j2
+            dest={{ icinga2_conf_d }}/users.conf
+            owner=root 
+            group=root 
+            mode=0644
+            backup=yes
   notify: 
    - restart icinga2
 
