@@ -17,9 +17,9 @@ object User "icingaadmin" {
 # notifications_users dictionary is defined
 {% for user,userdct in notification_users.iteritems() %} 
 object User "{{ user }}" {
-  import "generic_user"
+  import "generic-user"
   display_name = "{{ userdct['display_name'] }}"
-  enable_notifications = "{{ userdct['enable_notifications'] }}"
+  enable_notifications = {{ userdct['enable_notifications'] }}
 {% if 'states' in userdct %}
 {% else %}
   states = [ OK, Warning, Critical ]
