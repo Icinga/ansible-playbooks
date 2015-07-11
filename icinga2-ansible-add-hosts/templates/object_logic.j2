@@ -39,12 +39,15 @@ object Host "{{ hostvars[item]['ansible_fqdn'] }}" {
   # host checks if any - defined in top-level playbook
 {% if host_checks is defined %}
 {% for key,value in host_checks.iteritems() %}
+{# prevent duplication and allow override -#}
+{% if 'host_checks' in hostvars[item] and key not in hostvars[item]['host_checks'] %}
 object Service "{{ key }}" {
   host_name = "{{ hostvars[item]['ansible_fqdn'] }}"
 {% for key,value in value.items() %}
   {{ key }} = "{{ value }}"
 {% endfor %}
 }
+{% endif %}
 
 {% endfor %}
 {% endif %}
@@ -61,6 +64,5 @@ object Service "{{ key }}" {
   {{ key }} = "{{ value }}"
 {% endfor %}
 }
-
 {% endfor %}
 {% endif %}
