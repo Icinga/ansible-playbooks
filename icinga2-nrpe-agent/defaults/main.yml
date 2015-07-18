@@ -38,11 +38,14 @@ nrpe_agent_plugins_x86_64: "/usr/lib64/nagios/plugins"
 # Sample NRPE check commands
 nrpe_check_commands:
   check_load:
-    check_load: "-w 15,10,5 -c 30,25,20"
+    command: check_load
+    args: "-w 15,10,5 -c 30,25,20"
   check_disk:
-    check_disk: "-w 20% -c 10% -p /"
+    command: check_disk
+    args: "-w 20% -c 10% -p /"
 
 # Specific NRPE check commands for Debian
 nrpe_check_commands_Debian:
-  check_apt:
-    check_apt: "#Works fine without arguments"
+  check_apt: 
+    command: check_apt
+    args: "# works without args"
