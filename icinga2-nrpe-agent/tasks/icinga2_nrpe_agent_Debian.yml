@@ -8,6 +8,9 @@
   tags:
    - nrpe_agent_install
 
+- name: Copy working init file 
+  copy: src=nagios-nrpe-server dest=/etc/init.d/nagios-nrpe-server mode=0755 
+
 - name: Copy Nrpe Configuration
   template: src=nrpe.cfg.j2
             dest={{ nrpe_agent_config }}
