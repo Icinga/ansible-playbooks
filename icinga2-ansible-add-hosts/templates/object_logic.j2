@@ -1,6 +1,6 @@
 {% if hostvars[item]['group_names'] | difference('monitoring_servers') %}
   # host definition for {{ item }}
-object Host "{{ hostvars[item]['ansible_fqdn'] }}" {
+object Host "{{ hostvars[item]['ansible_hostname'] }}" {
   import "generic-host"
   address = "{{ hostvars[item]['ansible_default_ipv4']['address'] }}"
   vars.os = "{{ hostvars[item]['ansible_system'] }}"
@@ -42,7 +42,8 @@ object Host "{{ hostvars[item]['ansible_fqdn'] }}" {
 {# prevent duplication and allow override -#}
 {% if 'host_checks' in hostvars[item] and key not in hostvars[item]['host_checks'] %}
 object Service "{{ key }}" {
-  host_name = "{{ hostvars[item]['ansible_fqdn'] }}"
+{# you could also use hostvars[item]['ansible_fqdn'] #}
+  host_name = "{{ hostvars[item]['ansible_hostname'] }}"
 {% for key,value in value.items() %}
   {{ key }} = "{{ value }}"
 {% endfor %}
@@ -59,7 +60,7 @@ object Service "{{ key }}" {
 {% if 'host_checks' in hostvars[item] %}
 {% for key,value in hostvars[item].host_checks.iteritems() %}
 object Service "{{ key }}" {
-  host_name = "{{ hostvars[item]['ansible_fqdn'] }}"
+  host_name = "{{ hostvars[item]['ansible_hostname'] }}"
 {% for key,value in value.items() %}
   {{ key }} = "{{ value }}"
 {% endfor %}
