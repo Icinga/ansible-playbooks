@@ -19,7 +19,7 @@
 - name: Import IDO Schema on Icinga Database (only once)
   mysql_db: name={{ icinga2_web_db }}
             state=import
-            target={{ icinga2_ido_mysql_schema }}
+            target={{ icinga2_ido_mysql_schema_deb }}
   when: icinga_db.changed == true
 
 - name: Create Icinga Database User and configure Grants

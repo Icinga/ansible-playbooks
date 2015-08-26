@@ -48,10 +48,12 @@ icinga2_web_ui_mysql_rpm:
  - { package: "mysql-server" }
  - { package: "MySQL-python" }
 
+icinga2_web_db: "icinga_web"
 icinga2_web_db_dbuser: "icinga_web"
+icinga2_web_db_dbpass: "icinga_web"
 
 icinga2_ido_schema_version: "2.0.2"
-icinga2_ido_mysql_schema: "/usr/share/doc/icinga2-ido-mysql-{{ icinga2_ido_schema_version }}/schema/mysql.sql"
+icinga2_ido_mysql_schema_rh: "/usr/share/doc/icinga2-ido-mysql-{{ icinga2_ido_schema_version }}/schema/mysql.sql"
 
 icinga2_web_mysql_schema_rh_7: "/usr/share/doc/icinga-web-1.11.1/schema/mysql.sql"
 icinga2_web_mysql_schema_rh_6: "/usr/share/doc/icinga-web-1.11.0/schema/mysql.sql"
@@ -63,6 +65,21 @@ icinga2_ido_mysql_conf_global:
  - { directive: 'password = "icinga"' }
  - { directive: 'host = "localhost"' }
  - { directive: 'database = "icinga"' }
+ 
+# Vars for Debian OS Family
+
+icinga2_web_ui_deb:
+ - { package: "icinga-web" }
+ - { package: "icinga-web-config-icinga2-ido-mysql" }
+
+icinga2_web_ui_mysql_deb:
+ - { package: "mysql-server" }
+ - { package: "python-mysqldb" }
+
+icinga2_ido_mysql_schema_deb: "/usr/share/icinga2-ido-mysql/schema/mysql.sql"
+
+icinga2_web_mysql_schema_deb_7: "/usr/share/doc/icinga-web-1.11.1/schema/mysql.sql"
+
 ```
 License
 -------

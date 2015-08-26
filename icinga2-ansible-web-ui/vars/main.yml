@@ -28,7 +28,8 @@ icinga2_web_db_dbuser: "icinga_web"
 icinga2_web_db_dbpass: "icinga_web"
 
 icinga2_ido_schema_version: "2.0.2"
-icinga2_ido_mysql_schema: "/usr/share/icinga2-ido-mysql/schema/mysql.sql"
+icinga2_ido_mysql_schema_rh: "/usr/share/doc/icinga2-ido-mysql-{{ icinga2_ido_schema_version }}/schema/mysql.sql"
+icinga2_ido_mysql_schema_deb: "/usr/share/icinga2-ido-mysql/schema/mysql.sql"
 
 icinga2_web_mysql_schema_rh_7: "/usr/share/doc/icinga-web-1.11.1/schema/mysql.sql"
 icinga2_web_mysql_schema_rh_6: "/usr/share/doc/icinga-web-1.11.0/schema/mysql.sql"
