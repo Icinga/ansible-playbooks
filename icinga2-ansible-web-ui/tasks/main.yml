@@ -1,5 +1,8 @@
 ---
 # tasks file for icinga2-ansible-web-ui
 
+- include: icinga2_web_ui_Debian_install.yml
+  when: ansible_os_family == 'Debian'
+
 - include: icinga2_web_ui_RedHat_install.yml
   when: ansible_os_family == 'RedHat'
