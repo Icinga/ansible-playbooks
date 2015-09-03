@@ -6,7 +6,7 @@
        install_recommends=no
   with_items: nrpe_agent_{{ ansible_os_family }}
   tags:
-   - nrpe_agent_install
+   - install-only 
 
 - name: Copy working init file 
   copy: src=nagios-nrpe-server dest=/etc/init.d/nagios-nrpe-server mode=0755 
@@ -21,5 +21,5 @@
   notify:
    - restart nagios-nrpe-server
   tags:
-   - nrpe_agent_config
+   - config-only
 

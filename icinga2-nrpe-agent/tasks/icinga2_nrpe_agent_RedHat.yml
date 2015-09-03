@@ -4,7 +4,7 @@
        state=latest
   with_items: nrpe_agent_{{ ansible_os_family }}
   tags:
-   - nrpe_agent_install
+   - install-only
 
 - name: Copy Nrpe Configuration
   template: src=nrpe.cfg.j2
@@ -16,4 +16,4 @@
   notify:
    - restart nrpe
   tags:
-   - nrpe_agent_config
+   - config-only 

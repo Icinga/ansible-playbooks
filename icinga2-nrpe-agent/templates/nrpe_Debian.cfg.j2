@@ -3,6 +3,8 @@
 {{ element.user }}
 {% endfor %}
 
+{% if nrpe_check_commands is defined %}
+# NRPE check commands
 {% for check,cdict in nrpe_check_commands.iteritems() %}
 {% if check in nrpe_custom_check_commands %}
 {% set skip_check = true %}
@@ -17,8 +19,9 @@
 command[{{ check }}]={{ nrpe_agent_plugins }}/{{ cdict.command }} {{ cdict.args }}
 {% endif %}
 {% endfor %}
+{% endif %}
 
-{% if nrpe_custom_check_commands %}
+{% if nrpe_custom_check_commands is defined %}
 # Custom NRPE check commands
 {% for check,cdict in nrpe_custom_check_commands.iteritems() %}
 {% if 'nrpe_custom_check_commands' in hostvars[inventory_hostname] and check in hostvars[inventory_hostname].nrpe_custom_check_commands %}
@@ -39,7 +42,7 @@ command[{{ check }}]={{ nrpe_agent_plugins }}/{{ cdict.command }} {{ cdict.args 
 
 
 # Specific NRPE check commands for a given host or host group
-{% if hostvars[inventory_hostname].nrpe_check_commands %}
+{% if 'nrpe_check_commands' in hostvars[inventory_hostname] %}
 {% for check,cdict in hostvars[inventory_hostname].nrpe_check_commands.iteritems() %}
 {% if "plugin_dir" in cdict %}
 {% set plugin_dir = cdict.plugin_dir %}
@@ -59,7 +62,7 @@ command[{{ check }}]={{ plugin_dir }}/{{ cdict.command }} {{ cdict.args }}
 {% endfor %}
 {% endif %}
 # Custom NRPE host-specific check commands 
-{% if hostvars[inventory_hostname].nrpe_custom_check_commands %}
+{% if 'nrpe_custom_check_commands' in hostvars[inventory_hostname] %}
 {% for check,cdict in nrpe_custom_check_commands.iteritems() %}
 command[{{ check }}]={{ custom_nagios_plugin_dir }}/{{ cdict.command }} {{ cdict.args }}
 {% endfor %}
