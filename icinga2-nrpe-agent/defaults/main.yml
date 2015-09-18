@@ -10,6 +10,10 @@ nrpe_agent_Debian:
  - { package: "nagios-nrpe-plugin" }
  - { package: "nagios-plugins" }
 
+nrpe_agent_Gentoo:
+ - { package: "nrpe" }
+ - { package: "nagios-plugins" }
+
 nrpe_configuration:
  - { directive: "log_facility=daemon" }
  - { directive: "server_port=5666" }
@@ -24,6 +28,10 @@ nrpe_users_RedHat:
  - { user: "nrpe_group=nrpe" }
 
 nrpe_users_Debian:
+ - { user: "nrpe_user=nagios" }
+ - { user: "nrpe_group=nagios" }
+
+nrpe_users_Gentoo:
  - { user: "nrpe_user=nagios" }
  - { user: "nrpe_group=nagios" }
 
