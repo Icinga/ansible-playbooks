@@ -34,14 +34,23 @@ Now open up your `site.yml` playbook with your favorite text editor and add the 
   # Contact all the monitoring servers to copy host definitions
 - hosts: monitoring_servers
   roles:
-   - { role: icinga2-ansible-no-ui,
-             check_commands:
-             { check_nrpe: { -H: "$address$", -c: "$remote_nrpe_command$" }},
-             tags: ["icinga2-no-ui"] }
+   - role: icinga2-ansible-no-ui
+     icinga2_conf_global: |
+       include "constants.conf"
+       include "zones.conf"
+       include <itl>
+       include <plugins>
+       include "features-enabled/*.conf"
+       include_recursive "conf.d"
+     check_commands:
+       check_nrpe: |
+          "-H", "$address$",
+              "-c", "$remote_nrpe_command$",
+     tags: icinga2-no-ui
 
-   - { role: icinga2-ansible-classic-ui,
-             icinga2_classic_ui_passwd: "CHANGEME",
-             tags: ["icinga2-classic-ui"] }
+   - role: icinga2-ansible-web-ui
+     icinga2_web_ui_ido: "mysql"
+     tags: icinga2-web-ui
 
    - { role: icinga2-ansible-add-hosts,
               configuration_logic: "object",
@@ -110,99 +119,3 @@ object Service "http" {
 ```
 
 The variable **http_vhost** is a custom attribute that can be assigned to http check command. See [Plugin Check Commands](http://docs.icinga.org/icinga2/latest/doc/module/icinga2/toc#!/icinga2/latest/doc/module/icinga2/chapter/configuring-icinga2#plugin-check-commands) for a list of all the supported check custom attributes. What's interesting in this example is that **vars.http_vhost** will be automatically populated via `{{ hostvars[item]['ansible_domain'] }}`.
-
-### Example: Monitoring Database Servers
-
-For instance suppose that you want to monitor a bunch of database servers: create a new inventory file, with your monitoring server entry in place, and begin to add the database servers to be monitored:
-
-```ini
-[monitoring_servers]
-icinga2server ansible_ssh_host=1.2.3.4
-icinga2server_one ansible_ssh_host=1.2.3.5
-icinga2server_three ansible_ssh_host=1.2.3.6
-
-[dbservers]
-dbserver_one ansible_ssh_host=9.0.1.1
-dbserver_two ansible_ssh_host=9.0.1.2
-dbserver_three ansible_ssh_host=9.0.1.3
-dbserver_four ansible_ssh_host=9.0.1.4
-```
-
-Now open up your `site.yml` playbook with your favorite text editor and add the role **icinga2-ansible-add-hosts**:
-
-```yaml
----
-  # Contact all the monitored hosts to gather facts
-- hosts: all
-  gather_facts: True
-
-  # Contact all the monitoring servers to copy host definitions
-- hosts: monitoring_servers
-  roles:
-   - { role: icinga2-ansible-no-ui,
-             check_commands:
-             { check_nrpe: { -H: "$address$", -c: "$remote_nrpe_command$" }},
-             tags: ["icinga2-no-ui"] }
-
-   - { role: icinga2-ansible-classic-ui,
-             icinga2_classic_ui_passwd: "CHANGEME",
-             tags: ["icinga2-classic-ui"] }
-
-   - { role: icinga2-ansible-add-hosts,
-              configuration_logic: "object",
-              host_attributes:
-              { vars: { vars.sla: "24x7", vars.operator: "on_call" },
-                check_command: { check_command: "mysql" }},
-        
-              host_checks:
-              { load_average: { check_command: "check_nrpe", vars.remote_nrpe_command: "check_load" },
-                disk: { check_command: "check_nrpe", vars.remote_nrpe_command: "check_disk" },
-                mysql: { check_command: "tcp", vars.tcp_port: "3306" }},
-              tags: ["add-hosts"] }
-```
-
-Again, we are interested only to _add-hosts_ tag.
-
-Save the file and close, then launch the playbook with Ansible:
-
-`ansible-playbook site.yml -i inventory_dbservers.ini -t add-hosts`
-
-At this point you should see the newly host entries in `/etc/icinga2/conf.d/hosts`.
-
-Each entry should look like this:
-
-```bash
-  # A host definition
-
-object Host "dbserver_one" {
-  import "generic-host"
-  address = "9.0.1.1"
-  vars.os = "Linux"
-  vars.os_family = "RedHat"
-  
-  # Here Goes Vars and check_command
-  check_command = "mysql"
-  vars.operator = "on_call"
-  vars.sla = "24x7"
-
-}
-
-  #Here Goes Checks
-object Service "load_average" {
-  host_name = "dbserver_one"
-  check_command = "check_nrpe"
-  vars.remote_nrpe_command = "check_load"
-}
-
-object Service "disk" {
-  host_name = "dbserver_one"
-  check_command = "check_nrpe"
-  vars.remote_nrpe_command = "check_disk"
-}
-
-object Service "mysql" {
-  host_name = "dbserver_one"
-  check_command = "tcp"
-  vars.tcp_port = "3306"
-}
-```

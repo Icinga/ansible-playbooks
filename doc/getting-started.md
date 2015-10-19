@@ -24,6 +24,13 @@ Now create a playbook to hold instructions for Ansible, let's call this file `si
 - hosts: monitoring_servers
   roles:
    - role: icinga2-ansible-no-ui
+     icinga2_conf_global: |
+       include "constants.conf"
+       include "zones.conf"
+       include <itl>
+       include <plugins>
+       include "features-enabled/*.conf"
+       include_recursive "conf.d"
      check_commands:
        check_nrpe: |
           "-H", "$address$",
@@ -35,23 +42,7 @@ Save the file and close, then launch the playbook with Ansible:
 
 `ansible-playbook site.yml -i inventory.ini`
 
-During the execution the role will take care of all the tasks required to install and configure Icinga2 with Plugins. Here's a list of the tasks executed by **icinga2-ansible-no-ui** role:
-
-* Get Icinga2 Apt Key for Debian OS family 
-* Get Debmon Apt Key for Debian OS family (Debian) 
-* Get Icinga2 Apt Repos for Debian OS family 
-* Get Debmon Apt Repo for Debian OS family (Debian) 
-* Install Icinga2 on Debian OS family 
-* Install Requirements on RedHat OS family (Fedora) 
-* Enable Epel on RedHat OS family (RH6) 
-* Enable Epel on RedHat OS family (RH7) 
-* Get Icinga2 Yum Key on RedHat OS family 
-* Get Icinga2 Yum Repo on RedHat OS family (Fedora) 
-* Get Icinga2 Yum Repo on RedHat OS family 
-* Install Icinga2 on RedHat OS family 
-* Copy Main Icinga2 Configuration 
-* Copy Check Commands Configuration
-* Start Icinga2 
+During the execution the role will take care of all the tasks required to install and configure Icinga2 with Plugins.
 
 ### Setting up Icinga2 alongside Classic UI
 
@@ -62,6 +53,13 @@ After Icinga2 is up and running you can move forward to add a Classic UI. Open u
 - hosts: monitoring_servers
   roles:
    - role: icinga2-ansible-no-ui
+     icinga2_conf_global: |
+       include "constants.conf"
+       include "zones.conf"
+       include <itl>
+       include <plugins>
+       include "features-enabled/*.conf"
+       include_recursive "conf.d"
      check_commands:
        check_nrpe: |
           "-H", "$address$",
@@ -79,12 +77,7 @@ Save the file and close, then launch the playbook with Ansible as usual:
 
 `ansible-playbook site.yml -i inventory.ini`
 
-During the execution the role will take care of all the tasks required to install and configure Icinga2 Classic UI. Please take note that **icinga2-ansible-classic-ui** does not install Icinga2, and must be used after **icinga2-ansible-no-ui**. Here's a list of the tasks executed by **icinga2-ansible-classic-ui** role:
-
-* Install Icinga Classic UI on Debian OS family 
-* Configure a password for icingaadmin user 
-* Install Icinga Classic UI on RedHat OS family 
-* Configure a password for icingaadmin user 
+During the execution the role will take care of all the tasks required to install and configure Icinga2 Classic UI. Please take note that **icinga2-ansible-classic-ui** does not install Icinga2, and must be used after **icinga2-ansible-no-ui**.
 
 ### Setting up Icinga2 alongside Web UI
 
@@ -95,6 +88,13 @@ After Icinga2 is up and running you can move forward to add a Web UI. Open up th
 - hosts: monitoring_servers
   roles:
    - role: icinga2-ansible-no-ui
+     icinga2_conf_global: |
+       include "constants.conf"
+       include "zones.conf"
+       include <itl>
+       include <plugins>
+       include "features-enabled/*.conf"
+       include_recursive "conf.d"
      check_commands:
        check_nrpe: |
           "-H", "$address$",
@@ -112,23 +112,6 @@ Save the file and close, then launch the playbook with Ansible as usual:
 
 `ansible-playbook site.yml -i inventory.ini`
 
-During the execution the role will take care of all the tasks required to install and configure Icinga2 Web UI. Please take note that **icinga2-ansible-web-ui** does not install Icinga2, and must be used after **icinga2-ansible-no-ui**. Here's a list of the tasks executed by **icinga2-ansible-web-ui** role (this list does not represent strictly the order of execution, consider these ones only a reference):
-
-* Install IDO Mysql on RedHat OS family
-* Install MariaDB and Utils on Red Hat 7 OS Family
-* Start MariaDB on Red Hat 7 OS Family
-* Install MySQL and Utils on Red Hat 6 OS Family
-* Start MySQL
-* Create a Database for Icinga
-* Import IDO Schema on Icinga Database (only once)
-* Create Icinga Database User and configure Grants
-* Configure Icinga2 Ido Mysql Feature
-* Enable Icinga2 Ido Mysql Feature
-* Install Icinga Web on RedHat OS family
-* Create a Database for Icinga Web
-* Import IDO Schema in Icinga Web Database on RH6 (only once)
-* Import IDO Schema in Icinga Web Database on RH7 (only once)
-* Create Icinga Web Database User and configure Grants
-* Start Apache
+During the execution the role will take care of all the tasks required to install and configure Icinga2 Web UI. Please take note that **icinga2-ansible-web-ui** does not install Icinga2, and must be used after **icinga2-ansible-no-ui**.
 
 After Icinga2 is up and running with your favorite UI, you can move forward to [add host checks](https://github.com/Icinga/icinga2-ansible/blob/master/doc/adding-hosts.md).
