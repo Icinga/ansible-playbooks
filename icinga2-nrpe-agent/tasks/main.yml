@@ -11,3 +11,4 @@
 
 - include: icinga2_nrpe_agent_Gentoo.yml
   when: ansible_os_family == 'Gentoo' and 'monitoring_servers' not in group_names
+  # NRPE Agent will be installed on clients only

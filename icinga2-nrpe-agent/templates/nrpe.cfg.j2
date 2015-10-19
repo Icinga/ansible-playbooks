@@ -1,17 +1,16 @@
 # {{ ansible_managed }}
 
-allowed_hosts={% for host in nrpe_allowed_hosts %}{{ host }}{% if not loop.last %},{% endif %}{% endfor %}
+allowed_hosts={{ nrpe_allowed_hosts }}
 
-{% for element in nrpe_configuration %}
-{{ element.directive }}
-{% endfor %}
+{{ nrpe_configuration }}
 
 {% if ansible_os_family == 'RedHat' %}
-{% include "nrpe_RedHat.cfg.j2" %}
+nrpe_user=nrpe
+nrpe_group=nrpe
 {% endif %}
-{% if ansible_os_family == 'Debian' %}
-{% include "nrpe_Debian.cfg.j2" %}
+{% if ansible_os_family == 'Debian' or ansible_os_family == 'Gentoo' %}
+nrpe_user=nagios
+nrpe_group=nagios
 {% endif %}
-{% if ansible_os_family == 'Gentoo' %}
-{% include "nrpe_Gentoo.cfg.j2" %}
-{% endif %}
+
+{{ nrpe_check_commands }}
