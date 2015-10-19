@@ -1,2 +1,19 @@
 ---
 # defaults file for icinga2-ansible-classic-ui
+
+icinga2_classic_ui_passwd: "none"
+
+# Vars for Debian OS Family
+icinga2_classic_ui_pkg:
+ - { package: "icinga2-classicui" }
+ - { package: "python-passlib" }
+
+htpasswd_deb: "/etc/icinga2/classicui/htpasswd.users"
+
+# Vars for RH OS Family
+icinga2_classic_ui_rpm:
+ - { package: "icinga2-classicui-config" }
+ - { package: "icinga-gui" }
+ - { package: "python-passlib" }
+
+htpasswd_rh: "/etc/icinga/passwd"
