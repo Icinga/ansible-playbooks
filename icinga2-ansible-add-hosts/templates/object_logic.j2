@@ -8,26 +8,13 @@ object Host "{{ hostvars[item]['ansible_fqdn'] }}" {
   vars.ssh_port = "{{ hostvars[item]['ansible_ssh_port'] }}"
 
   # Here Goes Vars and check_command
-{% for key,value in host_attributes.iteritems() %}
-{% for key,value in value.items() %}
-  {{ key }} = "{{ value }}"
-{% endfor %}
-{% endfor %}
+  {{ host_attributes }}
 
 }
 
   #Here Goes Checks if Any
-{% if host_checks is defined %}
-{% for key,value in host_checks.iteritems() %}
-object Service "{{ key }}" {
-  host_name = "{{ hostvars[item]['ansible_fqdn'] }}"
-{% for key,value in value.items() %}
-  {{ key }} = "{{ value }}"
-{% endfor %}
-}
+  {{ host_checks }}
 
-{% endfor %}
-{% endif %}
 {% else %}
 # This is a monitoring server entry. No checks will be copied.
 {% endif %}
