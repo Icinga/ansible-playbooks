@@ -52,18 +52,32 @@ Now open up your `site.yml` playbook with your favorite text editor and add the 
      icinga2_web_ui_ido: "mysql"
      tags: icinga2-web-ui
 
-   - { role: icinga2-ansible-add-hosts,
-              configuration_logic: "object",
-              host_attributes:
-              { vars: { vars.sla: "24x7", vars.operator: "on_call" },
-                check_command: { check_command: "http" }},
-        
-              host_checks:
-              { load_average: { check_command: "check_nrpe", vars.remote_nrpe_command: "check_load" },
-                disk: { check_command: "check_nrpe", vars.remote_nrpe_command: "check_disk" },
-                http: { check_command: "http", vars.http_vhost: "{{ hostvars[item]['ansible_domain'] }}" }},
+   - role: icinga2-ansible-add-hosts
+     configuration_logic: "object"
+     host_attributes: |
+       check_command = "http"
+       vars.sla = "24x7"
+       vars.operator = "on_call"
+     host_checks: |
+       object Service "load_average" {
+         host_name = "{{ hostvars[item]['ansible_fqdn'] }}"
+         check_command = "check_nrpe"
+         vars.remote_nrpe_command = "check_load"
+       }
 
-              tags: ["add-hosts"] }
+       object Service "disk" {
+         host_name = "{{ hostvars[item]['ansible_fqdn'] }}"
+         check_command = "check_nrpe"
+         vars.remote_nrpe_command = "check_disk"
+       }
+
+       object Service "http" {
+         host_name = "{{ hostvars[item]['ansible_fqdn'] }}"
+         check_command = "http"
+         vars.http_vhost = "{{ hostvars[item]['ansible_domain'] }}"
+       }
+     tags: add-hosts
+
 ```
 
 As you have noticed, there is a new variable in place: **configuration_logic**.

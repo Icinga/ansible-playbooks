@@ -1,7 +1,7 @@
 Role Name
 ========
 
-Ansible role to add Host Definitions to Icinga2
+Ansible role to add Host Definitions on Icinga2
 
 Dependencies
 ------------
@@ -20,23 +20,32 @@ Example Playbook
   # Contact the monitoring servers to copy host definitions
 - hosts: monitoring_servers
   roles:
-   - { role: icinga2-ansible-no-ui,
-             tags: ["icinga2-no-ui"] }
+   - role: icinga2-ansible-add-hosts
+     configuration_logic: "object"
+     host_attributes: |
+       check_command = "http"
+       vars.sla = "24x7"
+     host_checks: |
+       object Service "load_average" {
+         host_name = "{{ hostvars[item]['ansible_fqdn'] }}"
+         check_command = "check_nrpe"
+         vars.remote_nrpe_command = "check_load"
+       }
 
-   - { role: icinga2-ansible-add-hosts,
-              configuration_logic: "object",
-              host_attributes:
-              { vars: { vars.sla: "24x7", },
-                check_command: { check_command: "hostalive" }},
-              tags: ["add-hosts"] }
+       object Service "disk" {
+         host_name = "{{ hostvars[item]['ansible_fqdn'] }}"
+         check_command = "check_nrpe"
+         vars.remote_nrpe_command = "check_disk"
+       }
+     tags: add-hosts
+
 ```
 
 Role Variables
 --------------
 
-```yaml
-icinga2_hosts_dir: "/etc/icinga2/conf.d/hosts"
-```
+See `defaults/main.yml`
+
 License
 -------
 
