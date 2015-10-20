@@ -1,0 +1,5 @@
+---
+# tasks file for icinga2-ansible-web2-ui
+
+- include: icinga2_web2_ui_RedHat_install.yml
+  when: ansible_os_family == 'RedHat'

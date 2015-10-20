@@ -1,0 +1,6 @@
+---
+# handlers file for icinga2-ansible-web2-ui
+- name: restart icinga2
+  service: name=icinga2
+           state=restarted
+           enabled=yes

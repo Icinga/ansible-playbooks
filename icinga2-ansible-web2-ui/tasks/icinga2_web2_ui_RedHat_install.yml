@@ -1,0 +1,42 @@
+---
+- name: Install Icinga2 IDO modules on RedHat OS family
+  yum: name=icinga2-ido-mysql
+       state=latest
+
+- name: Create a Database for Icinga2
+  mysql_db: name=icinga
+            state=present
+  register: icinga_web2_db
+
+- name: Create Icinga Database User and configure Grants
+  mysql_user: name=icinga
+              password=icinga
+              state=present
+              priv="icinga.*:GRANT,INSERT,SELECT,UPDATE,DELETE,DROP,CREATE VIEW,INDEX,EXECUTE"
+
+- name: Import the IDO Schema on Icinga Web Database - RH6 (only once)
+  mysql_db: name=icinga
+            state=import
+            target={{ icinga2_web_mysql_schema_rh_6 }}
+  when: ansible_distribution_major_version == "6" and icinga_web2_db.changed == true
+
+- name: Configure Icinga2 Ido Mysql Feature
+  template: src=ido-mysql.conf.j2
+            dest={{ icinga2_ido_mysql_conf }}
+            backup=yes
+            owner=icinga
+            group=icinga
+            mode=0640
+
+- name: Enable Icinga2 Ido Mysql Feature
+  command: "icinga2 feature enable ido-mysql"
+  register: features_result
+  changed_when: "'for these changes to take effect' in features_result.stdout"
+  notify:
+   - restart icinga2
+
+- name: Install Icinga Web2 on RedHat OS family
+  yum: name={{ item.package }}
+       state=latest
+       enablerepo={{ enablerepo }}
+  with_items: icinga2_web2_ui_rpm
