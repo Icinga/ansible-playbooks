@@ -85,14 +85,15 @@ After Icinga2 is up and running you can move forward to add IcingaWeb2 UI. Pleas
      tags: icinga2-no-ui
 
    - role: icinga2-ansible-web2-ui
+     icinga2_web2_db_pass: "CHANGEME"
      icinga2_ido_mysql_configuration: |
        library "db_ido_mysql"
 
        object IdoMysqlConnection "ido-mysql" {
-         user = "icinga"
-         password = "icinga"
+         user = "{{ icinga2_web2_db_user }}"
+         password = "{{ icinga2_web2_db_pass }}"
          host = "localhost"
-         database = "icinga"
+         database = "{{ icinga2_web2_db }}"
        }
      tags: icinga2-ansible-web2-ui
 

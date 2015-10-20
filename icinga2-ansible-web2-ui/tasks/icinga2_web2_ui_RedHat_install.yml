@@ -4,18 +4,18 @@
        state=latest
 
 - name: Create a Database for Icinga2
-  mysql_db: name=icinga
+  mysql_db: name={{ icinga2_web2_db }}
             state=present
   register: icinga_web2_db
 
 - name: Create Icinga Database User and configure Grants
-  mysql_user: name=icinga
-              password=icinga
+  mysql_user: name={{ icinga2_web2_db }}
+              password={{ icinga2_web2_db_pass }}
               state=present
-              priv="icinga.*:GRANT,INSERT,SELECT,UPDATE,DELETE,DROP,CREATE VIEW,INDEX,EXECUTE"
+              priv="{{ icinga2_web2_db_user }}.*:GRANT,INSERT,SELECT,UPDATE,DELETE,DROP,CREATE VIEW,INDEX,EXECUTE"
 
 - name: Import the IDO Schema on Icinga Web Database - RH6 (only once)
-  mysql_db: name=icinga
+  mysql_db: name={{ icinga2_web2_db }}
             state=import
             target={{ icinga2_web_mysql_schema_rh_6 }}
   when: ansible_distribution_major_version == "6" and icinga_web2_db.changed == true
@@ -40,6 +40,8 @@
        state=latest
        enablerepo={{ enablerepo }}
   with_items: icinga2_web2_ui_rpm
+  tags: icinga2-ansible-web2-ui-install
 
 - name: Icinga Web2 Installation finished (RH)
   debug: msg="Now generate a token with 'icingacli setup token create' and go at http://IP//icingaweb2/setup to continue the installation"
+  tags: icinga2-ansible-web2-ui-install
