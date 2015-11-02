@@ -1,25 +1,41 @@
 ---
 - name: Install Nrpe and Plugins
-  apt: pkg={{ item.package }} 
-       state=latest
-       update_cache=yes
-       install_recommends=no
-  with_items: nrpe_agent_{{ ansible_os_family }}
+  apt: 
+    pkg: "{{ item }}"
+    state: latest
+    update_cache: yes
+    install_recommends: no
+  with_items:
+    - monitoring-plugins-basic
+    - monitoring-plugins
+    - nagios-nrpe-plugin
+    - nagios-nrpe-server
+    - nagios-plugins-contrib
   tags:
-   - install-only 
+    - install-only 
 
 - name: Copy working init file 
-  copy: src=nagios-nrpe-server dest=/etc/init.d/nagios-nrpe-server mode=0755 
+  copy: 
+    src: nagios-nrpe-server
+    dest: /etc/init.d/nagios-nrpe-server
+    mode: 0755 
+  when:
+    (ansible_distribution|lower == 'debian' and ansible_distribution_major_version|int >= 8)
+
+#- name: Debug nrpe_check_commands
+#  debug: msg="{{ hostvars[inventory_hostname]|pprint }}"
+#  tags:
+#    - config-only
 
 - name: Copy Nrpe Configuration
-  template: src=nrpe.cfg.j2
-            dest={{ nrpe_agent_config }}
-            owner=root
-            group=root
-            mode=0644
-            backup=yes
+  template: 
+    src: nrpe.cfg.j2
+    dest: "{{ nrpe_agent_config }}"
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
   notify:
-   - restart nagios-nrpe-server
+    - restart nagios-nrpe-server
   tags:
-   - config-only
-
+    - config-only
