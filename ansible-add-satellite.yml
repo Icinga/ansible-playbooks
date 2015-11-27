@@ -1,0 +1,52 @@
+---
+
+- hosts: icinga_hosts
+  user: user
+  sudo: yes
+  
+  vars:
+    master_host: master-host.your-domain.net
+
+  tasks:
+       - name: Run apt-get update before we start, just in case...
+         apt: update_cache=yes
+       - name: Add Icinga2 Repo from debmon.org... (squeeze,wheezy,jessie are supported)
+         apt_repository: repo='deb http://debmon.org/debmon debmon-{{ ansible_distribution_release }} main' state=present
+       - name: Import Icinga2 repository key...
+         apt_key: url=http://debmon.org/debmon/repo.key state=present
+       - name: Install Icinga2 from latest repository...
+         apt: name=icinga2 update_cache=yes 
+        
+       - name: Ensure that PKI directory exists and got the right owner
+         file: dest=/etc/icinga2 state=directory owner=nagios group=nagios mode=0755 recurse=yes
+
+       - name: Create CRT and KEY
+         shell: icinga2 pki new-cert --cn "{{ inventory_hostname }}" --key /etc/icinga2/pki/{{ inventory_hostname }}.key --cert /etc/icinga2/pki/{{ inventory_hostname }}.crt
+
+       - name: Set trusted Cert
+         shell: icinga2 pki save-cert --key /etc/icinga2/pki/{{ inventory_hostname }}.key --cert /etc/icinga2/pki/{{ inventory_hostname }}.crt --trustedcert /etc/icinga2/pki/trusted-master.crt --host {{ master_host }}
+
+       - name: Receive Ticket from master...
+         shell: icinga2 pki ticket --cn {{ inventory_hostname }}
+         register: key
+         delegate_to: "{{ master_host }}"
+
+       - name: Request PKI
+         shell: icinga2 pki request --host {{ master_host }} --port 5665 --ticket {{ key.stdout }} --key /etc/icinga2/pki/{{ inventory_hostname }}.key --cert /etc/icinga2/pki/{{ inventory_hostname }}.crt --trustedcert /etc/icinga2/pki/trusted-master.crt --ca /etc/icinga2/pki/ca.crt
+
+       - name: Set Master as Endpoint
+         shell: icinga2 node setup --ticket {{ key.stdout }} --endpoint {{ master_host }} --zone {{ inventory_hostname }} --master_host {{ master_host }} --trustedcert /etc/icinga2/pki/trusted-master.crt
+
+       - name: Set Port and Host manually, its a hack, because it doesn't work if the values are not set.. 
+         replace: dest=/etc/icinga2/zones.conf regexp='object Endpoint \"{{ master_host }}\" \{' replace='object Endpoint "{{ master_host }}" { \n host = "{{ master_host }}" \n port = "5665" '
+
+       - name: Restart Icinga2
+         service: name=icinga2 state=restarted 
+
+       - name: Reload config on master
+         command: icinga2 node update-config
+         delegate_to: "{{ master_host }}"
+
+       - name: Restart Icinga2 on master
+         service: name=icinga2 state=restarted
+         delegate_to: "{{ master_host }}"
