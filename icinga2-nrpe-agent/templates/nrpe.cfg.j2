@@ -2,8 +2,8 @@
 
 allowed_hosts={% for host in groups['monitoring_servers'] %}{{ hostvars[host]['ansible_eth0']['ipv4']['address'] }}{% if not loop.last %},{% endif %}{% endfor %}
 
-{% for element in nrpe_configuration %}
-{{ element.directive }}
+{% for key, value in nrpe_configuration.iteritems() %}
+{{ key }}={{ value }}
 {% endfor %}
 
 {% if ansible_os_family == 'RedHat' %}

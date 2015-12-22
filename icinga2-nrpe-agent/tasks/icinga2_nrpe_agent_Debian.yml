@@ -6,8 +6,6 @@
     update_cache: yes
     install_recommends: no
   with_items:
-    - monitoring-plugins-basic
-    - monitoring-plugins
     - nagios-nrpe-plugin
     - nagios-nrpe-server
     - nagios-plugins-contrib

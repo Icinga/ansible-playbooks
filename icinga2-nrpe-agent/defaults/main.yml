@@ -11,13 +11,13 @@ nrpe_agent_Debian:
  - { package: "nagios-plugins" }
 
 nrpe_configuration:
- - { directive: "log_facility=daemon" }
- - { directive: "server_port=5666" }
- - { directive: "server_address={{ ansible_default_ipv4.address }}" }
- - { directive: "dont_blame_nrpe=0" }
- - { directive: "debug=0" }
- - { directive: "command_timeout=60" }
- - { directive: "connection_timeout=150" }
+  log_facility: "daemon" 
+  server_port: "5666"
+  server_address: "{{ server_address|default(ansible_default_ipv4.address) }}"
+  dont_blame_nrpe: "0"
+  debug: "0"
+  command_timeout: "60"
+  connection_timeout: "150"
 
 nrpe_users_RedHat:
  - { user: "nrpe_user=nrpe" }
