@@ -1,0 +1,62 @@
+---
+- name: Install Icinga Web2 on Debian OS family
+  apt: name={{ item }}
+       state=latest
+  with_items:
+    - icingaweb2
+    - icinga2-ido-mysql
+  tags: icinga2-ansible-web2-ui-debian-install
+
+- name: Create a Database for Icinga2
+  mysql_db: name={{ icinga2_web2_db }}
+            state=present
+  register: icinga_web2_db
+
+- name: Create a Database for Icinga2 IDO
+  mysql_db: name={{ icinga2_web2_ido_db }}
+            state=present
+  register: icinga_web2_ido_db
+
+- name: Create Icinga Database User and configure Grants
+  mysql_user: name={{ icinga2_web2_db_user }}
+              password={{ icinga2_web2_db_pass }}
+              state=present
+              priv="{{ icinga2_web2_db }}.*:ALL"
+
+- name: Create Icinga Database IDO User and configure Grants
+  mysql_user: name={{ icinga2_web2_ido_db_user }}
+              password={{ icinga2_web2_ido_db_pass }}
+              state=present
+              priv="{{ icinga2_web2_ido_db }}.*:ALL"
+
+- name: Import the IDO Schema on Icinga Web Database
+  mysql_db: name={{ icinga2_web2_ido_db }}
+            state=import
+            target={{ icinga2_web_mysql_schema_ido_debian }}
+  when: icinga_web2_ido_db.changed == true
+
+- name: Configure Icinga2 Ido Mysql Feature
+  template: src=ido-mysql-debian.conf.j2
+            dest={{ icinga2_ido_mysql_conf }}
+            backup=yes
+            owner=nagios
+            group=nagios
+            mode=0640
+
+- name: Enable Icinga2 Ido Mysql Feature
+  command: "icinga2 feature enable ido-mysql"
+  register: features_result
+  changed_when: "'for these changes to take effect' in features_result.stdout"
+  notify:
+   - restart icinga2
+
+- name: Get token Installation
+  command: icingacli setup token create
+  register: token
+
+- name: Print token
+  debug: msg="{{ token.stdout }}"
+
+- name: Icinga Web2 Installation finished (RH)
+  debug: msg="Now generate a token with 'icingacli setup token create' and go at http://IP/icingaweb2/setup to continue the installation"
+  tags: icinga2-ansible-web2-ui-install
