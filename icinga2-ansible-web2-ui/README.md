@@ -6,7 +6,13 @@ Ansible role to install Icinga2 Web2 Ui
 Requirements
 ------------
 
-Mysql or MariaDB - Httpd or Nginx - PHP
+On CentOS/RH: EPEL
+
+On Fedora from version 22: `python-dnf`
+
+Mysql or MariaDB - Httpd
+
+PHP (is going to be installed as a dependency of icingaweb2)
 
 Dependencies
 ------------
@@ -36,15 +42,15 @@ Example Playbook
      tags: icinga2-no-ui
 
    - role: icinga2-ansible-web2-ui
-     icinga2_web2_db_pass: "CHANGEME"
+     icinga2_db_pass: "CHANGEME"
      icinga2_ido_mysql_configuration: |
        library "db_ido_mysql"
 
        object IdoMysqlConnection "ido-mysql" {
-         user = "{{ icinga2_web2_db_user }}"
-         password = "{{ icinga2_web2_db_pass }}"
+         user = "{{ icinga2_db_user }}"
+         password = "{{ icinga2_db_pass }}"
          host = "localhost"
-         database = "{{ icinga2_web2_db }}"
+         database = "{{ icinga2_db }}"
        }
      tags: icinga2-ansible-web2-ui
 

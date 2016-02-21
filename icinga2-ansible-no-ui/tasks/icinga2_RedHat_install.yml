@@ -1,10 +1,4 @@
 ---
-- name: Install Requirements on RedHat OS family (Fedora)
-  yum: name={{ item.package }} 
-       state=latest
-  with_items: req_pkg
-  when: ansible_distribution == 'Fedora'
-
 - name: Get Icinga2 Yum Key on RedHat OS family
   rpm_key: key={{ icinga2_key }} 
            state=present
@@ -22,6 +16,13 @@
   yum: name={{ item.package }} 
        state=latest
   with_items: icinga2_yum
+  when: ansible_pkg_mgr == "yum"
+
+- name: Install Icinga2 on RedHat OS family (Fedora > 22)
+  dnf: name={{ item.package }} 
+       state=latest
+  with_items: icinga2_yum
+  when: ansible_pkg_mgr == "dnf"
 
 - name: Start Icinga2
   service: name=icinga2

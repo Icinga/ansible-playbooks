@@ -6,7 +6,9 @@ Ansible role to install Icinga2 Headless alongside Plugins
 Requirements
 ------------
 
-EPEL
+On CentOS/RH: EPEL
+
+On Fedora from version 22: `python-dnf`
 
 Example Playbook
 -------------------------

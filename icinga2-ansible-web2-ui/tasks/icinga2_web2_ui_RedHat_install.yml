@@ -2,23 +2,29 @@
 - name: Install Icinga2 IDO modules on RedHat OS family
   yum: name=icinga2-ido-mysql
        state=latest
+  when: ansible_pkg_mgr == "yum"
+
+- name: Install Icinga2 IDO modules on RedHat OS family (Fedora > 22)
+  dnf: name=icinga2-ido-mysql
+       state=latest
+  when: ansible_pkg_mgr == "dnf"
 
 - name: Create a Database for Icinga2
-  mysql_db: name={{ icinga2_web2_db }}
+  mysql_db: name={{ icinga2_db }}
             state=present
   register: icinga_web2_db
 
 - name: Create Icinga Database User and configure Grants
-  mysql_user: name={{ icinga2_web2_db }}
-              password={{ icinga2_web2_db_pass }}
+  mysql_user: name={{ icinga2_db }}
+              password={{ icinga2_db_pass }}
               state=present
-              priv="{{ icinga2_web2_db_user }}.*:GRANT,INSERT,SELECT,UPDATE,DELETE,DROP,CREATE VIEW,INDEX,EXECUTE"
+              priv="{{ icinga2_db_user }}.*:GRANT,INSERT,SELECT,UPDATE,DELETE,DROP,CREATE VIEW,INDEX,EXECUTE"
 
-- name: Import the IDO Schema on Icinga Web Database - RH6 (only once)
-  mysql_db: name={{ icinga2_web2_db }}
+- name: Import the IDO Schema on Icinga Web Database (only once)
+  mysql_db: name={{ icinga2_db }}
             state=import
-            target={{ icinga2_web_mysql_schema_rh_6 }}
-  when: ansible_distribution_major_version == "6" and icinga_web2_db.changed == true
+            target={{ icinga2_web_mysql_schema_rh }}
+  when: icinga_web2_db.changed == true
 
 - name: Configure Icinga2 Ido Mysql Feature
   template: src=ido-mysql.conf.j2
@@ -41,12 +47,23 @@
        enablerepo={{ enablerepo }}
   with_items: icinga2_web2_ui_rpm
   tags: icinga2-ansible-web2-ui-install
+  when: ansible_pkg_mgr == "yum"
 
-- name: Restart HTTPD to Apply the Configuration
-  service: name=httpd
+- name: Install Icinga Web2 on RedHat OS family
+  dnf: name={{ item.package }}
+       state=latest
+       enablerepo={{ enablerepo }}
+  with_items: icinga2_web2_ui_rpm
+  tags: icinga2-ansible-web2-ui-install
+  when: ansible_pkg_mgr == "dnf"
+
+- name: Restart HTTPD and Icinga2 to Apply the Configuration
+  service: name={{ item }}
            state=restarted
            enabled=yes
-  ignore_errors: yes
+  with_items:
+    - httpd
+    - icinga2
 
 - name: Icinga Web2 Installation finished (RH)
   debug: msg="Now generate a token with 'icingacli setup token create' and go at http://IP//icingaweb2/setup to continue the installation"
