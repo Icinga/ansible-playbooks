@@ -3,7 +3,7 @@
   portage: package={{ item.package }}
        state=present
        update=yes
-  with_items: nrpe_agent_{{ ansible_os_family }}
+  with_items: "{{ nrpe_agent_Gentoo }}"
   tags:
    - nrpe_agent_install
 

@@ -2,7 +2,14 @@
 - name: Install Nrpe and Plugins
   yum: name={{ item.package }} 
        state=latest
-  with_items: nrpe_agent_{{ ansible_os_family }}
+  with_items: "{{ nrpe_agent_RedHat }}"
+  when: ansible_pkg_mgr == "yum"
+
+- name: Install Nrpe and Plugins
+  dnf: name={{ item.package }} 
+       state=latest
+  with_items: "{{ nrpe_agent_RedHat }}"
+  when: ansible_pkg_mgr == "dnf"
 
 - name: Copy Nrpe Configuration
   template: src=nrpe.cfg.j2
