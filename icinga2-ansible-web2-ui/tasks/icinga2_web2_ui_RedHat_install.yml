@@ -42,6 +42,12 @@
   with_items: icinga2_web2_ui_rpm
   tags: icinga2-ansible-web2-ui-install
 
+- name: Restart HTTPD to Apply the Configuration
+  service: name=httpd
+           state=restarted
+           enabled=yes
+  ignore_errors: yes
+
 - name: Icinga Web2 Installation finished (RH)
   debug: msg="Now generate a token with 'icingacli setup token create' and go at http://IP//icingaweb2/setup to continue the installation"
   tags: icinga2-ansible-web2-ui-install
