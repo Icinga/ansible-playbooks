@@ -43,6 +43,7 @@ Example Playbook
 
    - role: icinga2-ansible-web2-ui
      icinga2_db_pass: "CHANGEME"
+     icinga2_web2_db_pass: "CHANGEME"
      icinga2_ido_mysql_configuration: |
        library "db_ido_mysql"
 
@@ -70,4 +71,3 @@ Author Information
 ------------------
 
 Valentino Gagliardi - Icinga Dev Team
-
