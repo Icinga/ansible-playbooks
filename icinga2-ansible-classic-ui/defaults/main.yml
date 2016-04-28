@@ -17,3 +17,18 @@ icinga2_classic_ui_rpm:
  - { package: "python-passlib" }
 
 htpasswd_rh: "/etc/icinga/passwd"
+
+# Vars for Gentoo OS Family
+icinga2_classic_ui_ebuilds:
+ - { package: "icinga" }
+ - { package: "passlib" }
+
+# Set which webserver to use, choice between apache2 and lighttpd, set to none if using
+# another webserver, but then you're on your own with configuring the webserver
+icinga2_classic_ui_webserver: 'none'
+
+# Set to file or directory, to tell the playbooks if your package.use is a file or 
+# directory
+icinga2_classic_ui_gentoo_package_use: 'file'
+
+htpasswd_gentoo: "/etc/icinga/htpasswd"

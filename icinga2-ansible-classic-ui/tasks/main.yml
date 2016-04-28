@@ -6,3 +6,6 @@
 
 - include: icinga2_classic_ui_RedHat_install.yml
   when: ansible_os_family == 'RedHat'
+
+- include: icinga2_classic_ui_Gentoo_install.yml
+  when: ansible_os_family == 'Gentoo'
