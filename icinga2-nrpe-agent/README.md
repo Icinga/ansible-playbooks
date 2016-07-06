@@ -37,6 +37,7 @@ Example Playbook
        command[check_ssh]={{ nrpe_agent_plugins_x86_64 }}/check_ssh -H {{ ansible_eth0.ipv4.address }} -p {{ ansible_port }}
        command[check_procs]={{ nrpe_agent_plugins_x86_64 }}/check_procs -w 300 -c 500
        command[check_disk]={{ nrpe_agent_plugins_x86_64 }}/check_disk -w 15% -c 10% -p / -p /home -p /tmp
+       command[check_disk]={{ nrpe_agent_plugins_x86_64 }}/check_mem_ng
      tags: nrpe-agent
 
 ```
@@ -44,35 +45,7 @@ Example Playbook
 Role Variables
 --------------
 
-```yaml
-nrpe_agent_RedHat:
- - { package: "nrpe" }
- - { package: "nagios-plugins-all" }
-
-nrpe_agent_Debian:
- - { package: "nagios-nrpe-server" }
- - { package: "nagios-nrpe-plugin" }
- - { package: "nagios-plugins" }
-
-nrpe_agent_Gentoo:
- - { package: "nrpe" }
- - { package: "nagios-plugins" }
-
-nrpe_agent_config: "/etc/nagios/nrpe.cfg"
-
-# A list of allowed hosts for Nrpe agent
-nrpe_allowed_hosts: "127.0.0.1,192.168.0.1"
-
-# Plugins path for RH and other x86_64
-nrpe_agent_plugins_x86_64: "/usr/lib64/nagios/plugins"
-
-# Sample NRPE check commands
-nrpe_check_commands:
-  check_load:
-    check_load: "-w 15,10,5 -c 30,25,20"
-  check_disk:
-    check_disk: "-w 20% -c 10% -p /"
-```
+See  `defaults/main.yml`
 
 License
 -------

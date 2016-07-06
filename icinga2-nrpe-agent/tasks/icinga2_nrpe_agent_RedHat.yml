@@ -11,6 +11,11 @@
   with_items: "{{ nrpe_agent_RedHat }}"
   when: ansible_pkg_mgr == "dnf"
 
+- name: Install Check_Mem_Ng on RH
+  get_url: url={{ nrpe_agent_check_mem }}
+           dest={{ nrpe_agent_plugins_x86_64 }}/check_mem_ng
+           mode=0755
+
 - name: Copy Nrpe Configuration
   template: src=nrpe.cfg.j2
             dest={{ nrpe_agent_config }}
