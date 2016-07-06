@@ -6,7 +6,7 @@
 - name: Create a IDO Database for Icinga2
   mysql_db: name={{ icinga2_db }}
             state=present
-            login_user=root 
+            login_user=root
             login_password={{ mysql_root_db_pass }}
   register: icinga_ido_db
 
@@ -15,14 +15,14 @@
               password={{ icinga2_db_pass }}
               state=present
               priv="{{ icinga2_db }}.*:GRANT,INSERT,SELECT,UPDATE,DELETE,DROP,CREATE VIEW,INDEX,EXECUTE"
-              login_user=root 
+              login_user=root
               login_password={{ mysql_root_db_pass }}
 
 - name: Import the IDO Schema on Icinga Web Database (only once)
   mysql_db: name={{ icinga2_db }}
             state=import
-            target={{ icinga2_mysql_schema_debian }}
-            login_user=root 
+            target={{ icinga2_web_mysql_schema_debian }}
+            login_user=root
             login_password={{ mysql_root_db_pass }}
   when: icinga_ido_db.changed == true
 
@@ -44,7 +44,7 @@
 - name: Install Icinga Web2 on Debian family
   apt: name={{ item.package }}
        state=latest
-  with_items: '{{ icinga2_web2_ui_deb }}' 
+  with_items: '{{ icinga2_web2_ui_deb }}'
   tags: icinga2-ansible-web2-ui-install
 
 - name: Create a Web Database for Icinga2
@@ -52,7 +52,7 @@
             state=present
   register: icinga_web_db
 
-- name: Create Icinga2 Web Database User and configure Grants 
+- name: Create Icinga2 Web Database User and configure Grants
   mysql_user: name={{ icinga2_web2_db_user }}
               password={{ icinga2_web2_db_pass }}
               state=present
@@ -83,7 +83,7 @@
     - icinga2
 
 - name: Add user www-data to group icingaweb2
-  user: name=www-data 
+  user: name=www-data
         groups=icingaweb2
 
 - name: Adjust Directory Owener and Group
@@ -94,7 +94,7 @@
 - name: Create Directory Owener and Group
   file: path=/etc/icingaweb2/modules/{{ item }} owner=www-data group=icingaweb2 mode=0755
         state=directory
-  with_items: 
+  with_items:
     - monitoring
     - translation
 
