@@ -7,6 +7,9 @@
 - include: icinga2_RedHat_install.yml
   when: ansible_os_family == 'RedHat'
 
+- include: icinga2_Gentoo_install.yml
+  when: ansible_os_family == 'Gentoo'
+
 - include: icinga2_configure.yml
   tags: 
    - icinga2_configure
