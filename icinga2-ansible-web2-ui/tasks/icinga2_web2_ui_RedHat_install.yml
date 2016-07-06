@@ -23,7 +23,7 @@
 - name: Import the IDO Schema on Icinga Web Database (only once)
   mysql_db: name={{ icinga2_db }}
             state=import
-            target={{ icinga2_mysql_schema_rh }}
+            target={{ icinga2_web_mysql_schema_rh }}
   when: icinga_ido_db.changed == true
 
 - name: Configure Icinga2 Ido Mysql Feature
@@ -45,7 +45,7 @@
   yum: name={{ item.package }}
        state=latest
        enablerepo={{ enablerepo }}
-  with_items: icinga2_web2_ui_rpm
+  with_items: "{{ icinga2_web2_ui_rpm }}"
   tags: icinga2-ansible-web2-ui-install
   when: ansible_pkg_mgr == "yum"
 
