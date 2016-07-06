@@ -1,0 +1,51 @@
+---
+- name: Set web USE-flag on Icinga to enable Classic UI
+  lineinfile: dest=/etc/portage/package.use
+              create=yes
+              line="net-analyzer/icinga web"
+              state=present
+  when: icinga2_classic_ui_gentoo_package_use == 'file'
+
+- name: Set web USE-flag on Icinga to enable Classic UI
+  lineinfile: dest=/etc/portage/package.use/icinga2-classic-ui
+              create=yes
+              line="net-analyzer/icinga web"
+              state=present
+  when: icinga2_classic_ui_gentoo_package_use == 'directory'
+
+- name: Set apache2 USE-flag on Icinga to enable apache2 configs installation
+  replace: dest=/etc/portage/package.use
+           regexp="(net-analyzer/icinga.*)"
+           replace="\1 apache2"
+  when: icinga2_classic_ui_gentoo_package_use == 'file' and icinga2_classic_ui_webserver == 'apache2'
+
+- name: Set web USE-flag on Icinga to enable lighttpd configs installation
+  replace: dest=/etc/portage/package.use/icinga2-classic-ui
+           regexp="(net-analyzer/icinga.*)"
+           replace="\1 lighttpd"
+  when: icinga2_classic_ui_gentoo_package_use == 'directory' and icinga2_classic_ui_webserver == 'lighttpd'
+
+- name: Install Icinga Classic UI on Gentoo OS family
+  portage: package={{ item.package }}
+           state=present
+  with_items: icinga2_classic_ui_ebuilds
+
+- name: Configure password for icingaadmin user
+  htpasswd: name=icingaadmin
+            state=present
+            path="{{ htpasswd_gentoo }}"
+            create=yes
+            password="{{ icinga2_classic_ui_passwd }}"
+
+- name: restart apache2
+  service: name=apache2
+           state=restarted
+  when: icinga2_classic_ui_webserver == 'apache2'
+
+- name: restart lighthttpd
+  service: name=apache2
+           state=restarted
+  when: icinga2_classic_ui_webserver == 'lighthttpd'
+
+- name: Icinga Classic UI Installation finished (Gentoo)
+  debug: msg="User icingaadmin and password {{ icinga2_classic_ui_passwd }} have been created. If you enabled apache2 or lighttpd USE-flags you can access it at http://IP/, otherwise you have to configure your webserver of choice yourself."

@@ -17,25 +17,29 @@ galaxy_info:
   # the ones that apply to your role. If you don't see your 
   # platform on this list, let us know and we'll get it added!
   #
-  #platforms:
-  #- name: EL
-  #  versions:
+  platforms:
+  - name: EL
+    versions:
   #  - all
   #  - 5
-  #  - 6
-  #  - 7
+    - 6
+    - 7
   #- name: GenericUNIX
   #  versions:
   #  - all
   #  - any
-  #- name: Fedora
-  #  versions:
+  - name: Fedora
+    versions:
   #  - all
   #  - 16
   #  - 17
   #  - 18
   #  - 19
-  #  - 20
+    - 20
+    - 21
+    - 22
+    - 23
+    - 24
   #- name: opensuse
   #  versions:
   #  - all

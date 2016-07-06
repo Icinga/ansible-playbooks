@@ -4,8 +4,8 @@
 icinga2_db: "icinga"
 icinga2_db_pass: "icinga"
 icinga2_db_user: "icinga"
-icinga2_mysql_schema_rh: "/usr/share/icinga2-ido-mysql/schema/mysql.sql"
-icinga2_mysql_schema_debian: "/usr/share/icinga2-ido-mysql/schema/mysql.sql"
+icinga2_web_mysql_schema_rh: "/usr/share/icinga2-ido-mysql/schema/mysql.sql"
+icinga2_web_mysql_schema_debian: "/usr/share/icinga2-ido-mysql/schema/mysql.sql"
 
 icinga2_ido_mysql_conf: "/etc/icinga2/features-available/ido-mysql.conf"
 icinga2_ido_mysql_configuration: "none"
