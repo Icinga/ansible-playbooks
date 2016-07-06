@@ -14,7 +14,7 @@ Create an inventory file and place your monitoring servers entries inside:
 
 ```ini
 [monitoring_servers]
-icinga_one ansible_ssh_host=1.2.3.4
+icinga_one ansible_host=1.2.3.4 ansible_user=root
 ```
 
 Now create a playbook to hold instructions for Ansible, let's call this file `site.yml`:
@@ -35,7 +35,7 @@ Now create a playbook to hold instructions for Ansible, let's call this file `si
        check_nrpe: |
           "-H", "$address$",
               "-c", "$remote_nrpe_command$",
-     tags: icinga2-no-ui
+  tags: icinga2-no-ui
 ```
 
 Save the file and close, then launch the playbook with Ansible:
@@ -46,7 +46,7 @@ During the execution the role will take care of all the tasks required to instal
 
 ### Setting up Icinga2 alongside IcingaWeb2 UI
 
-After Icinga2 is up and running you can move forward to add IcingaWeb2 UI. Please note that IcingaWeb2 requires EPEL, Mysql/MariaDB and PHP that should be installed separately. Open up the playbook with your favorite text editor and add the role for IcingaWeb2 UI:
+After Icinga2 is up and running you can move forward to add IcingaWeb2 UI. Please note that IcingaWeb2 requires EPEL and Mysql/MariaDB, therefore such dependencies should be installed separately. Open up the playbook with your favorite text editor and add the role for IcingaWeb2 UI:
 
 ```yaml
 ---
@@ -65,10 +65,6 @@ After Icinga2 is up and running you can move forward to add IcingaWeb2 UI. Pleas
        gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
        gpgcheck=1
      tags: mariadb
-
-     ## Please note: this role is not included and it is listed here for clarity only
-   - role: php
-     tags: php
 
    - role: icinga2-ansible-no-ui
      icinga2_conf_global: |
