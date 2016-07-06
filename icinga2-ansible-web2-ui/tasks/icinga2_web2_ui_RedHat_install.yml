@@ -53,7 +53,7 @@
   dnf: name={{ item.package }}
        state=latest
        enablerepo={{ enablerepo }}
-  with_items: icinga2_web2_ui_rpm
+  with_items: "{{ icinga2_web2_ui_rpm }}"
   tags: icinga2-ansible-web2-ui-install
   when: ansible_pkg_mgr == "dnf"
 
