@@ -22,7 +22,7 @@ nrpe_allowed_hosts: "127.0.0.1,192.168.0.1"
 # Plugins path for RH and other x86_64
 nrpe_agent_plugins_x86_64: "/usr/lib64/nagios/plugins"
 
-nrpe_agent_check_mem: "https://raw.githubusercontent.com/zwindler/zwindler-monitoring-plugins/master/check_mem_ng/check_mem_ng.sh"
+nrpe_agent_check_mem: "https://raw.githubusercontent.com/zwindler/check_mem_ng/master/check_mem_ng.sh"
 
 # Sample NRPE check commands
 nrpe_check_commands:
