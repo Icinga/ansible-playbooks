@@ -2,7 +2,7 @@
 # defaults file for icinga2-ansible-no-ui
 
 icinga2_key: "https://packages.icinga.org/icinga.key"
-icinga2_debmon_key: "http://debmon.org/debmon/repo.key"
+icinga2_debmon_key: "https://debmon.org/debmon/repo.key"
 
 icinga2_deb_repos:
  - { repo: "deb https://packages.icinga.org/{{ ansible_distribution|lower }} icinga-{{ ansible_distribution_release }} main" }
