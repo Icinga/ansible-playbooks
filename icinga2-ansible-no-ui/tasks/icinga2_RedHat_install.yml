@@ -6,7 +6,6 @@
 - name: Get Icinga2 Yum Repo on RedHat OS family (Fedora)
   get_url: url='{{ icinga2_url_yum_fedora }}' 
            dest={{ icinga2_repo_yum }}
-  when: ansible_distribution == 'Fedora'
 
 - name: Get Icinga2 Yum Repo on RedHat OS family
   get_url: url='{{ icinga2_url_yum }}' 
