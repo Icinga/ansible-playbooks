@@ -2,9 +2,9 @@
 - name: Copy Host Definitions
   template: src=hosts_template.j2
             dest={{ icinga2_hosts_dir }}/{{ hostvars[item]['ansible_fqdn'] }}.conf
-            owner=root 
-            group=root 
+            owner=root
+            group=root
             mode=0644
   with_items: "{{ groups['all'] }}"
-  notify: 
+  notify:
    - restart icinga2

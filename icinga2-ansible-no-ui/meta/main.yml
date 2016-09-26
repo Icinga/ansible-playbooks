@@ -80,7 +80,8 @@ galaxy_info:
   #  - quantal
   #  - raring
   #  - saucy
-    - trusty
+  #  - trusty
+    - xenial
   #- name: SLES
   #  versions:
   #  - all

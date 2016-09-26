@@ -27,7 +27,7 @@ icinga2_classic_ui_ebuilds:
 # another webserver, but then you're on your own with configuring the webserver
 icinga2_classic_ui_webserver: 'none'
 
-# Set to file or directory, to tell the playbooks if your package.use is a file or 
+# Set to file or directory, to tell the playbooks if your package.use is a file or
 # directory
 icinga2_classic_ui_gentoo_package_use: 'file'
 

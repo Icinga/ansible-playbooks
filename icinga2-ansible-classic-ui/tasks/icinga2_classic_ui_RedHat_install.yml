@@ -1,6 +1,6 @@
 ---
 - name: Install Icinga Classic UI on RedHat OS family
-  yum: name={{ item.package }} 
+  yum: name={{ item.package }}
        state=latest
   with_items: icinga2_classic_ui_rpm
   notify:

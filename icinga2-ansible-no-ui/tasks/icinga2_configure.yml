@@ -7,7 +7,7 @@
             group=root
             mode=0644
   when: "{{ icinga2_conf_global | default('') | length}}"
-  notify: 
+  notify:
    - restart icinga2
 
 - name: Copy Check Commands Configuration
@@ -18,5 +18,5 @@
             group=root
             mode=0644
   when: "{{ check_commands | default('') | length}}"
-  notify: 
+  notify:
    - restart icinga2
