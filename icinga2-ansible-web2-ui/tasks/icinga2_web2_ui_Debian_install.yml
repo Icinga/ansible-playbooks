@@ -81,12 +81,12 @@
   user: name=www-data
         groups=icingaweb2
 
-- name: Adjust Directory Owener and Group
+- name: Adjust Directory Owner and Group
   file: path=/etc/icingaweb2/modules owner=www-data group=icingaweb2 mode=0755
         state=directory
         recurse=yes
 
-- name: Create Directory Owener and Group
+- name: Create Directory Owner and Group
   file: path=/etc/icingaweb2/modules/{{ item }} owner=www-data group=icingaweb2 mode=0755
         state=directory
   with_items:
@@ -94,6 +94,6 @@
     - translation
 
 - name: Icinga Web2 Installation finished (Debian)
-  debug: msg="Now generate a token with 'icingacli setup token create' and go at http://IP//icingaweb2/setup to continue the installation"
+  debug: msg="Now generate a token with 'icingacli setup token create' and visit http://SERVERIP/icingaweb2/setup to continue the installation"
   tags: icinga2-ansible-web2-ui-install
 
