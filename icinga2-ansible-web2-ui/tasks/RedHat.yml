@@ -1,0 +1,169 @@
+---
+- name: Install requirements
+  package:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - MySQL-python
+    - php-ZendFramework-Db-Adapter-Mysqli
+    - icinga2-ido-mysql
+    - php-pdo
+    - icinga2-selinux
+
+- name: Create a IDO Database for Icinga2
+  mysql_db: name={{ icinga2_db }}
+            state=present
+  register: icinga_ido_db
+  notify: restart icinga2
+
+- name: Create Icinga2 IDO Database User and configure Grants
+  mysql_user: name={{ icinga2_db_user }}
+              password={{ icinga2_db_pass }}
+              state=present
+              priv="{{ icinga2_db }}.*:GRANT,INSERT,SELECT,UPDATE,DELETE,DROP,CREATE VIEW,INDEX,EXECUTE"
+  notify: restart icinga2
+
+- name: Import the IDO Schema on Icinga Web Database (only once)
+  mysql_db: name={{ icinga2_db }}
+            state=import
+            target={{ icinga2_web_mysql_schema_rh }}
+  when: icinga_ido_db.changed == true
+  notify: restart icinga2
+
+- name: Configure Icinga2 Ido Mysql Feature
+  template: src=ido-mysql.conf.j2
+            dest={{ icinga2_ido_mysql_conf }}
+            backup=yes
+            owner=icinga
+            group=icinga
+            mode=0640
+  notify: restart icinga2
+
+- name: Enable Icinga2 Ido Mysql Feature
+  command: "icinga2 feature enable ido-mysql"
+  register: features_result
+  changed_when: "'for these changes to take effect' in features_result.stdout"
+  notify:
+   - restart icinga2
+
+- name: Install Icinga Web2 on RedHat OS family
+  package:
+    name: "{{ item.package }}"
+    state: present
+  with_items: "{{ icinga2_web2_ui_rpm }}"
+  tags: icinga2-ansible-web2-ui-install
+  notify: restart icinga2
+
+- name: Create a Web Database for Icinga2
+  mysql_db: name={{ icinga2_web2_db }}
+            state=present
+  register: icinga_web_db
+  notify: restart icinga2
+
+- name: Create Icinga2 Web Database User and configure Grants
+  mysql_user: name={{ icinga2_web2_db_user }}
+              password={{ icinga2_web2_db_pass }}
+              state=present
+              priv="{{ icinga2_web2_db }}.*:GRANT,INSERT,SELECT,UPDATE,DELETE,DROP,CREATE VIEW,INDEX,EXECUTE"
+  notify: restart icinga2
+
+- name: Import the Web Schema on Icinga Web Database (only once)
+  mysql_db: name={{ icinga2_web2_db }}
+            state=import
+            target={{ icinga2_web2_mysql_schema_rh }}
+  when: icinga_web_db.changed == true
+  notify: restart icinga2
+
+  #- name: Configure Icinga2 Ido Mysql Feature
+  #  template: src=ido-mysql.conf.j2
+  #            dest={{ icinga2_ido_mysql_conf }}
+  #            backup=yes
+  #            owner=icinga
+  #            group=icinga
+  #            mode=0640
+  #  notify: restart apache
+
+- name: Create an sql file to insert icingaadmin in DB
+  template:
+    src: insert_icingaadmin.sql.j2
+    dest: /tmp/insert_icingaadmin.sql
+    mode: 0640
+
+- name: Import sql to create the icingaadmin
+  mysql_db:
+    state: import
+    name: "{{ icinga2_web2_db }}"
+    target: /tmp/insert_icingaadmin.sql
+  register: mysql_import_output
+  failed_when:
+    - mysql_import_output | failed
+    # When adding this user again mysql detects a duplicate entry and fails
+    # with this error. Since this is the result we expect, it's not an error.
+    - "'ERROR 1062' not in mysql_import_output.msg"
+
+- name: Configure PHP timezone
+  ini_file:
+    dest: /etc/php.ini
+    section: Date
+    option: date.timezone
+    value: "{{ timezone }}"
+    mode: 0644
+  notify: restart apache
+
+- name: Create config directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0760"
+    owner: apache
+    group: icingaweb2
+    #setype: httpd_sys_rw_content_t
+  with_items:
+    - /etc/icingaweb2/modules/monitoring
+    - /etc/icingaweb2/enabledModules
+
+- name: Enable modules
+  file:
+    dest: "/etc/icingaweb2/enabledModules/{{ item }}"
+    src: "/usr/share/icingaweb2/modules/{{ item }}"
+    state: link
+    owner: apache
+  with_items:
+    - doc
+    - monitoring
+
+- name: Deploy config files
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/icingaweb2/{{ item }}"
+    backup: yes
+    owner: apache
+    group: icingaweb2
+    mode: 0660
+  with_items:
+    - groups.ini
+    - resources.ini
+    - config.ini
+    - authentication.ini
+    - roles.ini
+  notify: restart icinga2
+
+- name: Deploy monitoring config files
+  template:
+    src: "modules/monitoring/{{ item }}.j2"
+    dest: "/etc/icingaweb2/modules/monitoring/{{ item }}"
+    backup: yes
+    owner: apache
+    group: icingaweb2
+    mode: 0660
+  with_items:
+    - config.ini
+    - backends.ini
+    - commandtransports.ini
+  notify: restart icinga2
+
+- name: Fix SELinux type and unix permissions for /etc/icingaweb2
+  file:
+    path: /etc/icingaweb2
+    setype: httpd_sys_rw_content_t
+    recurse: yes
