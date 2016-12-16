@@ -1,4 +1,9 @@
 ---
+- name: Install MySQL-python
+  package:
+    name: MySQL-python
+    state: latest
+
 - name: Install Icinga2 IDO modules on RedHat OS family
   yum: name=icinga2-ido-mysql
        state=latest
