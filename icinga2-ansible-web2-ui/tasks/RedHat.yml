@@ -8,7 +8,6 @@
     - php-ZendFramework-Db-Adapter-Mysqli
     - icinga2-ido-mysql
     - php-pdo
-    - icinga2-selinux
 
 - name: Create a IDO Database for Icinga2
   mysql_db: name={{ icinga2_db }}
@@ -39,10 +38,14 @@
             mode=0640
   notify: restart icinga2
 
-- name: Enable Icinga2 Ido Mysql Feature
-  command: "icinga2 feature enable ido-mysql"
-  register: features_result
-  changed_when: "'for these changes to take effect' in features_result.stdout"
+- name: Enable incinga2 features
+  file:
+    dest: "/etc/icinga2/features-enabled/{{ item }}.conf"
+    src: "/etc/icinga2/features-available/{{ item }}.conf"
+    state: link
+  with_items:
+    - ido-mysql
+    - command
   notify:
    - restart icinga2
 
@@ -73,15 +76,6 @@
             target={{ icinga2_web2_mysql_schema_rh }}
   when: icinga_web_db.changed == true
   notify: restart icinga2
-
-  #- name: Configure Icinga2 Ido Mysql Feature
-  #  template: src=ido-mysql.conf.j2
-  #            dest={{ icinga2_ido_mysql_conf }}
-  #            backup=yes
-  #            owner=icinga
-  #            group=icinga
-  #            mode=0640
-  #  notify: restart apache
 
 - name: Create an sql file to insert icingaadmin in DB
   template:
@@ -167,3 +161,9 @@
     path: /etc/icingaweb2
     setype: httpd_sys_rw_content_t
     recurse: yes
+
+- name: Install icinga2-selinux to fix permissions after everything is configured
+  package:
+    name: icinga2-selinux
+  notify:
+    - restart icinga2
