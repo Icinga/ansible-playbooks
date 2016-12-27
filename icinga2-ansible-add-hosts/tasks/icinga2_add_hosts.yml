@@ -6,5 +6,7 @@
             group=root
             mode=0644
   with_items: "{{ groups['all'] }}"
+  when:
+    - hostvars[item]['ansible_fqdn'] is defined
   notify:
    - restart icinga2
