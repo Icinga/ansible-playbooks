@@ -12,17 +12,11 @@
   get_url: url='{{ icinga2_url_yum }}'
            dest={{ icinga2_repo_yum }}
 
-- name: Install Icinga2 on RedHat OS family
-  yum: name={{ item.package }}
-       state=latest
+- name: Install Icinga2
+  package:
+    name: "{{ item.package }}"
+    state: latest
   with_items: "{{ icinga2_yum }}"
-  when: ansible_pkg_mgr == "yum"
-
-- name: Install Icinga2 on RedHat OS family (Fedora > 22)
-  dnf: name={{ item.package }}
-       state=latest
-  with_items: "{{ icinga2_yum }}"
-  when: ansible_pkg_mgr == "dnf"
 
 - name: Start Icinga2
   service: name=icinga2
