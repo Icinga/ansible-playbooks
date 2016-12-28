@@ -16,11 +16,16 @@ icinga2_web2_db_user: "icingaweb"
 icinga2_web2_mysql_schema_rh: "/usr/share/doc/icingaweb2/schema/mysql.schema.sql"
 icinga2_web2_mysql_schema_debian: "/usr/share/icingaweb2/etc/schema/mysql.schema.sql"
 
-enablerepo: "base"
+icinga2_web2_admin_user: "icingaadmin"
+# Generate your hash with:
+# openssl passwd -1 "password"
+icinga2_web2_admin_pass_hash: "$1$sY7AVhg9$RkUG3PrnToj6mkexwItL51" # Hash of icingaadmin
 
-icinga2_web2_ui_rpm:
- - { package: "icingaweb2" }
- - { package: "icingacli" }
+icinga2_director_db: "icingadir"
+icinga2_director_db_pass: "icingadir"
+icinga2_director_db_user: "icingadir"
+
+icinga2_director_endpoint: icinga-master
 
 icinga2_web2_ui_deb:
  - { package: "icingaweb2" }

@@ -1,16 +1,22 @@
 ---
 - name: Get Icinga2 Yum Key on RedHat OS family
-  rpm_key: key={{ icinga2_key }}
-           state=present
+  rpm_key:
+    key: "{{ icinga2_key }}"
+    state: present
 
-- name: Get Icinga2 Yum Repo on RedHat OS family (Fedora)
-  get_url: url='{{ icinga2_url_yum_fedora }}'
-           dest={{ icinga2_repo_yum }}
+- name: Add Icinga2 repository (Fedora)
+  yum_repository:
+    name: ICINGA-release
+    description: "ICINGA (stable release for fedora)"
+    baseurl: "http://packages.icinga.org/epel/$releasever/release/"
   when: ansible_distribution == 'Fedora'
 
-- name: Get Icinga2 Yum Repo on RedHat OS family
-  get_url: url='{{ icinga2_url_yum }}'
-           dest={{ icinga2_repo_yum }}
+- name: Add Icinga2 repository (CentOS epel)
+  yum_repository:
+    name: ICINGA-release
+    description: "ICINGA (stable release for epel)"
+    baseurl: "http://packages.icinga.org/epel/$releasever/release/"
+  when: ansible_distribution != 'Fedora'
 
 - name: Install Icinga2
   package:
@@ -19,6 +25,7 @@
   with_items: "{{ icinga2_yum }}"
 
 - name: Start Icinga2
-  service: name=icinga2
-           state=started
-           enabled=yes
+  service:
+    name: icinga2
+    state: started
+    enabled: yes

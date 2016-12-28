@@ -19,3 +19,13 @@ username = "{{ icinga2_db_user }}"
 password = "{{ icinga2_db_pass }}"
 charset = ""
 persistent = "0"
+
+[Director DB]
+type = "db"
+db = "mysql"
+host = "localhost"
+port = ""
+dbname = "{{ icinga2_director_db }}"
+username = "{{ icinga2_director_db_user }}"
+password = "{{ icinga2_director_db_pass }}"
+charset = "utf8"

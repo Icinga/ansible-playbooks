@@ -8,6 +8,12 @@
     - php-ZendFramework-Db-Adapter-Mysqli
     - icinga2-ido-mysql
     - php-pdo
+    - icinga2-selinux
+    - icingaweb2
+    - icingacli
+    - git # needed for director clone
+  notify:
+   - restart icinga2
 
 - name: Create a IDO Database for Icinga2
   mysql_db: name={{ icinga2_db }}
@@ -49,14 +55,6 @@
   notify:
    - restart icinga2
 
-- name: Install Icinga Web2 on RedHat OS family
-  package:
-    name: "{{ item.package }}"
-    state: present
-  with_items: "{{ icinga2_web2_ui_rpm }}"
-  tags: icinga2-ansible-web2-ui-install
-  notify: restart icinga2
-
 - name: Create a Web Database for Icinga2
   mysql_db: name={{ icinga2_web2_db }}
             state=present
@@ -95,6 +93,18 @@
     # with this error. Since this is the result we expect, it's not an error.
     - "'ERROR 1062' not in mysql_import_output.msg"
 
+# Director database
+- name: create icingaweb2 director database
+  mysql_db:
+    name: "{{ icinga2_director_db }}"
+    state: present
+
+- name: create icingaweb2 director user
+  mysql_user:
+    name: "{{ icinga2_director_db_user }}"
+    password: "{{ icinga2_director_db_pass }}"
+    priv: "{{ icinga2_director_db }}.*:ALL,GRANT"
+
 - name: Configure PHP timezone
   ini_file:
     dest: /etc/php.ini
@@ -111,20 +121,13 @@
     mode: "0760"
     owner: apache
     group: icingaweb2
-    #setype: httpd_sys_rw_content_t
   with_items:
     - /etc/icingaweb2/modules/monitoring
+    - /etc/icingaweb2/modules/director
     - /etc/icingaweb2/enabledModules
-
-- name: Enable modules
-  file:
-    dest: "/etc/icingaweb2/enabledModules/{{ item }}"
-    src: "/usr/share/icingaweb2/modules/{{ item }}"
-    state: link
-    owner: apache
-  with_items:
-    - doc
-    - monitoring
+  notify:
+    - restart icinga2
+    - fix icinga2 permissions
 
 - name: Deploy config files
   template:
@@ -140,7 +143,9 @@
     - config.ini
     - authentication.ini
     - roles.ini
-  notify: restart icinga2
+  notify:
+    - restart icinga2
+    - fix icinga2 permissions
 
 - name: Deploy monitoring config files
   template:
@@ -154,16 +159,46 @@
     - config.ini
     - backends.ini
     - commandtransports.ini
-  notify: restart icinga2
+  notify:
+    - restart icinga2
+    - fix icinga2 permissions
+
+- name: Install/update director (Configuation GUI)
+  git:
+    dest: /usr/share/icingaweb2/modules/director/
+    repo: https://github.com/Icinga/icingaweb2-module-director.git
+
+- name: Deploy director config files
+  template:
+    src: "modules/director/{{ item }}.j2"
+    dest: "/etc/icingaweb2/modules/director/{{ item }}"
+    backup: yes
+    owner: apache
+    group: icingaweb2
+    mode: 0660
+  with_items:
+    - config.ini
+    - kickstart.ini
+  notify:
+    - restart icinga2
+    - fix icinga2 permissions
+
+- name: Enable modules
+  file:
+    dest: "/etc/icingaweb2/enabledModules/{{ item }}"
+    src: "/usr/share/icingaweb2/modules/{{ item }}"
+    state: link
+    owner: apache
+  with_items:
+    - doc
+    - monitoring
+    - director
+  notify:
+    - restart icinga2
+    - fix icinga2 permissions
 
 - name: Fix SELinux type and unix permissions for /etc/icingaweb2
   file:
     path: /etc/icingaweb2
     setype: httpd_sys_rw_content_t
     recurse: yes
-
-- name: Install icinga2-selinux to fix permissions after everything is configured
-  package:
-    name: icinga2-selinux
-  notify:
-    - restart icinga2

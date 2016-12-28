@@ -11,3 +11,10 @@
     name: httpd
     state: restarted
     enabled: yes
+
+- name: fix icinga2 permissions
+  command: "{{ item }}"
+  with_items:
+    - /usr/sbin/semodule -s targeted -i /usr/share/selinux/targeted/icinga2.pp
+    - /sbin/fixfiles -R icinga2-bin restore
+    - /sbin/fixfiles -R icinga2-common restore
