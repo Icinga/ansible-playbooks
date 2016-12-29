@@ -1,0 +1,8 @@
+object Endpoint NodeName {
+  host = NodeName
+}
+
+object Zone ZoneName {
+  endpoints = [ NodeName ]
+  global = true /* Allows management across all hosts in this zone */
+}

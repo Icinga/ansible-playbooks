@@ -15,6 +15,8 @@
   notify:
    - restart icinga2
 
+# IDO database setup
+
 - name: Create a IDO Database for Icinga2
   mysql_db: name={{ icinga2_db }}
             state=present
@@ -44,6 +46,20 @@
             mode=0640
   notify: restart icinga2
 
+# Configure existing icinga2 installation to be a server
+
+- name: Create icinga2 config directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    mode: "0760"
+    owner: icinga
+    group: icinga
+  with_items:
+    - /etc/icinga2/pki
+  notify:
+    - fix icinga2 permissions
+
 - name: Enable incinga2 features
   file:
     dest: "/etc/icinga2/features-enabled/{{ item }}.conf"
@@ -52,8 +68,60 @@
   with_items:
     - ido-mysql
     - command
+    - api
   notify:
-   - restart icinga2
+    - restart icinga2
+    - fix icinga2 permissions
+
+- name: Configure API
+  command: /sbin/icinga2 api setup
+  args:
+    creates:
+      - /var/lib/icinga2/ca/ca.crt
+      - /var/lib/icinga2/ca/ca.key
+      - /etc/icinga2/pki/{{ ansible_fqdn }}.key
+      - /etc/icinga2/pki/{{ ansible_fqdn }}.crt
+      - /etc/icinga2/conf.d/api-users.conf
+      - /etc/icinga2/features-enabled/api.conf
+  notify:
+    - restart icinga2
+
+- name: Fix cert getting deployed to var when the default location is in /etc
+  file:
+    src: /var/lib/icinga2/ca/{{ item }}
+    dest: /etc/icinga2/pki/{{ item }}
+    state: link
+  with_items:
+    - ca.crt
+    - ca.key
+  notify:
+    - restart icinga2
+
+- name: Deploy icinga2 config files
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/icinga2/conf.d/{{ item }}"
+    backup: yes
+    owner: icinga
+    group: icinga
+    mode: 0640
+  with_items:
+    - api-users.conf
+  notify:
+    - restart icinga2
+
+- name: Deploy zones configuration
+  template:
+    src: zones.conf.j2
+    dest: /etc/icinga2/zones.conf
+    backup: yes
+    owner: icinga
+    group: icinga
+    mode: 0640
+  notify:
+    - restart icinga2
+
+# Icinga2 web database
 
 - name: Create a Web Database for Icinga2
   mysql_db: name={{ icinga2_web2_db }}
@@ -92,18 +160,21 @@
     # When adding this user again mysql detects a duplicate entry and fails
     # with this error. Since this is the result we expect, it's not an error.
     - "'ERROR 1062' not in mysql_import_output.msg"
+  notify: restart icinga2
 
 # Director database
 - name: create icingaweb2 director database
   mysql_db:
     name: "{{ icinga2_director_db }}"
     state: present
+  notify: restart icinga2
 
 - name: create icingaweb2 director user
   mysql_user:
     name: "{{ icinga2_director_db_user }}"
     password: "{{ icinga2_director_db_pass }}"
     priv: "{{ icinga2_director_db }}.*:ALL,GRANT"
+  notify: restart icinga2
 
 - name: Configure PHP timezone
   ini_file:
@@ -129,7 +200,7 @@
     - restart icinga2
     - fix icinga2 permissions
 
-- name: Deploy config files
+- name: Deploy icingaweb2 config files
   template:
     src: "{{ item }}.j2"
     dest: "/etc/icingaweb2/{{ item }}"
@@ -147,7 +218,7 @@
     - restart icinga2
     - fix icinga2 permissions
 
-- name: Deploy monitoring config files
+- name: Deploy icingaweb2 monitoring config files
   template:
     src: "modules/monitoring/{{ item }}.j2"
     dest: "/etc/icingaweb2/modules/monitoring/{{ item }}"
@@ -183,7 +254,7 @@
     - restart icinga2
     - fix icinga2 permissions
 
-- name: Enable modules
+- name: Enable icingaweb2 modules
   file:
     dest: "/etc/icingaweb2/enabledModules/{{ item }}"
     src: "/usr/share/icingaweb2/modules/{{ item }}"
@@ -196,6 +267,12 @@
   notify:
     - restart icinga2
     - fix icinga2 permissions
+
+- name: Deploy icingaweb2 director schema
+  command: /bin/icingacli director migration run
+
+- name: Deploy icingaweb2 director configuration
+  command: /bin/icingacli director kickstart run
 
 - name: Fix SELinux type and unix permissions for /etc/icingaweb2
   file:
