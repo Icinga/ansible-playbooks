@@ -1,14 +1,17 @@
 ---
 # tasks file for icinga2-nrpe-agent
 
+- include: locate_plugins.yml
+
 - include: icinga2_nrpe_agent_RedHat.yml
-  when: ansible_os_family == 'RedHat' and 'monitoring_servers' not in group_names
+  when: ansible_os_family == 'RedHat' and nrpe_server_group_name not in group_names
   # NRPE Agent will be installed on clients only
 
 - include: icinga2_nrpe_agent_Debian.yml
-  when: ansible_os_family == 'Debian' and 'monitoring_servers' not in group_names
+  when: ansible_os_family == 'Debian' and nrpe_server_group_name not in group_names
   # NRPE Agent will be installed on clients only
 
 - include: icinga2_nrpe_agent_Gentoo.yml
-  when: ansible_os_family == 'Gentoo' and 'monitoring_servers' not in group_names
+  when: ansible_os_family == 'Gentoo' and nrpe_server_group_name not in group_names
   # NRPE Agent will be installed on clients only
+

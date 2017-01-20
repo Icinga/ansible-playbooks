@@ -13,4 +13,15 @@ nrpe_user=nagios
 nrpe_group=nagios
 {% endif %}
 
+{% if nrpe_check_commands is mapping %}
+{% for key, value in nrpe_check_commands.iteritems() %}
+{% if value is mapping %}
+command[{{ key }}]={{ value.path | default(nrpe_agent_plugins_path) }}/{{ value.script | default(key) }} {{ value.args|default("") }}
+{% else %}
+command[{{ key }}]={{ nrpe_agent_plugins_path }}/{{ key }} {{ value }}
+{% endif %}
+{% endfor %}
+{% else %}
 {{ nrpe_check_commands }}
+{% endif %}
+

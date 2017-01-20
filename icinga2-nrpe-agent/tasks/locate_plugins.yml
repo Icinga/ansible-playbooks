@@ -1,0 +1,24 @@
+---
+- name: "Check for x86_64 plugin directory"
+  stat:
+    path: "{{ nrpe_agent_plugins_x86_64 }}"
+  register: plugins_path
+
+- set_fact:
+    nrpe_agent_plugins_path: "{{ nrpe_agent_plugins_x86_64 }}"
+  when: plugins_path.stat.isdir is defined and plugins_path.stat.readable == True
+    
+- name: "Check for x86_32 plugin directory"
+  stat:
+    path: "{{ nrpe_agent_plugins_x86_32 }}"
+  register: plugins_path
+  when: nrpe_agent_plugins_path is undefined
+
+- set_fact:
+    nrpe_agent_plugins_path: "{{ nrpe_agent_plugins_x86_32 }}"
+  when: plugins_path.stat.isdir is defined and plugins_path.stat.readable == True
+
+- fail: 
+    msg: "Unable to find the correct plugins path. Please check your nrpe_agent_plugins_x86_64 and nrpe_agent_plugins_x86_32 values."
+  when: nrpe_agent_plugins_path is undefined
+

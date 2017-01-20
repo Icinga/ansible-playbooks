@@ -1,12 +1,18 @@
 ---
 - name: Install Nrpe and Plugins
-  apt: pkg={{ item.package }} 
-       state=latest
-       update_cache=yes
-       install_recommends=no
+  apt: 
+    name: "{{ item.package }}"
+    state: latest
+    install_recommends: no
+    default_release: "{{ item.release | default(omit) }}"
   with_items: "{{ nrpe_agent_Debian }}"
   tags:
    - nrpe_agent_install
+
+- name: Install Check_Mem_Ng on Debian
+  get_url: url={{ nrpe_agent_check_mem }}
+           dest={{ nrpe_agent_plugins_path }}/check_mem_ng
+           mode=0755
 
 - name: Copy Nrpe Configuration
   template: src=nrpe.cfg.j2
