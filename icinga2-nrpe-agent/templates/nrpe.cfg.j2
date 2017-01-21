@@ -2,7 +2,13 @@
 
 allowed_hosts={{ nrpe_allowed_hosts }}
 
+{% if nrpe_configuration is mapping %}
+{% for key, value in nrpe_configuration.iteritems() %}
+{{ key }}={{ value }}
+{% endfor %}
+{% else %}
 {{ nrpe_configuration }}
+{% endif %}
 
 {% if ansible_os_family == 'RedHat' %}
 nrpe_user=nrpe

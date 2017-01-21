@@ -42,6 +42,23 @@ Example Playbook
 
 ```
 
+It's possible to use a dict for **nrpe_configuration** instead of a plain text block:
+
+```yaml
+    nrpe_configuration: 
+      log_facility: daemon
+      debug: 0
+      pid_file: /var/run/nagios/nrpe.pid
+      server_port: 5666
+      server_address: "{{ ansible_default_ipv4.address }}"
+      nrpe_user: nagios
+      nrpe_group: nagios
+      dont_blame_nrpe: 0
+      allow_bash_command_substitution: 0
+      command_timeout: 60
+      connection_timeout: 150
+```
+
 A more flexible and advanced configuration of check commands can be done by:
 
 ```yaml
