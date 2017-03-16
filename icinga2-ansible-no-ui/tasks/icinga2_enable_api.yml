@@ -1,0 +1,21 @@
+---
+- name: Enable Icinga2 API
+  command: >
+    icinga2 node setup
+      --master
+      --accept-config
+  args:
+    creates: "/etc/icinga2/pki/{{ icinga2_master_zone }}.crt"
+  notify:
+    restart icinga2
+  # --zone arg            The name of the local zone
+  # --master_host arg     The name of the master host for auto-signing the csr;
+  #                       syntax: host[,port]
+  # --endpoint arg        Connect to remote endpoint; syntax: cn[,host,port]
+  # --listen arg          Listen on host,port
+  # --ticket arg          Generated ticket number for this request
+  # --trustedcert arg     Trusted master certificate file
+  # --cn arg              The certificate's common name
+  # --accept-config       Accept config from master
+  # --accept-commands     Accept commands from master
+  # --master              Use setup for a master instance
