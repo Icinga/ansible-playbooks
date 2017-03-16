@@ -8,6 +8,11 @@ object Host "{{ hostvars[item]['ansible_fqdn'] }}" {
 
   {{ host_attributes }}
 
+  {% if 'icinga_host_attributes' in hostvars[item] %}
+    {% for attribute, value in hostvars[item].icinga_host_attributes.iteritems() %}
+    {{ attribute }} = {{ value }}
+    {% endfor %}
+  {% endif %}
 }
 
   #Here Goes Checks if Any
