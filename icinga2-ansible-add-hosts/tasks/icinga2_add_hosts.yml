@@ -7,4 +7,4 @@
             mode=0644
   with_items: "{{ groups['all'] }}"
   notify:
-   - restart icinga2
+   - reload icinga2
