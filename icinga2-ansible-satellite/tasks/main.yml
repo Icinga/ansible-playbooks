@@ -1,0 +1,95 @@
+---
+- name: Check registration of host
+  stat:
+    path: /etc/icinga2/pki/ca.crt
+  register: st
+
+- set_fact:
+    pki_configured: true
+  when: st.stat.isfile is defined and st.stat.isfile
+
+- set_fact:
+    pki_configured: false
+  when: st.stat.isfile is not defined or not st.stat.isfile
+
+- block:
+  - name: Create pki directory
+    file:
+      dest: /etc/icinga2/pki
+      state: directory
+      owner: icinga
+      group: icinga
+      mode: 0700
+
+  - name: Create local cert
+    command: >
+      icinga2 pki new-cert
+        --cn "{{ inventory_hostname }}"
+        --key /etc/icinga2/pki/{{ inventory_hostname }}.key
+        --cert /etc/icinga2/pki/{{ inventory_hostname }}.crt
+    args:
+      creates: /etc/icinga2/pki/{{ inventory_hostname }}.key
+
+  - name: Set trusted master certificate
+    command: >
+      icinga2 pki save-cert
+        --key /etc/icinga2/pki/{{ inventory_hostname }}.key
+        --cert /etc/icinga2/pki/{{ inventory_hostname }}.crt
+        --trustedcert /etc/icinga2/pki/trusted-master.crt
+        --host {{ icinga2_master }}
+    args:
+      creates: /etc/icinga2/pki/trusted-master.crt
+
+  - name: Request Icinga2 ticket
+    command: >
+      icinga2 pki ticket
+        --cn "{{ inventory_hostname }}"
+    register: key
+    delegate_to: "{{ icinga2_master }}"
+
+  - name: Request PKI
+    command: >
+      icinga2 pki request
+        --host {{ icinga2_master }}
+        --port 5665
+        --ticket {{ key.stdout }}
+        --key /etc/icinga2/pki/{{ inventory_hostname }}.key
+        --cert /etc/icinga2/pki/{{ inventory_hostname }}.crt
+        --trustedcert /etc/icinga2/pki/trusted-master.crt
+        --ca /etc/icinga2/pki/ca.crt
+    args:
+      creates: /etc/icinga2/pki/ca.crt
+
+  - name: Setup Icinga as satellite node
+    command: >
+      icinga2 node setup
+        --cn {{ inventory_hostname }}
+        --ticket {{ key.stdout }}
+        --endpoint "{{ icinga2_master }}"
+        --master_host "{{ icinga2_master }}"
+        --zone "{{ inventory_hostname }}"
+        --trustedcert /etc/icinga2/pki/trusted-master.crt
+        --accept-config
+        --accept-commands
+    # --zone arg           # The name of the local zone
+    # --master_host arg    # The name of the master host for auto-signing the csr;
+    #                      # syntax: host[,port]
+    # --endpoint arg       # Connect to remote endpoint; syntax: cn[,host,port]
+    # --listen arg         # Listen on host,port
+    # --ticket arg         # Generated ticket number for this request
+    # --trustedcert arg    # Trusted master certificate file
+    # --cn arg             # The certificate's common name
+    # --accept-config      # Accept config from master
+    # --accept-commands    # Accept commands from master
+    # --master             # Use setup for a master instance
+  - name: Restart Icinga
+    service:
+      name: icinga2
+      state: reloaded
+
+  - name: Restart Icinga master
+    service:
+      name: icinga2
+      state: reloaded
+    delegate_to: "{{ icinga2_master }}"
+  when: not pki_configured
