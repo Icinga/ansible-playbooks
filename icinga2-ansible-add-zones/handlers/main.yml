@@ -1,0 +1,12 @@
+---
+# handlers file for icinga2-ansible-add-zones
+
+- name: restart icinga2
+  service: name=icinga2
+           state=restarted
+           enabled=yes
+
+- name: reload icinga2
+  service: name=icinga2
+           state=reloaded
+           enabled=yes

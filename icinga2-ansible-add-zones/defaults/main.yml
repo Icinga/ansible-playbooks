@@ -1,0 +1,6 @@
+---
+# defaults file for icinga2-ansible-add-zones
+
+icinga2_zones_dir: "/etc/icinga2/zones.d/"
+icinga_master_zone: "master"
+icinga_merged_zones: '{{icinga_zones|combine({ icinga_master_zone : {} })}}'

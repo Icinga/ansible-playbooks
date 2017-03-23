@@ -1,0 +1,12 @@
+object Zone "{{ item }}" {
+  {% if 'parent' in icinga_merged_zones[item] %}
+  parent = "{{ icinga_merged_zones[item].parent }}"
+  {% endif %}
+
+  endpoints = [
+      {% for host, params in hostvars.iteritems() %}
+      {% if item == icinga_master_zone and 'icinga_zone' not in params  %}
+      "{{ host }}",
+      {% endif %}{% endfor %}
+  ]
+}
