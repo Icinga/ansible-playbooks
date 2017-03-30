@@ -25,6 +25,8 @@ Example Playbook
      icinga_host_attributes:
        check_command: "http"
        vars.sla: "24x7"
+     icinga_host_templates:
+       - icinga/sensors.j2
      host_checks: |
        object Service "load_average" {
          host_name = "{{ hostvars[item]['ansible_fqdn'] }}"
@@ -39,6 +41,22 @@ Example Playbook
        }
      tags: add-hosts
 
+```
+
+The `icinga_host_templates` allows you to inject more complex
+`host_variables` through a template.
+In this example, you would add `templatse/icinga/sensors.j2`, e.g.
+
+```
+vars.sensors = {
+    {% for sensor in hostvars[item].sensors %}
+    "Sensor {{ sensor.name }}" = {
+        sensor_name = "{{ sensor.name }}"
+        cpu_temp_crit = {{ sensor.critical }}
+        cpu_temp_warn = {{ sensor.warning }}
+    },
+    {% endfor %}
+}
 ```
 
 Role Variables
