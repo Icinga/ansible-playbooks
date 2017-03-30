@@ -1,3 +1,5 @@
+# {{ ansible_managed }}
+
 {% if hostvars[item]['group_names'] | difference('monitoring_servers') %}
   # A host definition
 object Host "{{ hostvars[item]['ansible_fqdn'] }}" {
@@ -11,6 +13,14 @@ object Host "{{ hostvars[item]['ansible_fqdn'] }}" {
   {% if 'icinga_host_attributes' in hostvars[item] %}
     {% for attribute, value in hostvars[item].icinga_host_attributes.iteritems() %}
     {{ attribute }} = {{ value }}
+    {% endfor %}
+  {% endif %}
+
+  {% if 'icinga_host_templates' in hostvars[item] %}
+    {% for template in hostvars[item].icinga_host_templates %}
+      {% include template %}
+      # Intentional newline
+
     {% endfor %}
   {% endif %}
 }
