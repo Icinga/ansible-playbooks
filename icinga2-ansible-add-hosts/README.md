@@ -22,9 +22,9 @@ Example Playbook
   roles:
    - role: icinga2-ansible-add-hosts
      configuration_logic: "object"
-     host_attributes: |
-       check_command = "http"
-       vars.sla = "24x7"
+     icinga_host_attributes:
+       check_command: "http"
+       vars.sla: "24x7"
      host_checks: |
        object Service "load_average" {
          host_name = "{{ hostvars[item]['ansible_fqdn'] }}"
