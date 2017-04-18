@@ -29,13 +29,13 @@ Example Playbook
        object Service "load_average" {
          host_name = "{{ hostvars[item]['ansible_fqdn'] }}"
          check_command = "check_nrpe"
-         vars.remote_nrpe_command = "check_load"
+         vars.nrpe_command = "check_load"
        }
 
        object Service "disk" {
          host_name = "{{ hostvars[item]['ansible_fqdn'] }}"
          check_command = "check_nrpe"
-         vars.remote_nrpe_command = "check_disk"
+         vars.nrpe_command = "check_disk"
        }
      tags: add-hosts
 
