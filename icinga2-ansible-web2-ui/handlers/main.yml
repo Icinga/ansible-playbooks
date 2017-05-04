@@ -1,6 +1,20 @@
 ---
 # handlers file for icinga2-ansible-web2-ui
+- name: fix icinga2 permissions
+  command: "{{ item }}"
+  with_items:
+    - /usr/sbin/semodule -s targeted -i /usr/share/selinux/targeted/icinga2.pp
+    - /sbin/fixfiles -R icinga2-bin restore
+    - /sbin/fixfiles -R icinga2-common restore
+
 - name: restart icinga2
-  service: name=icinga2
-           state=restarted
-           enabled=yes
+  service:
+    name: icinga2
+    state: restarted
+    enabled: yes
+
+- name: restart apache
+  service:
+    name: httpd
+    state: restarted
+    enabled: yes
