@@ -5,3 +5,8 @@
   service: name=icinga2
            state=restarted
            enabled=yes
+
+- name: reload icinga2
+  service: name=icinga2
+           state=reloaded
+           enabled=yes
