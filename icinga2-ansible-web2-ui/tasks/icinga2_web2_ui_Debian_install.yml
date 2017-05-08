@@ -68,13 +68,17 @@
             owner=nagios
             group=nagios
             mode=0640
+- name: Define web server daemon package.
+  set_fact:
+    web_server_daemon: "{{ __web_server_daemon_deb }}"
+  when: web_server_daemon is not defined
 
-- name: Restart HTTPD and Icinga2 to Apply the Configuration
+- name: Restart {{web_server_daemon}} and Icinga2 to Apply the Configuration
   service: name={{ item }}
            state=restarted
            enabled=yes
   with_items:
-    - apache2
+    - "{{web_server_daemon}}"
     - icinga2
 
 - name: Add user www-data to group icingaweb2
