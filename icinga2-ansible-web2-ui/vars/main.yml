@@ -1,2 +1,4 @@
 ---
 # vars file for icinga2-ansible-web2-ui
+__web_server_daemon_deb: apache2
+__web_server_daemon_rh: httpd

@@ -83,12 +83,17 @@
             group=icinga
             mode=0640
 
-- name: Restart HTTPD and Icinga2 to Apply the Configuration
+- name: Define web server daemon package.
+  set_fact:
+    web_server_daemon: "{{ __web_server_daemon_rh }}"
+  when: web_server_daemon is not defined
+
+- name: Restart {{ web_server_daemon }} and Icinga2 to Apply the Configuration
   service: name={{ item }}
            state=restarted
            enabled=yes
   with_items:
-    - httpd
+    - "{{ web_server_daemon }}"
     - icinga2
 
 - name: Icinga Web2 Installation finished (RH)
