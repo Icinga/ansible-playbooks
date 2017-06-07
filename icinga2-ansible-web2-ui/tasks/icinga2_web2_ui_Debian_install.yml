@@ -61,13 +61,6 @@
             target={{ icinga2_web2_mysql_schema_debian }}
   when: icinga_web_db.changed == true
 
-- name: Configure Icinga2 Ido Mysql Feature
-  template: src=ido-mysql.conf.j2
-            dest={{ icinga2_ido_mysql_conf }}
-            backup=yes
-            owner=nagios
-            group=nagios
-            mode=0640
 - name: Define web server daemon package.
   set_fact:
     web_server_daemon: "{{ __web_server_daemon_deb }}"
