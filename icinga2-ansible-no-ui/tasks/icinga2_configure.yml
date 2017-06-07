@@ -6,7 +6,7 @@
             owner=root
             group=root
             mode=0644
-  when: "{{ icinga2_conf_global | default('') | length}}"
+  when: icinga2_conf_global is defined
   notify:
    - restart icinga2
 
@@ -17,6 +17,6 @@
             owner=root
             group=root
             mode=0644
-  when: "{{ check_commands | default('') | length}}"
+  when: check_commands is defined
   notify:
    - restart icinga2
