@@ -8,7 +8,6 @@ icinga2_web_mysql_schema_rh: "/usr/share/icinga2-ido-mysql/schema/mysql.sql"
 icinga2_web_mysql_schema_debian: "/usr/share/icinga2-ido-mysql/schema/mysql.sql"
 
 icinga2_ido_mysql_conf: "/etc/icinga2/features-available/ido-mysql.conf"
-icinga2_ido_mysql_configuration: "none"
 
 icinga2_web2_db: "icingaweb"
 icinga2_web2_db_pass: "icingaweb"

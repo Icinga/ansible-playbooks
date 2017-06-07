@@ -33,6 +33,7 @@
             owner=icinga
             group=icinga
             mode=0640
+  when: icinga2_ido_mysql_configuration is defined
 
 - name: Enable Icinga2 Ido Mysql Feature
   command: "icinga2 feature enable ido-mysql"
