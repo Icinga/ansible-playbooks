@@ -2,7 +2,7 @@
 - name: Install MariaDB and Utils on Red Hat OS Family (based on your choice in icinga2_web_ui_ido value)
   yum: name={{ item.package }}
        state=latest
-  with_items: icinga2_web_ui_mariadb_rpm
+  with_items: "{{ icinga2_web_ui_mariadb_rpm }}"
   when: ansible_distribution_major_version == "7"
 
 - name: Start MariaDB
