@@ -1,10 +1,10 @@
 ---
 - name: Install Icinga Classic UI on Debian OS family
-  apt: pkg={{ item.package }} 
+  apt: pkg={{ item.package }}
        state=latest
        update_cache=yes
        cache_valid_time=30
-  with_items: icinga2_classic_ui_pkg
+  with_items: "{{ icinga2_classic_ui_pkg }}"
 
 - name: Configure a password for icingaadmin user
   htpasswd: name=icingaadmin
@@ -12,7 +12,7 @@
             path={{ htpasswd_deb }}
             create=no
             password={{ icinga2_classic_ui_passwd }}
-  notify: 
+  notify:
    - restart apache2
 
 - name: Icinga Classic UI Installation finished (Debian)

@@ -28,7 +28,7 @@
 - name: Install Icinga Classic UI on Gentoo OS family
   portage: package={{ item.package }}
            state=present
-  with_items: icinga2_classic_ui_ebuilds
+  with_items: "{{ icinga2_classic_ui_ebuilds }}"
 
 - name: Configure password for icingaadmin user
   htpasswd: name=icingaadmin

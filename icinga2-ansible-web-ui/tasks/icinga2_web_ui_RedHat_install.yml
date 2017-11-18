@@ -9,7 +9,7 @@
 - name: Install Icinga Web on RedHat OS family
   yum: name={{ item.package }}
        state=latest
-  with_items: icinga2_web_ui_rpm
+  with_items: "{{ icinga2_web_ui_rpm }}"
 
 - name: Create a Database for Icinga Web
   mysql_db: name={{ icinga2_web_db_dbuser }}
