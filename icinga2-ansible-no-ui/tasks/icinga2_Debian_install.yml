@@ -16,7 +16,7 @@
   apt_repository: repo='{{ item.repo }}'
                   update_cache=yes
                   state=present
-  with_items: '{{ icinga2_deb_repos }}'
+  with_items: "{{ icinga2_deb_repos }}"
 
   # Debian packages require additional packages which are provided by the
   # Debian Monitoring Project repository
@@ -30,7 +30,7 @@
        update_cache=yes
        state=latest
        install_recommends=no
-  with_items: '{{ icinga2_pkg }}'
+  with_items: "{{ icinga2_pkg }}"
 
 - name: Start Icinga2
   service: name=icinga2
