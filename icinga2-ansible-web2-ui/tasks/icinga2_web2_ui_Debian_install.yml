@@ -1,36 +1,49 @@
 ---
 - name: Install Mysql prerequisite
-  apt: name=python-mysqldb
+  apt:
+    name: python-mysqldb
+
+- name: Install PHP requirements
+  apt:
+    name: "{{ item}}"
+    state: present
+  with_items:
+    - php7.0
+    - libapache2-mod-php7.0
 
 - name: Install Icinga2 IDO modules on Debian family
-  apt: name=icinga2-ido-mysql
-       state=latest
+  apt:
+    name: icinga2-ido-mysql
+    state: latest
 
 - name: Create a IDO Database for Icinga2
-  mysql_db: name={{ icinga2_db }}
-            state=present
+  mysql_db:
+    name: "{{ icinga2_db }}"
+    state: present
   register: icinga_ido_db
 
 - name: Create Icinga2 IDO Database User and configure Grants
-  mysql_user: name={{ icinga2_db_user }}
-              password={{ icinga2_db_pass }}
-              state=present
-              priv="{{ icinga2_db }}.*:GRANT,INSERT,SELECT,UPDATE,DELETE,DROP,CREATE VIEW,INDEX,EXECUTE"
+  mysql_user:
+    name: "{{ icinga2_db_user }}"
+    password: "{{ icinga2_db_pass }}"
+    state: present
+    priv: "{{ icinga2_db }}.*:GRANT,INSERT,SELECT,UPDATE,DELETE,DROP,CREATE VIEW,INDEX,EXECUTE"
 
 - name: Import the IDO Schema on Icinga Web Database (only once)
-  mysql_db: name={{ icinga2_db }}
-            state=import
-            target={{ icinga2_web_mysql_schema_debian }}
+  mysql_db:
+    name: "{{ icinga2_db }}"
+    state: import
+    target: "{{ icinga2_web_mysql_schema_debian }}"
   when: icinga_ido_db.changed == true
 
 - name: Configure Icinga2 Ido Mysql Feature
-  template: src=ido-mysql.conf.j2
-            dest={{ icinga2_ido_mysql_conf }}
-            backup=yes
-            owner=nagios
-            group=nagios
-            mode=0640
-  when: icinga2_ido_mysql_configuration is defined
+  template:
+    src: ido-mysql.conf.j2
+    dest: "{{ icinga2_ido_mysql_conf }}"
+    backup: yes
+    owner: nagios
+    group: nagios
+    mode: 0640
 
 - name: Enable Icinga2 Ido Mysql Feature
   command: "icinga2 feature enable ido-mysql"
@@ -40,57 +53,76 @@
    - restart icinga2
 
 - name: Install Icinga Web2 on Debian family
-  apt: name={{ item.package }}
-       state=latest
+  apt:
+    name: "{{ item.package }}"
+    state: latest
   with_items: "{{ icinga2_web2_ui_deb }}"
   tags: icinga2-ansible-web2-ui-install
 
 - name: Create a Web Database for Icinga2
-  mysql_db: name={{ icinga2_web2_db }}
-            state=present
+  mysql_db:
+    name: "{{ icinga2_web2_db }}"
+    state: present
   register: icinga_web_db
 
 - name: Create Icinga2 Web Database User and configure Grants
-  mysql_user: name={{ icinga2_web2_db_user }}
-              password={{ icinga2_web2_db_pass }}
-              state=present
-              priv="{{ icinga2_web2_db }}.*:GRANT,INSERT,SELECT,UPDATE,DELETE,DROP,CREATE VIEW,INDEX,EXECUTE"
+  mysql_user:
+    name: "{{ icinga2_web2_db_user }}"
+    password: "{{ icinga2_web2_db_pass }}"
+    state: present
+    priv: "{{ icinga2_web2_db }}.*:GRANT,INSERT,SELECT,UPDATE,DELETE,DROP,CREATE VIEW,INDEX,EXECUTE"
 
 - name: Import the Web Schema on Icinga Web Database (only once)
-  mysql_db: name={{ icinga2_web2_db }}
-            state=import
-            target={{ icinga2_web2_mysql_schema_debian }}
+  mysql_db:
+    name: "{{ icinga2_web2_db }}"
+    state: import
+    target: "{{ icinga2_web2_mysql_schema_debian }}"
   when: icinga_web_db.changed == true
 
-- name: Define web server daemon package.
-  set_fact:
-    web_server_daemon: "{{ __web_server_daemon_deb }}"
-  when: web_server_daemon is not defined
+- name: Configure Icinga2 Ido Mysql Feature
+  template:
+    src: ido-mysql.conf.j2
+    dest: "{{ icinga2_ido_mysql_conf }}"
+    backup: yes
+    owner: nagios
+    group: nagios
+    mode: 0640
 
-- name: Restart {{web_server_daemon}} and Icinga2 to Apply the Configuration
-  service: name={{ item }}
-           state=restarted
-           enabled=yes
+- name: Restart HTTPD and Icinga2 to Apply the Configuration
+  service:
+    name: "{{ item }}"
+    state: restarted
+    enabled: yes
   with_items:
-    - "{{web_server_daemon}}"
+    - apache2
     - icinga2
 
 - name: Add user www-data to group icingaweb2
-  user: name=www-data
-        groups=icingaweb2
+  user:
+    name: www-data
+    groups: icingaweb2
 
 - name: Adjust Directory Owner and Group
-  file: path=/etc/icingaweb2/modules owner=www-data group=icingaweb2 mode=0755
-        state=directory
-        recurse=yes
+  file:
+    path: "/etc/icingaweb2/modules"
+    owner: www-data
+    group: icingaweb2
+    mode: 0755
+    state: directory
+    recurse: yes
 
 - name: Create Directory Owner and Group
-  file: path=/etc/icingaweb2/modules/{{ item }} owner=www-data group=icingaweb2 mode=0755
-        state=directory
+  file:
+    path: "/etc/icingaweb2/modules/{{ item }}"
+    owner: www-data
+    group: icingaweb2
+    mode: 0755
+    state: directory
   with_items:
     - monitoring
     - translation
 
 - name: Icinga Web2 Installation finished (Debian)
-  debug: msg="Now generate a token with 'icingacli setup token create' and visit http://SERVERIP/icingaweb2/setup to continue the installation"
+  debug:
+    msg: "Now generate a token with 'icingacli setup token create' and visit http://SERVERIP/icingaweb2/setup to continue the installation"
   tags: icinga2-ansible-web2-ui-install
