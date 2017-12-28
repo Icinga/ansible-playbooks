@@ -1,6 +1,5 @@
 ---
-- name: Get Public Yum Repo
-  block:
+- block:
     - name: Get Icinga2 Yum Key on RedHat OS family
       rpm_key: key={{ icinga2_key }}
                state=present
