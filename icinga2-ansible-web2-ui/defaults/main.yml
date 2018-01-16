@@ -24,4 +24,4 @@ icinga2_web2_ui_rpm:
 icinga2_web2_ui_deb:
  - { package: "icingaweb2" }
  
- icinga2_timezone: "UTC"
+icinga2_timezone: "UTC"
