@@ -82,9 +82,9 @@ Now open up your `site.yml` playbook with your favorite text editor and add the 
 
 As you have noticed, there is a new variable in place: **configuration_logic**.
 
-When configuration_logic is "object", the role will generate host definitions following an [Object logic style](http://docs.icinga.org/icinga2/latest/doc/module/icinga2/toc#!/icinga2/latest/doc/module/icinga2/chapter/monitoring-basics#configuration-best-practice)
+When configuration_logic is "object", the role will generate host definitions following an [Object logic style](https://www.icinga.com/docs/icinga2/latest/doc/04-configuring-icinga-2/#configuration-best-practice)
  
-**TODO**: When configuration_logic variable is "apply", the role will generate host definitions following an [Apply logic style](http://docs.icinga.org/icinga2/latest/doc/module/icinga2/toc#!/icinga2/latest/doc/module/icinga2/chapter/monitoring-basics#using-apply)
+**TODO**: When configuration_logic variable is "apply", the role will generate host definitions following an [Apply logic style](https://www.icinga.com/docs/icinga2/latest/doc/03-monitoring-basics/#using-apply)
 
 Given that icinga2 and Classic UI are already installed, we are interested only to _add-hosts_ tag. Please take note that icinga2-ansible-add-hosts does not install Icinga2, and must be used after icinga2-ansible-no-ui.
 
@@ -132,4 +132,4 @@ object Service "http" {
 }
 ```
 
-The variable **http_vhost** is a custom attribute that can be assigned to http check command. See [Plugin Check Commands](http://docs.icinga.org/icinga2/latest/doc/module/icinga2/toc#!/icinga2/latest/doc/module/icinga2/chapter/configuring-icinga2#plugin-check-commands) for a list of all the supported check custom attributes. What's interesting in this example is that **vars.http_vhost** will be automatically populated via `{{ hostvars[item]['ansible_domain'] }}`.
+The variable **http_vhost** is a custom attribute that can be assigned to http check command. See [Plugin Check Commands](https://www.icinga.com/docs/icinga2/latest/doc/10-icinga-template-library/#plugin-check-commands-for-monitoring-plugins) for a list of all the supported check custom attributes. What's interesting in this example is that **vars.http_vhost** will be automatically populated via `{{ hostvars[item]['ansible_domain'] }}`.
