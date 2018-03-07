@@ -42,6 +42,55 @@
   notify:
    - restart icinga2
 
+- name: Centos Install Centos Release Scl
+  package:
+    name: centos-release-scl
+    state: present
+  when: ansible_distribution == "CentOS"
+
+- name: RedHat Install RhScl subscription requirment
+  fail:
+    msg: "please enable subscription-manager repos --enable rhel-server-rhscl-{{ ansible_facts.ansible_distribution_major_version }}-rpms"
+  when: ansible_distribution == "RedHat"
+
+- debug:
+    var: ansible_distribution_major_version
+    verbosity: 2
+
+
+- name: Install Mysql php-fpm
+  package:
+    name: rh-php71-php-mysqlnd
+    state: present
+  when:
+    - icinga2_ido_mysql_configuration is defined
+    - ansible_distribution_major_version == "7"
+
+- name: Install postgres php-fpm
+  package:
+    name: rh-php71-php-pgsql
+    state: present
+  when:
+    - icinga2_ido_postgres_configuration is defined
+    - ansible_distribution_major_version == "7"
+
+- name: Install Mysql php-fpm
+  package:
+    name: rh-php70-php-mysqlnd
+    state: present
+  when:
+    - icinga2_ido_mysql_configuration is defined
+    - ansible_distribution_major_version == "6"
+
+- name: Install postgres php-fpm
+  package:
+    name: rh-php70-php-pgsql
+    state: present
+  when:
+    - icinga2_ido_postgres_configuration is defined
+    - ansible_distribution_major_version == "6"
+
+
 - name: Install Icinga Web2 on RedHat OS family
   yum: name={{ item.package }}
        state=latest
@@ -57,7 +106,6 @@
   with_items: "{{ icinga2_web2_ui_rpm }}"
   tags: icinga2-ansible-web2-ui-install
   when: ansible_pkg_mgr == "dnf"
-
 
 - name: Create a Web Database for Icinga2
   mysql_db: name={{ icinga2_web2_db }}
@@ -88,6 +136,32 @@
   with_items:
     - "{{ web_server_daemon }}"
     - icinga2
+    - php-fpm
+  when: ansible_pkg_mgr == "dnf"
+
+- name: Restart {{ web_server_daemon }} and Icinga2 to Apply the Configuration
+  service: name={{ item }}
+           state=restarted
+           enabled=yes
+  with_items:
+    - "{{ web_server_daemon }}"
+    - icinga2
+    - rh-php71-php-fpm
+  when:
+    - ansible_pkg_mgr == "yum"
+    - ansible_distribution_major_version == "7"
+
+- name: Restart {{ web_server_daemon }} and Icinga2 to Apply the Configuration
+  service: name={{ item }}
+           state=restarted
+           enabled=yes
+  with_items:
+    - "{{ web_server_daemon }}"
+    - icinga2
+    - rh-php70-php-fpm
+  when:
+    - ansible_pkg_mgr == "yum"
+    - ansible_distribution_major_version  == "6"
 
 - name: Get setup token.
   shell: 'icingacli setup token create | sed "s/.*token is: \(.*\)/\1/g"'
