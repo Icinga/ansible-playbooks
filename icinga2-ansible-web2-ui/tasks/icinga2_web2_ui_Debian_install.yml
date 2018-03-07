@@ -9,7 +9,14 @@
     state: present
   with_items:
     - php7.0
-    - libapache2-mod-php7.0
+    - libapache2-mod-php7.0    
+    - php-gd
+
+- name: Change php.ini date.timezone
+  lineinfile:
+    dest: /etc/php/7.0/apache2/php.ini
+    regexp: "date.timezone ="
+    line: "date.timezone = {{ icinga2_timezone }}"
 
 - name: Install Icinga2 IDO modules on Debian family
   apt:
