@@ -53,13 +53,18 @@
     msg: "please enable subscription-manager repos --enable rhel-server-rhscl-{{ ansible_facts.ansible_distribution_major_version }}-rpms"
   when: ansible_distribution == "RedHat"
 
+- debug:
+    var: ansible_distribution_major_version
+    verbosity: 2
+
+
 - name: Install Mysql php-fpm
   package:
     name: rh-php71-php-mysqlnd
     state: present
   when:
     - icinga2_ido_mysql_configuration is defined
-    - ansible_distribution_major_version == 7
+    - ansible_distribution_major_version == "7"
 
 - name: Install postgres php-fpm
   package:
@@ -67,7 +72,7 @@
     state: present
   when:
     - icinga2_ido_postgres_configuration is defined
-    - ansible_distribution_major_version == 7
+    - ansible_distribution_major_version == "7"
 
 - name: Install Mysql php-fpm
   package:
@@ -75,7 +80,7 @@
     state: present
   when:
     - icinga2_ido_mysql_configuration is defined
-    - ansible_distribution_major_version == 6
+    - ansible_distribution_major_version == "6"
 
 - name: Install postgres php-fpm
   package:
@@ -83,7 +88,7 @@
     state: present
   when:
     - icinga2_ido_postgres_configuration is defined
-    - ansible_distribution_major_version == 6
+    - ansible_distribution_major_version == "6"
 
 
 - name: Install Icinga Web2 on RedHat OS family
@@ -144,7 +149,7 @@
     - rh-php71-php-fpm
   when:
     - ansible_pkg_mgr == "yum"
-    - ansible_distribution_major_version == 7
+    - ansible_distribution_major_version == "7"
 
 - name: Restart {{ web_server_daemon }} and Icinga2 to Apply the Configuration
   service: name={{ item }}
@@ -156,7 +161,7 @@
     - rh-php70-php-fpm
   when:
     - ansible_pkg_mgr == "yum"
-    - ansible_distribution_major_version  == 6
+    - ansible_distribution_major_version  == "6"
 
 - name: Get setup token.
   shell: 'icingacli setup token create | sed "s/.*token is: \(.*\)/\1/g"'
