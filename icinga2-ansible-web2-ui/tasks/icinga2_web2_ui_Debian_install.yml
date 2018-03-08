@@ -11,6 +11,18 @@
     - php7.0
     - libapache2-mod-php7.0
 
+- name: Find out timezone
+  slurp:
+     src: /etc/timezone
+  register: etc_timezone
+
+- name: Timezone in php.ini
+  lineinfile:
+    path: /etc/php/7.0/apache2/php.ini
+    regexp: '^;?date.timezone ='
+    line: 'date.timezone = "{{ etc_timezone["content"] | b64decode | regex_replace("\n") }}"'
+  notify: restart apache2
+
 - name: Install Icinga2 IDO modules on Debian family
   apt:
     name: icinga2-ido-mysql
