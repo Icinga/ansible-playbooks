@@ -3,14 +3,18 @@
   apt: name=apt-transport-https state=present
 
 - name: Get Icinga2 Apt Key for Debian OS family
-  apt_key: url={{ icinga2_key }}
-           state=present
+  apt_key:
+    id: C6E319C334410682
+    url: "{{ icinga2_key }}"
+    state: present
 
   # Debian packages require additional packages which are provided by the
   # Debian Monitoring Project repository
 - name: Get Debmon Apt Key for Debian OS family (Debian)
-  apt_key: url={{ icinga2_debmon_key }}
-           state=present
+  apt_key:
+    id: DC0EE15A29D662D2
+    url: "{{ icinga2_debmon_key }}"
+    state: present
 
 - name: Get Icinga2 Apt Repos for Debian OS family
   apt_repository: repo='{{ item.repo }}'
