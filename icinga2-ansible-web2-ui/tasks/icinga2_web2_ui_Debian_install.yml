@@ -10,6 +10,8 @@
   with_items:
     - php7.0
     - libapache2-mod-php7.0
+    - php-gd
+
 
 - name: Install Icinga2 IDO modules on Debian family
   apt:
