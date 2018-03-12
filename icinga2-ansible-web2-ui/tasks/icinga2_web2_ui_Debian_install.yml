@@ -135,16 +135,3 @@
   with_items:
     - monitoring
     - translation
-
-- name: Get setup token.
-  shell: 'icingacli setup token create | sed "s/.*token is: \(.*\)/\1/g"'
-  register: setup_token
-  tags: token
-
-
-- name: Icinga Web2 Installation finished (RH)
-  debug:
-    msg="The WebUI token is {{ setup_token.stdout }}, us it at http://IP//icingaweb2/setup to continue the installation"
-  tags:
-    - icinga2-ansible-web2-ui-install
-    - token
