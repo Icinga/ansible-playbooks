@@ -2,6 +2,8 @@ Role Name
 =========
 
 Ansible role to install Icinga2 Web2 Ui
+and some of the most usable common modules (List found in Vars definition)
+
 
 Requirements
 ------------
@@ -71,3 +73,4 @@ Author Information
 ------------------
 
 Valentino Gagliardi - Icinga Dev Team
+Assaf Flatto - Icinga Dev Team

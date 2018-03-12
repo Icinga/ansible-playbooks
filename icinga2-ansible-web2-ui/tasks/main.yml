@@ -6,3 +6,5 @@
 
 - include: icinga2_web2_ui_Debian_install.yml
   when: ansible_os_family == 'Debian'
+
+- include: icinga2_web2_modules_install.yml
