@@ -1,18 +1,18 @@
 ---
 # tasks file for icinga2-ansible-no-ui
 
-- include: icinga2_Debian_install.yml
+- include_tasks: icinga2_Debian_install.yml
   when: ansible_os_family == 'Debian' and ansible_distribution != 'Ubuntu'
 
-- include: icinga2_Ubuntu_install.yml
+- include_tasks: icinga2_Ubuntu_install.yml
   when: ansible_os_family == 'Debian' and ansible_distribution == 'Ubuntu'
 
-- include: icinga2_RedHat_install.yml
+- include_tasks: icinga2_RedHat_install.yml
   when: ansible_os_family == 'RedHat'
 
-- include: icinga2_Gentoo_install.yml
+- include_tasks: icinga2_Gentoo_install.yml
   when: ansible_os_family == 'Gentoo'
 
-- include: icinga2_configure.yml
+- import_tasks: icinga2_configure.yml
   tags:
    - icinga2_configure
