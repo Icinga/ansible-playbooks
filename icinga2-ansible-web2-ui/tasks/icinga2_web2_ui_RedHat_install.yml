@@ -53,11 +53,6 @@
     msg: "please enable subscription-manager repos --enable rhel-server-rhscl-{{ ansible_facts.ansible_distribution_major_version }}-rpms"
   when: ansible_distribution == "RedHat"
 
-- debug:
-    var: ansible_distribution_major_version
-    verbosity: 2
-
-
 - name: Install Mysql php-fpm
   package:
     name: rh-php71-php-mysqlnd
@@ -92,7 +87,7 @@
 
 
 - name: Install Icinga Web2 on RedHat OS family
-  yum: name={{ item.package }}
+  yum: name={{ item }}
        state=latest
        enablerepo={{ enablerepo }}
   with_items: "{{ icinga2_web2_ui_rpm }}"

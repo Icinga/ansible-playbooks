@@ -4,16 +4,16 @@
 # Vars for RH OS Family
 
 icinga2_web_ui_rpm:
- - { package: "icinga-web" }
- - { package: "icinga-web-{{ icinga2_web_ui_ido }}" }
+ - icinga-web
+ - "icinga-web-{{ icinga2_web_ui_ido }}"
 
 icinga2_web_ui_mariadb_rpm:
- - { package: "mariadb-server" }
- - { package: "MySQL-python" }
+ - mariadb-server
+ - MySQL-python
 
 icinga2_web_ui_mysql_rpm:
- - { package: "mysql-server" }
- - { package: "MySQL-python" }
+ - mysql-server
+ - MySQL-python
 
 icinga2_web_db_dbuser: "icinga_web"
 

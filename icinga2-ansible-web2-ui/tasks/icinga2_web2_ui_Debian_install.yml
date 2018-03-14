@@ -68,7 +68,7 @@
 
 - name: Install Icinga Web2 on Debian family
   apt:
-    name: "{{ item.package }}"
+    name: "{{ item }}"
     state: latest
   with_items: "{{ icinga2_web2_ui_deb }}"
   tags: icinga2-ansible-web2-ui-install

@@ -26,7 +26,7 @@
   when: icinga2_classic_ui_gentoo_package_use == 'directory' and icinga2_classic_ui_webserver == 'lighttpd'
 
 - name: Install Icinga Classic UI on Gentoo OS family
-  portage: package={{ item.package }}
+  portage: package={{ item }}
            state=present
   with_items: "{{ icinga2_classic_ui_ebuilds }}"
 

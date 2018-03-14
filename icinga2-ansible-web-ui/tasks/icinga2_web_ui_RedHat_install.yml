@@ -1,13 +1,13 @@
 ---
 - name: Install IDO {{ icinga2_web_ui_ido }} on RedHat OS family
-  yum: name=icinga2-ido-{{ icinga2_web_ui_ido }} 
+  yum: name=icinga2-ido-{{ icinga2_web_ui_ido }}
        state=latest
 
 - include_tasks: icinga2_web_ui_mysql_RedHat_install.yml
   when: icinga2_web_ui_ido == "mysql"
 
 - name: Install Icinga Web on RedHat OS family
-  yum: name={{ item.package }}
+  yum: name={{ item }}
        state=latest
   with_items: "{{ icinga2_web_ui_rpm }}"
 

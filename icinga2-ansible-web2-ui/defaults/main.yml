@@ -18,8 +18,10 @@ icinga2_web2_mysql_schema_debian: "/usr/share/icingaweb2/etc/schema/mysql.schema
 enablerepo: "base"
 
 icinga2_web2_ui_rpm:
- - { package: "icingaweb2" }
- - { package: "icingacli" }
+ - icingaweb2
+ - icingacli
+ - git
 
 icinga2_web2_ui_deb:
- - { package: "icingaweb2" }
+ - icingaweb2
+ - git
