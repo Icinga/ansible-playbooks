@@ -2,17 +2,17 @@
 # defaults file for icinga2-nrpe-agent
 
 nrpe_agent_RedHat:
- - { package: "nrpe" }
- - { package: "nagios-plugins-all" }
+ - nrpe
+ - nagios-plugins-all
 
 nrpe_agent_Debian:
- - { package: "nagios-nrpe-server" }
- - { package: "nagios-nrpe-plugin" }
- - { package: "nagios-plugins" }
+ - nagios-nrpe-server
+ - nagios-nrpe-plugin
+ - nagios-plugins
 
 nrpe_agent_Gentoo:
- - { package: "nrpe" }
- - { package: "nagios-plugins" }
+ - nrpe
+ - nagios-plugins
 
 nrpe_agent_config: "/etc/nagios/nrpe.cfg"
 

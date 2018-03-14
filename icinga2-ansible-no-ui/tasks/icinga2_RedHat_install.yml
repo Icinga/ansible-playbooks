@@ -16,13 +16,13 @@
   when: icinga2_use_public_yum_repo
 
 - name: Install Icinga2 on RedHat OS family
-  yum: name={{ item.package }}
+  yum: name={{ item }}
        state=latest
   with_items: "{{ icinga2_yum }}"
   when: ansible_pkg_mgr == "yum"
 
 - name: Install Icinga2 on RedHat OS family (Fedora > 22)
-  dnf: name={{ item.package }}
+  dnf: name={{ item }}
        state=latest
   with_items: "{{ icinga2_yum }}"
   when: ansible_pkg_mgr == "dnf"

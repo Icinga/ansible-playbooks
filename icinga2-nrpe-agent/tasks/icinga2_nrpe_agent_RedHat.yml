@@ -1,12 +1,12 @@
 ---
 - name: Install Nrpe and Plugins
-  yum: name={{ item.package }} 
+  yum: name={{ item }}
        state=latest
   with_items: "{{ nrpe_agent_RedHat }}"
   when: ansible_pkg_mgr == "yum"
 
 - name: Install Nrpe and Plugins
-  dnf: name={{ item.package }} 
+  dnf: name={{ item }}
        state=latest
   with_items: "{{ nrpe_agent_RedHat }}"
   when: ansible_pkg_mgr == "dnf"

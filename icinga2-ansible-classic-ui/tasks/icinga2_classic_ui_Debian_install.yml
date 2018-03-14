@@ -1,6 +1,6 @@
 ---
 - name: Install Icinga Classic UI on Debian OS family
-  apt: pkg={{ item.package }}
+  apt: pkg={{ item }}
        state=latest
        update_cache=yes
        cache_valid_time=30

@@ -1,6 +1,6 @@
 ---
 - name: Install Nrpe and Plugins
-  apt: pkg={{ item.package }} 
+  apt: pkg={{ item }} 
        state=latest
        update_cache=yes
        install_recommends=no
@@ -19,4 +19,3 @@
    - restart nagios-nrpe-server
   tags:
    - nrpe_agent_config
-

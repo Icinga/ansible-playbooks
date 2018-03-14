@@ -1,6 +1,6 @@
 ---
 - name: Install Nrpe and Plugins
-  portage: package={{ item.package }}
+  portage: package={{ item }}
        state=present
        update=yes
   with_items: "{{ nrpe_agent_Gentoo }}"

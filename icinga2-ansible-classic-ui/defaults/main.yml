@@ -5,23 +5,23 @@ icinga2_classic_ui_passwd: "none"
 
 # Vars for Debian OS Family
 icinga2_classic_ui_pkg:
- - { package: "icinga2-classicui" }
- - { package: "python-passlib" }
+ - icinga2-classicui
+ - python-passlib
 
 htpasswd_deb: "/etc/icinga2/classicui/htpasswd.users"
 
 # Vars for RH OS Family
 icinga2_classic_ui_rpm:
- - { package: "icinga2-classicui-config" }
- - { package: "icinga-gui" }
- - { package: "python-passlib" }
+ - icinga2-classicui-config
+ - icinga-gui
+ - python-passlib
 
 htpasswd_rh: "/etc/icinga/passwd"
 
 # Vars for Gentoo OS Family
 icinga2_classic_ui_ebuilds:
- - { package: "icinga" }
- - { package: "passlib" }
+ - icinga
+ - passlib
 
 # Set which webserver to use, choice between apache2 and lighttpd, set to none if using
 # another webserver, but then you're on your own with configuring the webserver
