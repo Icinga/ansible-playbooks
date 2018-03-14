@@ -1,6 +1,10 @@
 ---
 # tasks file for icinga2-nrpe-agent
 
+- set_fact:
+    allowed_hosts: "{{ hostvars[item]['ansible_default_ipv4']['address'] }}"
+  with_inventory_hostnames: monitoring_servers
+
 - include_tasks: icinga2_nrpe_agent_RedHat.yml
   when: ansible_os_family == 'RedHat' and 'monitoring_servers' not in group_names
   # NRPE Agent will be installed on clients only

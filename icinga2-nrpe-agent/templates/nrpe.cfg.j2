@@ -1,6 +1,6 @@
 # {{ ansible_managed }}
 
-allowed_hosts={{ nrpe_allowed_hosts }}
+allowed_hosts={{ allowed_hosts | default('nrpe_allowed_hosts') }}
 
 {{ nrpe_configuration }}
 

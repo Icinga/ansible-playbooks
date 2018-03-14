@@ -24,6 +24,8 @@ nrpe_agent_plugins_x86_64: "/usr/lib64/nagios/plugins"
 
 nrpe_agent_check_mem: "https://raw.githubusercontent.com/zwindler/check_mem_ng/master/check_mem_ng.sh"
 
+ssh_port: 22
+
 # Sample NRPE check commands
 nrpe_check_commands:
   check_load:
