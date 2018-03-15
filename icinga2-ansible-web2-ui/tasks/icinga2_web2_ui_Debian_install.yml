@@ -11,6 +11,7 @@
     - php7.0
     - libapache2-mod-php7.0
     - php-gd
+  notify: restart apache2
 
 
 - name: Find out timezone
@@ -58,13 +59,13 @@
     owner: nagios
     group: nagios
     mode: 0640
+  notify: restart icinga2
 
 - name: Enable Icinga2 Ido Mysql Feature
   command: "icinga2 feature enable ido-mysql"
   register: features_result
   changed_when: "'for these changes to take effect' in features_result.stdout"
-  notify:
-   - restart icinga2
+  notify: restart icinga2
 
 - name: Install Icinga Web2 on Debian family
   apt:
@@ -92,15 +93,6 @@
     state: import
     target: "{{ icinga2_web2_mysql_schema_debian }}"
   when: icinga_web_db.changed == true
-
-- name: Restart HTTPD and Icinga2 to Apply the Configuration
-  service:
-    name: "{{ item }}"
-    state: restarted
-    enabled: yes
-  with_items:
-    - apache2
-    - icinga2
 
 - name: Add user www-data to group icingaweb2
   user:
