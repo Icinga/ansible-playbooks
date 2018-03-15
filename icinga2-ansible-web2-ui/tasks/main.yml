@@ -10,11 +10,13 @@
 - name: Get setup token.
   shell: 'icingacli setup token create | sed "s/.*token is: \(.*\)/\1/g"'
   register: setup_token
+  when: not ansible_check_mode
   tags: token
 
 - name: Icinga Web2 Installation finished
   debug:
     msg="The WebUI token is {{ setup_token.stdout }}, us it at http://IP//icingaweb2/setup to continue the installation"
+  when: not ansible_check_mode
   tags:
     - icinga2-ansible-web2-ui-install
     - token
