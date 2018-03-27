@@ -6,6 +6,7 @@
 
 - name: Get Icinga2 Apt Key for Debian OS family
   apt_key:
+    id: C6E319C334410682
     url: "{{ icinga2_key }}"
     state: present
 
