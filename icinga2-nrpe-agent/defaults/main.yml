@@ -4,6 +4,7 @@
 nrpe_agent_RedHat:
  - nrpe
  - nagios-plugins-all
+ - nrpe-selinux
 
 nrpe_agent_Debian:
  - nagios-nrpe-server

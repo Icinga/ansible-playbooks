@@ -91,6 +91,16 @@
     - icinga2_ido_postgres_configuration is defined
     - ansible_distribution_major_version == "6"
 
+- name: Find out timezone
+  slurp:
+     src: /etc/localtime
+  register: etc_localtime
+
+- name: Timezone in php.ini
+  lineinfile:
+    path: /etc/opt/rh/rh-php71/php.ini
+    regexp: '^;?date.timezone ='
+    line: 'date.timezone = "{{ etc_localtime["content"] | b64decode | regex_replace("\n") }}"'
 
 - name: Install Icinga Web2 on RedHat OS family
   yum:
