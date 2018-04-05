@@ -21,7 +21,8 @@ icinga2_web2_ui_rpm:
  - icingaweb2
  - icingacli
  - git
-
+ - php-yaml
+ 
 icinga2_web2_ui_deb:
  - icingaweb2
  - git

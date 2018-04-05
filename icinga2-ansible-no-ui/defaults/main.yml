@@ -13,6 +13,7 @@ icinga2_pkg:
  - icinga2
  - nagios-plugins
  - bsd-mailx
+ - nagios-nrpe-plugin
 
 icinga2_use_public_yum_repo: True
 icinga2_url_yum: "https://packages.icinga.org/epel/ICINGA-release.repo"
@@ -24,6 +25,7 @@ icinga2_yum:
  - icinga2-selinux
  - nagios-plugins-all
  - mailx
+ - nagios-plugins-nrpe
 
 icinga2_main_conf: "/etc/icinga2/icinga2.conf"
 icinga2_conf_d: "/etc/icinga2/conf.d"
