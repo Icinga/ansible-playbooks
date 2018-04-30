@@ -1,4 +1,20 @@
 ---
+- name: install urllib3
+  pip:
+    name: urllib3
+    version: 1.7.1
+- name: install pyasn1
+  pip:
+    name: pyasn1
+    version: 0.3.7
+- name: install pyOpenSSL
+  pip:
+    name: pyOpenSSL
+    version: 0.13
+- name: install ndg-httpsclient
+  pip:
+    name: ndg-httpsclient
+    version: 0.4.3
 - name: Install https for apt (Ubuntu)
   apt: name=apt-transport-https state=present
 
@@ -23,3 +39,4 @@
   service: name=icinga2
            state=started
            enabled=yes
+  ignore_errors: yes
