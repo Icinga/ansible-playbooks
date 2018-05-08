@@ -21,7 +21,7 @@
   set_fact: php_version="{{ php_version.stdout_lines[0] | regex_replace('^PHP (\d\.\d).*$','\\1') }}"
 
 - name: Enable PHP apache module
-  apache2_module: name="php{{ php_version }}""
+  apache2_module: name="php{{ php_version }}"
 
 - name: Find out timezone
   slurp:
