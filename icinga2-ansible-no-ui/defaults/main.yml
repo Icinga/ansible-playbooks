@@ -30,9 +30,8 @@ icinga2_conf_d: "/etc/icinga2/conf.d"
 
 icinga2_ubuntu_pkg_deps: # apt-get pinned versions
  - { package: "apache2-utils" }
- - { package: "nagios-plugins=1.5-3ubuntu1" }
- - { package: "bsd-mailx=8.1.2-0.20131005cvs-1ubuntu0.14.04.1" }
+ - { package: "nagios-plugins" }
+ - { package: "bsd-mailx" }
 
 icinga2_ubuntu_pkg: # apt-get pinned versions
- - { package: "icinga2=2.8.4-1.trusty" }
- 
+ - { package: "icinga2={{ icinga2_version }}.trusty" }
