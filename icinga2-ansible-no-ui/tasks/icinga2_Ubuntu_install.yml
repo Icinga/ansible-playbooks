@@ -33,7 +33,7 @@
        update_cache=yes
        install_recommends=no
        force=yes
-  with_items: '{{ icinga2_ubuntu_custom_pkg }}'
+  with_items: '{{ icinga2_ubuntu_pkg_deps }}'
 
 - name: Install Icinga2 on Debian OS family
   apt: pkg={{ item.package }}
