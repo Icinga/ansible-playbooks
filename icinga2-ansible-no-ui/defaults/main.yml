@@ -27,3 +27,11 @@ icinga2_yum:
 
 icinga2_main_conf: "/etc/icinga2/icinga2.conf"
 icinga2_conf_d: "/etc/icinga2/conf.d"
+
+icinga2_ubuntu_pkg_deps: # apt-get pinned versions
+ - { package: "apache2-utils" }
+ - { package: "nagios-plugins" }
+ - { package: "bsd-mailx" }
+
+icinga2_ubuntu_pkg: # apt-get pinned versions
+ - { package: "icinga2={{ icinga2_version }}.trusty" }
