@@ -28,12 +28,19 @@
                   state=present
   with_items: '{{ icinga2_deb_repos }}'
 
+- name: Install Icinga2 Deps on Debian OS family
+  apt: pkg={{ item.package }}
+       update_cache=yes
+       install_recommends=no
+       force=yes
+  with_items: '{{ icinga2_ubuntu_custom_pkg }}'
+
 - name: Install Icinga2 on Debian OS family
   apt: pkg={{ item.package }}
        update_cache=yes
-       state=latest
        install_recommends=no
-  with_items: '{{ icinga2_pkg }}'
+       force=yes
+  with_items: '{{ icinga2_ubuntu_pkg }}'
 
 - name: Start Icinga2
   service: name=icinga2
