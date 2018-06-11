@@ -7,6 +7,7 @@
            state=present
   register: add_repository_key
   ignore_errors: true
+  failed_when: no
 
 - name: Add Icinga2 apt key (alternative for older systems without SNI).
   shell: "curl -sSL {{ icinga2_key }} | sudo apt-key add -"
@@ -21,6 +22,7 @@
            state=present
   register: add_debmon_repository_key
   ignore_errors: true
+  failed_when: no
 
 - name: Add Debmon apt key (alternative for older systems without SNI).
   shell: "curl -sSL {{ icinga2_debmon_key }} | sudo apt-key add -"
