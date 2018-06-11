@@ -7,13 +7,12 @@
            state=present
   register: add_repository_key
   ignore_errors: true
-  failed_when: no
 
 - name: Add Icinga2 apt key (alternative for older systems without SNI).
   shell: "curl -sSL {{ icinga2_key }} | sudo apt-key add -"
   args:
     warn: no
-  when: add_repository_key|failed
+  when: add_repository_key is failed
 
   # Debian packages require additional packages which are provided by the
   # Debian Monitoring Project repository
@@ -22,13 +21,12 @@
            state=present
   register: add_debmon_repository_key
   ignore_errors: true
-  failed_when: no
 
 - name: Add Debmon apt key (alternative for older systems without SNI).
   shell: "curl -sSL {{ icinga2_debmon_key }} | sudo apt-key add -"
   args:
     warn: no
-  when: add_debmon_repository_key|failed
+  when: add_debmon_repository_key is failed
 
 - name: Get Icinga2 Apt Repos for Debian OS family
   apt_repository: repo='{{ item.repo }}'
