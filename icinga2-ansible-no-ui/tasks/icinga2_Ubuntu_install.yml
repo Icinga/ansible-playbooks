@@ -21,12 +21,28 @@
 - name: Get Icinga2 Apt Key for Debian OS family
   apt_key: url={{ icinga2_key }}
            state=present
+  register: add_repository_key
+  ignore_errors: true
+
+- name: Add Icinga2 apt key (alternative for older systems without SNI).
+  shell: "curl -sSL {{ icinga2_key }} | sudo apt-key add -"
+  args:
+    warn: no
+  when: add_repository_key|failed
 
 - name: Get Icinga2 Apt Repos for Debian OS family
   apt_repository: repo='{{ item.repo }}'
                   update_cache=yes
                   state=present
   with_items: '{{ icinga2_deb_repos }}'
+  register: add_debmon_repository_key
+  ignore_errors: true
+
+- name: Add Debmon apt key (alternative for older systems without SNI).
+  shell: "curl -sSL {{ icinga2_debmon_key }} | sudo apt-key add -"
+  args:
+    warn: no
+  when: add_debmon_repository_key|failed
 
 - name: Install Icinga2 Deps on Debian OS family
   apt: pkg={{ item.package }}
