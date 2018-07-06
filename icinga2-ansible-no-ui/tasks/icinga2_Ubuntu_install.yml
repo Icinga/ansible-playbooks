@@ -2,7 +2,7 @@
 - name: install urllib3
   pip:
     name: urllib3
-    version: 1.22
+    version: 1.23
 - name: install pyasn1
   pip:
     name: pyasn1
