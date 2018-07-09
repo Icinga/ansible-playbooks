@@ -1,16 +1,12 @@
 ---
-- name: install urllib3
-  pip:
-    name: urllib3
-    version: 1.7.1
 - name: install pyasn1
   pip:
     name: pyasn1
-    version: 0.3.7
+    version: 0.4.1
 - name: install pyOpenSSL
   pip:
     name: pyOpenSSL
-    version: 0.13
+    version: 18.0
 - name: install ndg-httpsclient
   pip:
     name: ndg-httpsclient
@@ -21,12 +17,28 @@
 - name: Get Icinga2 Apt Key for Debian OS family
   apt_key: url={{ icinga2_key }}
            state=present
+  register: add_repository_key
+  ignore_errors: true
+
+- name: Add Icinga2 apt key (alternative for older systems without SNI).
+  shell: "curl -sSL {{ icinga2_key }} | sudo apt-key add -"
+  args:
+    warn: no
+  when: add_repository_key is failed
 
 - name: Get Icinga2 Apt Repos for Debian OS family
   apt_repository: repo='{{ item.repo }}'
                   update_cache=yes
                   state=present
   with_items: '{{ icinga2_deb_repos }}'
+  register: add_debmon_repository_key
+  ignore_errors: true
+
+- name: Add Debmon apt key (alternative for older systems without SNI).
+  shell: "curl -sSL {{ icinga2_debmon_key }} | sudo apt-key add -"
+  args:
+    warn: no
+  when: add_debmon_repository_key is failed
 
 - name: Install Icinga2 Deps on Debian OS family
   apt: pkg={{ item.package }}
@@ -35,12 +47,17 @@
        force=yes
   with_items: '{{ icinga2_ubuntu_pkg_deps }}'
 
+- name: Get OS ubuntu lsb release
+  shell: lsb_release -c -s
+  register: lsb_release
+
 - name: Install Icinga2 on Debian OS family
-  apt: pkg={{ item.package }}
+  apt: pkg={{ item }}
        update_cache=yes
        install_recommends=no
        force=yes
-  with_items: '{{ icinga2_ubuntu_pkg }}'
+  with_items:
+    - "icinga2={{ icinga2_version }}.{{ lsb_release.stdout }}"
 
 - name: Start Icinga2
   service: name=icinga2

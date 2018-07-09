@@ -6,6 +6,9 @@
   apt: name=icinga2-ido-mysql
        state=latest
 
+- name: Install libapache2-mod-php
+  apt: name=libapache2-mod-php
+
 - name: Create a IDO Database for Icinga2
   mysql_db:
     name: "{{ icinga2_db }}"
@@ -16,7 +19,7 @@
   register: icinga_ido_db
 
 - name: Create Icinga2 IDO Database User and configure Grants
-  mysql_user: 
+  mysql_user:
     name: "{{ icinga2_db_user }}"
     host: "%"
     password: "{{ icinga2_db_pass }}"
@@ -26,13 +29,13 @@
     login_user: "{{ db_root_username }}"
     login_password: "{{ db_root_password }}"
   # register: icinga_ido_db
-  # Removed this register because this always registers as changed and will 
-  # attempt to re-run "Import the IDO Schema on Icinga Web Database (only once)" 
-  # which will cause the play to fail. This will still get triggered off of DB 
+  # Removed this register because this always registers as changed and will
+  # attempt to re-run "Import the IDO Schema on Icinga Web Database (only once)"
+  # which will cause the play to fail. This will still get triggered off of DB
   # creation.
 
 - name: Import the IDO Schema on Icinga Web Database (only once)
-  mysql_db: 
+  mysql_db:
     name: "{{ icinga2_db }}"
     state: import
     target: "{{ icinga2_web_mysql_schema_debian }}"
@@ -64,7 +67,7 @@
   tags: icinga2-ansible-web2-ui-install
 
 - name: Create a Web Database for Icinga2
-  mysql_db: 
+  mysql_db:
     name: "{{ icinga2_web2_db }}"
     state: present
     login_host: "{{ db_host }}"
@@ -100,7 +103,7 @@
 
 - name: Add timezone to php.ini
   replace:
-    path: /etc/php5/apache2/php.ini
+    path: /etc/php/7.0/apache2/php.ini
     regexp: '^;date.timezone =.*'
     replace: 'date.timezone = America/Chicago'
 
