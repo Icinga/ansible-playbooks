@@ -5,8 +5,8 @@ icinga2_key: "https://packages.icinga.org/icinga.key"
 # icinga2_debmon_key: "https://debmon.org/debmon/repo.key"
 
 icinga2_deb_repos:
- - { repo: "deb https://packages.icinga.org/{{ ansible_distribution|lower }} icinga-{{ ansible_distribution_release }} main" }
- - { repo: "deb-src https://packages.icinga.org/{{ ansible_distribution|lower }} icinga-{{ ansible_distribution_release }} main" }
+ - { repo: "deb https://packages.icinga.com/{{ ansible_distribution|lower }} icinga-{{ ansible_distribution_release }} main" }
+ - { repo: "deb-src https://packages.icinga.com/{{ ansible_distribution|lower }} icinga-{{ ansible_distribution_release }} main" }
 icinga2_debmon_repo: "deb http://debmon.org/debmon debmon-{{ ansible_distribution_release }} main"
 
 icinga2_pkg:

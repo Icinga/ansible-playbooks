@@ -10,6 +10,13 @@
     url: "{{ icinga2_key }}"
     state: present
 
+- name: Remove old Apt Repos
+  apt_repository:
+    repo: "{{ item.repo|replace('packages.icinga.com', 'packages.icinga.org') }}"
+    update_cache: no
+    state: absent
+  with_items: "{{ icinga2_deb_repos }}"
+
 - name: Get Icinga2 Apt Repos for Debian OS family
   apt_repository:
     repo: "{{ item.repo }}"

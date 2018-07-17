@@ -14,6 +14,13 @@
     id: DC0EE15A29D662D2
     state: absent
 
+  # The Apt repo now lives on packages.icinga.com
+- name: Remove old Apt repos
+  apt_repository: repo='{{ item.repo|replace("packages.icinga.com", "packages.icinga.org") }}'
+                  update_cache=no
+                  state=absent
+  with_items: "{{ icinga2_deb_repos }}"
+
 - name: Get Icinga2 Apt Repos for Debian OS family
   apt_repository: repo='{{ item.repo }}'
                   update_cache=yes
