@@ -16,3 +16,6 @@
 - import_tasks: icinga2_configure.yml
   tags:
    - icinga2_configure
+
+- include: icinga2_enable_api.yml
+  when: icinga2_enable_api

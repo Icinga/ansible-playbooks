@@ -1,0 +1,14 @@
+object Endpoint "{{ hostvars[item]['ansible_fqdn'] }}" {
+  host = "{{ hostvars[item]['ansible_fqdn'] }}"
+}
+
+{% if 'icinga_zone' in hostvars[item] %}
+object Zone "{{ hostvars[item]['ansible_fqdn'] }}" {
+  endpoints = [ "{{ hostvars[item]['ansible_fqdn'] }}" ]
+  {% if 'icinga_zone' in hostvars[item] %}
+    parent = "{{ hostvars[item]['icinga_zone'] }}"
+  {% else %}
+    parent = "{{ icinga_master_zone }}"
+  {% endif %}
+}
+{% endif %}
