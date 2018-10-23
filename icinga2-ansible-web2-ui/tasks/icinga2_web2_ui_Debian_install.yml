@@ -2,10 +2,6 @@
 - name: Install Mysql prerequisite
   apt: name=python-mysqldb
 
-- name: Install Icinga2 IDO modules on Debian family
-  apt: name=icinga2-ido-mysql
-       state=latest
-
 - name: Install libapache2-mod-php
   apt: name=libapache2-mod-php
 
