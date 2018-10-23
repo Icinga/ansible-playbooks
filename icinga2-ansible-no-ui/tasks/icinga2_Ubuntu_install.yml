@@ -60,7 +60,6 @@
     - "icinga2={{ icinga2_version }}.{{ lsb_release.stdout }}"
     - "icinga2-bin={{ icinga2_version }}.{{ lsb_release.stdout }}"
     - "icinga2-common={{ icinga2_version }}.{{ lsb_release.stdout }}"
-    - "libicinga2={{ icinga2_version }}.{{ lsb_release.stdout }}"
 
 - name: Start Icinga2
   service: name=icinga2
