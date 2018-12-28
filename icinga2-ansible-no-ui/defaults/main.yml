@@ -29,3 +29,7 @@ icinga2_yum:
 
 icinga2_main_conf: "/etc/icinga2/icinga2.conf"
 icinga2_conf_d: "/etc/icinga2/conf.d"
+
+
+# choose between different database types
+icinga2_db_type: "mysql"
