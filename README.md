@@ -11,4 +11,4 @@ The documentation is located in the doc/ directory. This documentation is, as th
 
 ## Support
 
-Check the project website at http://www.icinga.org for status updates and https://support.icinga.org if you want to contact us.
+Check the project website at https://www.icinga.com/ for status updates and https://icinga.com/support/ if you want to contact us.
