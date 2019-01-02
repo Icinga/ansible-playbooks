@@ -61,7 +61,7 @@ After Icinga2 is up and running you can move forward to add IcingaWeb2 UI. Pleas
      mariadb_yum_repos: |
        [MariaDB]
        name=MariaDB
-       baseurl=http://yum.mariadb.org/5.5/centos6-amd64
+       baseurl=https://yum.mariadb.org/5.5/centos6-amd64
        gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB
        gpgcheck=1
      tags: mariadb
