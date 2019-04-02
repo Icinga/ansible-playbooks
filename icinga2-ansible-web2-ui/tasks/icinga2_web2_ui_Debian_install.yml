@@ -94,7 +94,7 @@
     name: "{{ icinga2_web2_db_user }}"
     password: "{{ icinga2_web2_db_pass }}"
     state: present
-    priv: "{{ icinga2_web2_db }}.*:GRANT,INSERT,SELECT,UPDATE,DELETE,DROP,CREATE VIEW,INDEX,EXECUTE"
+    priv: "{{ icinga2_web2_db }}.*:ALL"
 
 - name: Import the Web Schema on Icinga Web Database (only once)
   mysql_db:
