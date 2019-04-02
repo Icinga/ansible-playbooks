@@ -39,7 +39,6 @@
     owner: "icinga"
     group: "icinga"
     mode: 0640
-  when: icinga2_ido_mysql_configuration is defined
 
 - name: Enable Icinga2 Ido Mysql Feature
   command: "icinga2 feature enable ido-mysql"
@@ -63,33 +62,13 @@
   package:
     name: rh-php71-php-mysqlnd
     state: present
-  when:
-    - icinga2_ido_mysql_configuration is defined
-    - ansible_distribution_major_version == "7"
-
-- name: Install postgres php-fpm
-  package:
-    name: rh-php71-php-pgsql
-    state: present
-  when:
-    - icinga2_ido_postgres_configuration is defined
-    - ansible_distribution_major_version == "7"
+  when: ansible_distribution_major_version == "7"
 
 - name: Install Mysql php-fpm
   package:
     name: rh-php70-php-mysqlnd
     state: present
-  when:
-    - icinga2_ido_mysql_configuration is defined
-    - ansible_distribution_major_version == "6"
-
-- name: Install postgres php-fpm
-  package:
-    name: rh-php70-php-pgsql
-    state: present
-  when:
-    - icinga2_ido_postgres_configuration is defined
-    - ansible_distribution_major_version == "6"
+  when: ansible_distribution_major_version == "6"
 
 - name: Find out timezone
   slurp:
