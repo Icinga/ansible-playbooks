@@ -1,0 +1,8 @@
+---
+icinga2_db_user_privileges: INSERT,SELECT,UPDATE,DELETE,DROP,CREATE VIEW,INDEX,EXECUTE
+icinga2_web2_db_user_privileges: INSERT,SELECT,UPDATE,DELETE,DROP,CREATE VIEW,INDEX,EXECUTE
+icinga2_web2_mysql_schema: "/usr/share/doc/icingaweb2/schema/mysql.schema.sql"
+
+
+icinga2_conf_owner: icinga
+icinga2_conf_group: icinga
