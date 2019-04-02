@@ -14,13 +14,6 @@
   package:
     name: rh-php71-php-mysqlnd
     state: present
-  when: ansible_distribution_major_version == "7"
-
-- name: Install Mysql php-fpm
-  package:
-    name: rh-php70-php-mysqlnd
-    state: present
-  when: ansible_distribution_major_version == "6"
 
 - name: Find out timezone
   slurp:
@@ -83,17 +76,3 @@
     - rh-php71-php-fpm
   when:
     - ansible_pkg_mgr == "yum"
-    - ansible_distribution_major_version == "7"
-
-- name: Restart {{ web_server_daemon }} and Icinga2 to Apply the Configuration
-  service:
-    name: "{{ item }}"
-    state: restarted
-    enabled: yes
-  loop:
-    - "{{ web_server_daemon }}"
-    - icinga2
-    - rh-php70-php-fpm
-  when:
-    - ansible_pkg_mgr == "yum"
-    - ansible_distribution_major_version  == "6"
