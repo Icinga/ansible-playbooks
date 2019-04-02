@@ -104,19 +104,17 @@
 
 - name: Install Icinga Web2 on RedHat OS family
   yum:
-    name: "{{ item }}"
+    name: "{{ icinga2_web2_ui_rpm }}"
     state: latest
     enablerepo: "{{ enablerepo }}"
-  with_items: "{{ icinga2_web2_ui_rpm }}"
   tags: icinga2-ansible-web2-ui-install
   when: ansible_pkg_mgr == "yum"
 
 - name: Install Icinga Web2 on RedHat OS family
   dnf:
-    name: "{{ item }}"
+    name: "{{ icinga2_web2_ui_rpm }}"
     state: latest
     enablerepo: "{{ enablerepo }}"
-  with_items: "{{ icinga2_web2_ui_rpm }}"
   tags: icinga2-ansible-web2-ui-install
   when: ansible_pkg_mgr == "dnf"
 
@@ -150,7 +148,7 @@
     name: "{{ item }}"
     state: restarted
     enabled: yes
-  with_items:
+  loop:
     - "{{ web_server_daemon }}"
     - icinga2
     - php-fpm
@@ -161,7 +159,7 @@
     name: "{{ item }}"
     state: restarted
     enabled: yes
-  with_items:
+  loop:
     - "{{ web_server_daemon }}"
     - icinga2
     - rh-php71-php-fpm
@@ -174,7 +172,7 @@
     name: "{{ item }}"
     state: restarted
     enabled: yes
-  with_items:
+  loop:
     - "{{ web_server_daemon }}"
     - icinga2
     - rh-php70-php-fpm

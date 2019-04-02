@@ -14,7 +14,7 @@
 
 - name: Icinga Web2 Installation finished
   debug:
-    msg="The WebUI token is {{ setup_token.stdout }}, us it at http://IP//icingaweb2/setup to continue the installation"
+    msg: "The WebUI token is {{ setup_token.stdout }}, us it at http://IP//icingaweb2/setup to continue the installation"
   tags:
     - icinga2-ansible-web2-ui-install
     - token

@@ -1,6 +1,7 @@
 ---
 # handlers file for icinga2-ansible-no-ui
 - name: restart icinga2
-  service: name=icinga2
-           state=restarted
-           enabled=yes
+  service:
+    name: icinga2
+    state: restarted
+    enabled: yes
