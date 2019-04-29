@@ -1,4 +1,16 @@
 ---
+- name: install pyasn1
+  pip:
+    name: pyasn1
+    version: 0.4.1
+- name: install pyOpenSSL
+  pip:
+    name: pyOpenSSL
+    version: 18.0
+- name: install ndg-httpsclient
+  pip:
+    name: ndg-httpsclient
+    version: 0.4.3
 - name: Get Public Yum Repo
   block:
     - name: Get Icinga2 Yum Key on RedHat OS family
@@ -15,17 +27,24 @@
                dest={{ icinga2_repo_yum }}
   when: icinga2_use_public_yum_repo
 
-- name: Install Icinga2 on RedHat OS family
-  yum: name={{ item.package }}
-       state=latest
-  with_items: "{{ icinga2_yum }}"
-  when: ansible_pkg_mgr == "yum"
+- name: Install Icinga2 Deps yum OS family
+  yum:
+    name: "{{ item.package }}"
+    state: present
+    update_cache: yes
+  with_items: '{{ icinga2_yum_deps }}'
 
-- name: Install Icinga2 on RedHat OS family (Fedora > 22)
-  dnf: name={{ item.package }}
-       state=latest
-  with_items: "{{ icinga2_yum }}"
-  when: ansible_pkg_mgr == "dnf"
+- name: Install Icinga2 on yum OS family
+  yum:
+    name: "{{ item }}"
+    state: present
+    update_cache: yes
+  with_items:
+    - "icinga2={{ icinga2_version }}.{{ lsb_release.stdout }}"
+    - "icinga2-bin={{ icinga2_version }}.{{ lsb_release.stdout }}"
+    - "icinga2-common={{ icinga2_version }}.{{ lsb_release.stdout }}"
+    - "libicinga2={{ icinga2_version }}.{{ lsb_release.stdout }}"
+    - "icinga2-ido-mysql={{ icinga2_version }}.{{ lsb_release.stdout }}"
 
 - name: Start Icinga2
   service: name=icinga2
