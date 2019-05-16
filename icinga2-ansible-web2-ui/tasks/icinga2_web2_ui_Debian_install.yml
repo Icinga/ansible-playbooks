@@ -7,7 +7,7 @@
   apt:
     name: "{{ item }}"
     state: present
-  with_items:
+  loop:
     - php
     - php-gd
     - libapache2-mod-php
@@ -18,10 +18,12 @@
   changed_when: false
 
 - name: Set PHP version
-  set_fact: php_version="{{ php_version.stdout_lines[0] | regex_replace('^PHP (\d\.\d).*$','\\1') }}"
+  set_fact:
+    php_version: "{{ php_version.stdout_lines[0] | regex_replace('^PHP (\\d\\.\\d).*$','\\1') }}"
 
 - name: Enable PHP apache module
-  apache2_module: name="php{{ php_version }}"
+  apache2_module:
+    name: "php{{ php_version }}"
 
 - name: Find out timezone
   slurp:
@@ -35,89 +37,25 @@
     line: 'date.timezone = "{{ etc_timezone["content"] | b64decode | regex_replace("\n") }}"'
   notify: restart apache2
 
-- name: Install Icinga2 IDO modules on Debian family
-  apt:
-    name: icinga2-ido-mysql
-    state: latest
-
-- name: Create a IDO Database for Icinga2
-  mysql_db:
-    name: "{{ icinga2_db }}"
-    state: present
-  register: icinga_ido_db
-
-- name: Create Icinga2 IDO Database User and configure Grants
-  mysql_user:
-    name: "{{ icinga2_db_user }}"
-    password: "{{ icinga2_db_pass }}"
-    state: present
-    priv: "{{ icinga2_db }}.*:ALL"
-
-- name: Import the IDO Schema on Icinga Web Database (only once)
-  mysql_db:
-    name: "{{ icinga2_db }}"
-    state: import
-    target: "{{ icinga2_web_mysql_schema_debian }}"
-  when: icinga_ido_db.changed == true
-
-- name: Configure Icinga2 Ido Mysql Feature
-  template:
-    src: ido-mysql.conf.j2
-    dest: "{{ icinga2_ido_mysql_conf }}"
-    backup: yes
-    owner: nagios
-    group: nagios
-    mode: 0640
-
-- name: Enable Icinga2 Ido Mysql Feature
-  command: "icinga2 feature enable ido-mysql"
-  register: features_result
-  changed_when: "'for these changes to take effect' in features_result.stdout"
-  notify:
-   - restart icinga2
-
 - name: Install Icinga Web2 on Debian family
   apt:
-    name: "{{ item }}"
+    name: "{{ icinga2_web2_ui_deb }}"
     state: latest
-  with_items: "{{ icinga2_web2_ui_deb }}"
   tags: icinga2-ansible-web2-ui-install
 
-- name: Create a Web Database for Icinga2
-  mysql_db:
-    name: "{{ icinga2_web2_db }}"
+- name: Install the Icinga2 IDO module
+  package:
+    name: icinga2-ido-mysql
     state: present
-  register: icinga_web_db
 
-- name: Create Icinga2 Web Database User and configure Grants
-  mysql_user:
-    name: "{{ icinga2_web2_db_user }}"
-    password: "{{ icinga2_web2_db_pass }}"
-    state: present
-    priv: "{{ icinga2_web2_db }}.*:GRANT,INSERT,SELECT,UPDATE,DELETE,DROP,CREATE VIEW,INDEX,EXECUTE"
-
-- name: Import the Web Schema on Icinga Web Database (only once)
-  mysql_db:
-    name: "{{ icinga2_web2_db }}"
-    state: import
-    target: "{{ icinga2_web2_mysql_schema_debian }}"
-  when: icinga_web_db.changed == true
-
-- name: Configure Icinga2 Ido Mysql Feature
-  template:
-    src: ido-mysql.conf.j2
-    dest: "{{ icinga2_ido_mysql_conf }}"
-    backup: yes
-    owner: nagios
-    group: nagios
-    mode: 0640
+- import_tasks: icinga2_web2_create_databases.yml
 
 - name: Restart HTTPD and Icinga2 to Apply the Configuration
   service:
     name: "{{ item }}"
     state: restarted
     enabled: yes
-  with_items:
+  loop:
     - apache2
     - icinga2
 
@@ -142,6 +80,6 @@
     group: icingaweb2
     mode: 0755
     state: directory
-  with_items:
+  loop:
     - monitoring
     - translation

@@ -1,19 +1,21 @@
 ---
 - name: Install Icinga Classic UI on Debian OS family
-  apt: pkg={{ item }}
-       state=latest
-       update_cache=yes
-       cache_valid_time=30
-  with_items: "{{ icinga2_classic_ui_pkg }}"
+  apt:
+    pkg: "{{ icinga2_classic_ui_pkg }}"
+    state: latest
+    update_cache: yes
+    cache_valid_time: 30
 
 - name: Configure a password for icingaadmin user
-  htpasswd: name=icingaadmin
-            state=present
-            path={{ htpasswd_deb }}
-            create=no
-            password={{ icinga2_classic_ui_passwd }}
+  htpasswd:
+    name: icingaadmin
+    state: present
+    path: "{{ htpasswd_deb }}"
+    create: no
+    password: "{{ icinga2_classic_ui_passwd }}"
   notify:
    - restart apache2
 
 - name: Icinga Classic UI Installation finished (Debian)
-  debug: msg="Login at http://IP/icinga2-classicui with user icingaadmin and password {{ icinga2_classic_ui_passwd }}"
+  debug:
+    msg: "Login at http://IP/icinga2-classicui with user icingaadmin and password {{ icinga2_classic_ui_passwd }}"

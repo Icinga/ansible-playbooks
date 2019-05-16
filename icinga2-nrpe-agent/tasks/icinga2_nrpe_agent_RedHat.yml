@@ -5,28 +5,30 @@
   when: ansible_os_family == "RedHat" and ansible_architecture == "i686"
 
 - name: Install Nrpe and Plugins
-  yum: name={{ item }}
-       state=latest
-  with_items: "{{ nrpe_agent_RedHat }}"
+  yum:
+    name: "{{ nrpe_agent_RedHat }}"
+    state: latest
   when: ansible_pkg_mgr == "yum"
 
 - name: Install Nrpe and Plugins
-  dnf: name={{ item }}
-       state=latest
-  with_items: "{{ nrpe_agent_RedHat }}"
+  dnf:
+    name: "{{ nrpe_agent_RedHat }}"
+    state: latest
   when: ansible_pkg_mgr == "dnf"
 
 - name: Install Check_Mem_Ng on RH
-  get_url: url={{ nrpe_agent_check_mem }}
-           dest={{ nrpe_agent_plugins_path }}/check_mem_ng
-           mode=0755
+  get_url:
+    url: "{{ nrpe_agent_check_mem }}"
+    dest: "{{ nrpe_agent_plugins_x86_64 }}/check_mem_ng"
+    mode: 0755
 
 - name: Copy Nrpe Configuration
-  template: src=nrpe.cfg.j2
-            dest={{ nrpe_agent_config }}
-            owner=root
-            group=root
-            mode=0644
-            backup=yes
+  template:
+    src: nrpe.cfg.j2
+    dest: "{{ nrpe_agent_config }}"
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
   notify:
    - restart nrpe
