@@ -46,6 +46,7 @@
   package:
     name: icinga2-ido-mysql
     state: present
+    priv: "{{ icinga2_web2_db }}.*:ALL"
 
 - import_tasks: icinga2_web2_create_databases.yml
 
