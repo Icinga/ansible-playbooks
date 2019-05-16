@@ -1,0 +1,7 @@
+---
+icinga2_db_user_privileges: ALL
+icinga2_web2_db_user_privileges: ALL
+icinga2_web2_mysql_schema: "/usr/share/icingaweb2/etc/schema/mysql.schema.sql"
+
+icinga2_conf_owner: nagios
+icinga2_conf_group: nagios

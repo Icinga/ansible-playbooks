@@ -15,23 +15,21 @@
     repo: "{{ item.repo|replace('packages.icinga.com', 'packages.icinga.org') }}"
     update_cache: no
     state: absent
-  with_items: "{{ icinga2_deb_repos }}"
+  loop: "{{ icinga2_deb_repos }}"
 
 - name: Get Icinga2 Apt Repos for Debian OS family
   apt_repository:
     repo: "{{ item.repo }}"
     update_cache: yes
     state: present
-  with_items: "{{ icinga2_deb_repos }}"
+  loop: "{{ icinga2_deb_repos }}"
 
 - name: Install Icinga2 on Debian OS family
   apt:
-    pkg: "{{ item }}"
+    pkg: "{{ icinga2_pkg }}"
     update_cache: yes
     state: latest
     install_recommends: no
-  with_items:
-    - "{{ icinga2_pkg }}"
 
 - name: Start Icinga2
   service:

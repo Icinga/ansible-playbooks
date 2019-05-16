@@ -1,6 +1,8 @@
 ---
 - name: Install https for apt (Debian)
-  apt: name=apt-transport-https state=present
+  apt:
+    name: apt-transport-https
+    state: present
 
 - name: Get Icinga2 Apt Key for Debian OS family
   apt_key:
@@ -16,31 +18,35 @@
 
   # The Apt repo now lives on packages.icinga.com
 - name: Remove old Apt repos
-  apt_repository: repo='{{ item.repo|replace("packages.icinga.com", "packages.icinga.org") }}'
-                  update_cache=no
-                  state=absent
-  with_items: "{{ icinga2_deb_repos }}"
+  apt_repository:
+    repo: "{{ item.repo|replace('packages.icinga.com', 'packages.icinga.org') }}"
+    update_cache: no
+    state: absent
+  loop: "{{ icinga2_deb_repos }}"
 
 - name: Get Icinga2 Apt Repos for Debian OS family
-  apt_repository: repo='{{ item.repo }}'
-                  update_cache=yes
-                  state=present
-  with_items: "{{ icinga2_deb_repos }}"
+  apt_repository:
+    repo: "{{ item.repo }}"
+    update_cache: yes
+    state: present
+  loop: "{{ icinga2_deb_repos }}"
 
   # Debmon has been shut down and is not required any more
 - name: Remove Debmon Apt Repo for Debian OS family (Debian)
-  apt_repository: repo='{{ icinga2_debmon_repo }}'
-                  update_cache=yes
-                  state=absent
+  apt_repository:
+    repo: "{{ icinga2_debmon_repo }}"
+    update_cache: yes
+    state: absent
 
 - name: Install Icinga2 on Debian OS family
-  apt: pkg={{ item }}
-       update_cache=yes
-       state=latest
-       install_recommends=no
-  with_items: "{{ icinga2_pkg }}"
+  apt:
+    pkg: "{{ icinga2_pkg }}"
+    update_cache: yes
+    state: latest
+    install_recommends: no
 
 - name: Start Icinga2
-  service: name=icinga2
-           state=started
-           enabled=yes
+  service:
+    name: icinga2
+    state: started
+    enabled: yes
