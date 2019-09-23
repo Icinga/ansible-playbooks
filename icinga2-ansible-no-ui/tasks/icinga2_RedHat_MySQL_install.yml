@@ -16,7 +16,7 @@
       get_url:
         url: "{{ icinga2_url_yum }}"
         dest: "{{ icinga2_repo_yum }}"
-  when: icinga2_use_public_yum_repo
+  when: icinga2_use_public_yum_repo|bool
 
 - name: Install Icinga2 on RedHat OS family
   yum:
