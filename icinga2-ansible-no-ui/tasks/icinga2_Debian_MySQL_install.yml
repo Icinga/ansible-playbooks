@@ -22,7 +22,7 @@
   when: ansible_distribution_release == "stretch"
   apt_repository:
     repo: "deb https://deb.debian.org/debian stretch-backports main"
-    update_cache: no
+    update_cache: yes
     filename: "stretch-backports"
     state: present
 
