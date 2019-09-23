@@ -16,6 +16,16 @@
     id: DC0EE15A29D662D2
     state: absent
 
+  # Backport repository for Debian Stretch is needed for Icinga 2.11
+  # see https://icinga.com/docs/icinga2/latest/doc/02-installation/#debian-backports-repository
+- name: Add backport repository for Debian Stretch
+  when: ansible_distribution_release == "stretch"
+  apt_repository:
+    repo: "deb https://deb.debian.org/debian stretch-backports main"
+    update_cache: yes
+    filename: "stretch-backports"
+    state: present
+
   # The Apt repo now lives on packages.icinga.com
 - name: Remove old Apt repos
   apt_repository:
