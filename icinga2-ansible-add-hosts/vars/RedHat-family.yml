@@ -1,5 +1,3 @@
 ---
-# vars file for icinga2-ansible-add-hosts
 icinga2_user: icinga
 icinga2_group: icinga
-

@@ -1,11 +1,22 @@
 ---
 # tasks file for icinga2-ansible-web2-ui
 
+- name: Get variables for the OS family
+  include_vars: "{{ ansible_os_family }}.yml"
+
 - include_tasks: icinga2_web2_ui_RedHat_install.yml
   when: ansible_os_family == 'RedHat'
 
 - include_tasks: icinga2_web2_ui_Debian_install.yml
   when: ansible_os_family == 'Debian'
+
+- name: Check if IcingaWeb2 config.ini exists
+  stat:
+    path: /etc/icingaweb2/config.ini
+  register: icingaweb2_config_ini
+  tags:
+    - icinga2-ansible-web2-ui-install
+    - token
 
 - name: Get setup token.
   shell: 'icingacli setup token create | sed "s/.*token is: \(.*\)/\1/g"'
@@ -15,8 +26,11 @@
 
 - name: Icinga Web2 Installation finished
   debug:
-    msg="The WebUI token is {{ setup_token.stdout }}, us it at http://IP//icingaweb2/setup to continue the installation"
-  when: not ansible_check_mode
+    msg: "The WebUI token is {{ setup_token.stdout }} ; use it at http://{{ ansible_fqdn }}/icingaweb2/setup to continue the installation"
+  when:
+    - not icingaweb2_config_ini.stat.exists
+    - not ansible_check_mode
+    msg: "The WebUI token is {{ setup_token.stdout }}, us it at http://IP//icingaweb2/setup to continue the installation"
   tags:
     - icinga2-ansible-web2-ui-install
     - token

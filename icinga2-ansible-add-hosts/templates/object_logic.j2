@@ -11,7 +11,7 @@ object Host "{{ hostvars[item]['ansible_fqdn'] }}" {
   {{ host_attributes }}
 
   {% if 'icinga_host_attributes' in hostvars[item] %}
-    {% for attribute, value in hostvars[item].icinga_host_attributes.iteritems() %}
+    {% for attribute, value in hostvars[item].icinga_host_attributes.items() | list %}
     {{ attribute }} = {{ value }}
     {% endfor %}
   {% endif %}

@@ -1,0 +1,4 @@
+---
+icinga2_user: nagios
+icinga2_group: nagios
+

@@ -1,11 +1,14 @@
 ---
+- name: nrpe_agent_plugins_path
+  set_fact:
+    nrpe_agent_plugins_path: /usr/lib/nagios/plugins
+
 - name: Install Nrpe and Plugins
   package:
-       name: "{{ item }}"
-       state: latest
-       update_cache: yes
-       install_recommends: no
-  with_items: "{{ nrpe_agent_Debian }}"
+    name: "{{ nrpe_agent_Debian }}"
+    state: latest
+    update_cache: yes
+    install_recommends: no
   tags:
    - nrpe_agent_install
 
