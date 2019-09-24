@@ -16,4 +16,5 @@ Check the project website at https://www.icinga.com/ for status updates and http
 # Important
 
 This project is no longer fully maintained.
+
 We are focusing on the new "Official" Ansible playbook https://github.com/Icinga/ansible-icinga2 there is plenty of work a head, and we encourage contributions.
