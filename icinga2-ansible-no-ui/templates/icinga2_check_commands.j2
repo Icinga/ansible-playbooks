@@ -1,6 +1,6 @@
 # {{ ansible_managed }}
 
-{% for key,value in check_commands.iteritems() %}
+{% for key,value in check_commands.items() | list %}
 object CheckCommand "{{ key }}" {
   import "plugin-check-command"
 

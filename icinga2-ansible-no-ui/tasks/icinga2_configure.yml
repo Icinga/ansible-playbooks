@@ -1,22 +1,24 @@
 ---
 - name: Copy Main Icinga2 Configuration
-  template: src=icinga2.conf.j2
-            dest={{ icinga2_main_conf }}
-            backup=yes
-            owner=root
-            group=root
-            mode=0644
-  when: "{{ icinga2_conf_global | default('') | length}}"
+  template:
+    src: icinga2.conf.j2
+    dest: "{{ icinga2_main_conf }}"
+    backup: yes
+    owner: root
+    group: root
+    mode: 0644
+  when: icinga2_conf_global | default('') | length
   notify:
    - restart icinga2
 
 - name: Copy Check Commands Configuration
-  template: src=icinga2_check_commands.j2
-            dest={{ icinga2_conf_d }}/check_commands.conf
-            backup=yes
-            owner=root
-            group=root
-            mode=0644
+  template:
+    src: icinga2_check_commands.j2
+    dest: "{{ icinga2_conf_d }}/check_commands.conf"
+    backup: yes
+    owner: root
+    group: root
+    mode: 0644
   when: "{{ check_commands | default('') | length}}"
   notify:
    - restart icinga2

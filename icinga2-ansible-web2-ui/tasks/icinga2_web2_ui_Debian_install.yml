@@ -5,14 +5,17 @@
 
 - name: Install PHP requirements
   apt:
-    name: "{{ item}}"
+    name: "{{ item }}"
     state: present
-  with_items:
-    - php7.0
-    - libapache2-mod-php7.0
+  loop:
+    - php
     - php-gd
   notify: restart apache2
+    
 
+- name: Enable PHP apache module
+  apache2_module:
+    name: "php{{ php_version }}"
 
 - name: Find out timezone
   slurp:
@@ -21,7 +24,7 @@
 
 - name: Timezone in php.ini
   lineinfile:
-    path: /etc/php/7.0/apache2/php.ini
+    path: '/etc/php/{{ php_version }}/apache2/php.ini'
     regexp: '^;?date.timezone ='
     line: 'date.timezone = "{{ etc_timezone["content"] | b64decode | regex_replace("\n") }}"'
   notify: restart apache2
@@ -67,32 +70,17 @@
   changed_when: "'for these changes to take effect' in features_result.stdout"
   notify: restart icinga2
 
+
 - name: Install Icinga Web2 on Debian family
   apt:
-    name: "{{ item }}"
+    name: "{{ icinga2_web2_ui_deb }}"
     state: latest
-  with_items: "{{ icinga2_web2_ui_deb }}"
   tags: icinga2-ansible-web2-ui-install
 
-- name: Create a Web Database for Icinga2
-  mysql_db:
-    name: "{{ icinga2_web2_db }}"
+- name: Install the Icinga2 IDO module
+  package:
+    name: icinga2-ido-mysql
     state: present
-  register: icinga_web_db
-
-- name: Create Icinga2 Web Database User and configure Grants
-  mysql_user:
-    name: "{{ icinga2_web2_db_user }}"
-    password: "{{ icinga2_web2_db_pass }}"
-    state: present
-    priv: "{{ icinga2_web2_db }}.*:GRANT,INSERT,SELECT,UPDATE,DELETE,DROP,CREATE VIEW,INDEX,EXECUTE"
-
-- name: Import the Web Schema on Icinga Web Database (only once)
-  mysql_db:
-    name: "{{ icinga2_web2_db }}"
-    state: import
-    target: "{{ icinga2_web2_mysql_schema_debian }}"
-  when: icinga_web_db.changed == true
 
 - name: Add user www-data to group icingaweb2
   user:
@@ -115,6 +103,6 @@
     group: icingaweb2
     mode: 0755
     state: directory
-  with_items:
+  loop:
     - monitoring
     - translation

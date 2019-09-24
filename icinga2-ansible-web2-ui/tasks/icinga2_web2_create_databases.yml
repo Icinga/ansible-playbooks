@@ -1,0 +1,56 @@
+---
+- name: Create a IDO Database for Icinga2
+  mysql_db:
+    name: "{{ icinga2_db }}"
+    state: present
+  register: icinga_ido_db
+
+- name: Create Icinga2 IDO Database User and configure Grants
+  mysql_user:
+    name: "{{ icinga2_db_user }}"
+    password: "{{ icinga2_db_pass }}"
+    state: present
+    priv: "{{ icinga2_db }}.*:{{ icinga2_db_user_privileges }}"
+
+- name: Import the IDO Schema on Icinga Web Database (only once)
+  mysql_db:
+    name: "{{ icinga2_db }}"
+    state: import
+    target: "{{ icinga2_web_mysql_schema }}"
+  when: icinga_ido_db.changed == true
+
+- name: Configure Icinga2 Ido Mysql Feature
+  template:
+    src: ido-mysql.conf.j2
+    dest: "{{ icinga2_ido_mysql_conf }}"
+    backup: yes
+    owner: "{{ icinga2_conf_owner }}"
+    group: "{{ icinga2_conf_group }}"
+    mode: 0640
+
+- name: Enable Icinga2 Ido Mysql Feature
+  command: "icinga2 feature enable ido-mysql"
+  register: features_result
+  changed_when: "'for these changes to take effect' in features_result.stdout"
+  notify:
+    - restart icinga2
+
+- name: Create a Web Database for Icinga2
+  mysql_db:
+    name: "{{ icinga2_web2_db }}"
+    state: present
+  register: icinga_web_db
+
+- name: Create Icinga2 Web Database User and configure Grants
+  mysql_user:
+    name: "{{ icinga2_web2_db_user }}"
+    password: "{{ icinga2_web2_db_pass }}"
+    state: present
+    priv: "{{ icinga2_web2_db }}.*:{{ icinga2_web2_db_user_privileges }}"
+
+- name: Import the Web Schema on Icinga Web Database (only once)
+  mysql_db:
+    name: "{{ icinga2_web2_db }}"
+    state: import
+    target: "{{ icinga2_web2_mysql_schema }}"
+  when: icinga_web_db.changed == true

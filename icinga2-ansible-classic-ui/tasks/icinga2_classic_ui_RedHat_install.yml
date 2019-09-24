@@ -1,20 +1,22 @@
 ---
 - name: Install Icinga Classic UI on RedHat OS family
-  yum: name={{ item }}
-       state=latest
-  with_items: "{{ icinga2_classic_ui_rpm }}"
+  yum:
+    name: "{{ icinga2_classic_ui_rpm }}"
+    state: latest
   notify:
    - restart icinga2
    - restart httpd
 
 - name: Configure a password for icingaadmin user
-  htpasswd: name=icingaadmin
-            state=present
-            path={{ htpasswd_rh }}
-            create=no
-            password={{ icinga2_classic_ui_passwd }}
+  htpasswd:
+    name: icingaadmin
+    state: present
+    path: "{{ htpasswd_rh }}"
+    create: no
+    password: "{{ icinga2_classic_ui_passwd }}"
   notify:
    - restart httpd
 
 - name: Icinga Classic UI Installation finished (RH)
-  debug: msg="Login at http://IP/icinga with user icingaadmin and password {{ icinga2_classic_ui_passwd }}"
+  debug:
+    msg: "Login at http://IP/icinga with user icingaadmin and password {{ icinga2_classic_ui_passwd }}"
