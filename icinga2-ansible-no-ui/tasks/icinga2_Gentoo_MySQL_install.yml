@@ -1,0 +1,12 @@
+---
+- name: Install Icinga2 on Gentoo OS family
+  portage:
+    package: "{{ item }}"
+    state: present
+  loop: "{{ icinga2_pkg }}"
+
+- name: Start Icinga2
+  service:
+    name: icinga2
+    state: started
+    enabled: yes

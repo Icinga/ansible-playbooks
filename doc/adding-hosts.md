@@ -58,6 +58,9 @@ Now open up your `site.yml` playbook with your favorite text editor and add the 
        check_command = "http"
        vars.sla = "24x7"
        vars.operator = "on_call"
+       vars.notification["mail"] = {
+         groups = [ "icingaadmins" ]
+         }
      host_checks: |
        object Service "load_average" {
          host_name = "{{ hostvars[item]['ansible_fqdn'] }}"

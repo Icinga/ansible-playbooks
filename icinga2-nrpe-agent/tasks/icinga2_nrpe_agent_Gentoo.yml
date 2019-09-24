@@ -1,19 +1,21 @@
 ---
 - name: Install Nrpe and Plugins
-  portage: package={{ item }}
-       state=present
-       update=yes
-  with_items: "{{ nrpe_agent_Gentoo }}"
+  portage:
+    package: "{{ item }}"
+    state: "present"
+    update: yes
+  loop: "{{ nrpe_agent_Gentoo }}"
   tags:
    - nrpe_agent_install
 
 - name: Copy Nrpe Configuration
-  template: src=nrpe.cfg.j2
-            dest={{ nrpe_agent_config }}
-            owner=root
-            group=root
-            mode=0644
-            backup=yes
+  template:
+    src: nrpe.cfg.j2
+    dest: "{{ nrpe_agent_config }}"
+    owner: root
+    group: root
+    mode: 0644
+    backup: yes
   notify:
    - restart nrpe
   tags:
