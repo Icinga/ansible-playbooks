@@ -12,3 +12,8 @@ The documentation is located in the doc/ directory. This documentation is, as th
 ## Support
 
 Check the project website at https://www.icinga.com/ for status updates and https://icinga.com/support/ if you want to contact us.
+
+# Important
+
+This project is no longer fully maintained.
+We are focusing on the new "Official" Ansible playbook https://github.com/Icinga/ansible-icinga2 there is plenty of work a head, and we encourage contributions.
