@@ -1,27 +1,26 @@
 ---
 # tasks file for icinga2-ansible-no-ui
 
-- include_tasks: icinga2_Debian_MySQL_install.yml
-  when:
-    - ansible_os_family == 'Debian'
-    - ansible_distribution != 'Ubuntu'
-    - icinga2_db_type == "mysql"
+- block:
+  - include_tasks: icinga2_Debian_MySQL_install.yml
+    when:
+      - ansible_os_family == 'Debian'
+      - ansible_distribution != 'Ubuntu'
 
-- include_tasks: icinga2_Ubuntu_MySQL_install.yml
-  when:
-    - ansible_os_family == 'Debian'
-    - ansible_distribution == 'Ubuntu'
-    - icinga2_db_type == "mysql"
+  - include_tasks: icinga2_Ubuntu_MySQL_install.yml
+    when:
+      - ansible_os_family == 'Debian'
+      - ansible_distribution == 'Ubuntu'
 
-- include_tasks: icinga2_RedHat_MySQL_install.yml
-  when:
-    - ansible_os_family == 'RedHat'
-    - icinga2_db_type == "mysql"
+  - include_tasks: icinga2_RedHat_MySQL_install.yml
+    when:
+      - ansible_os_family == 'RedHat'
 
-- include_tasks: icinga2_Gentoo_MySQL_install.yml
-  when:
-    - ansible_os_family == 'Gentoo'
-    - icinga2_db_type == "mysql"
+  - include_tasks: icinga2_Gentoo_MySQL_install.yml
+    when:
+      - ansible_os_family == 'Gentoo'
+
+  when: icinga2_db_type == "mysql"
 
 - import_tasks: icinga2_configure.yml
   tags:
