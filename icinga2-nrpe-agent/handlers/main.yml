@@ -3,7 +3,7 @@
 
 - name: restart nrpe
   service:
-    ame: nrpe
+    name: nrpe
     state: restarted
     enabled: yes
 
