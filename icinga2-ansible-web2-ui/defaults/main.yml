@@ -1,7 +1,7 @@
 ---
 # defaults file for icinga2-ansible-web2-ui
 
-icinga2_db: "icinga"
+icinga2_db: "icinga2"
 icinga2_db_pass: "icinga"
 icinga2_db_user: "icinga"
 icinga2_web_mysql_schema: "/usr/share/icinga2-ido-mysql/schema/mysql.sql"
