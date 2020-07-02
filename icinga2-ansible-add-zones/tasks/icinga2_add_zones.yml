@@ -1,0 +1,29 @@
+---
+- name: Copy Endpoint Zone Definitions
+  template: src=endpoint_zones.j2
+            dest={{ icinga2_zones_dir }}/{{ hostvars[item]['ansible_fqdn'] }}.conf
+            owner=icinga
+            group=icinga
+            mode=0640
+  with_items: "{{ groups['all'] }}"
+  notify:
+   - reload icinga2
+
+- name: Copy Zone Definitions
+  template:
+    src: zone.j2
+    dest: "{{ icinga2_zones_dir }}/{{ item }}.conf"
+    owner: icinga
+    group: icinga
+    mode: 0640
+  with_items: "{{ icinga_merged_zones }}"
+  notify:
+   - reload icinga2
+
+- name: Copy zones.conf
+  template:
+    src: zones.conf
+    dest: /etc/icinga2/zones.conf
+    owner: icinga
+    group: icinga
+    mode: 0640

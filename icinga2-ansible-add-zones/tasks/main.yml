@@ -1,0 +1,11 @@
+---
+# tasks file for icinga2-ansible-add-zones
+
+- name: Ensure existance of {{ icinga2_zones_dir }}
+  file:
+    name: "{{ icinga2_zones_dir }}"
+    state: directory
+    owner: icinga
+    group: icinga
+
+- include: icinga2_add_zones.yml
